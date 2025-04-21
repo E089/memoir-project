@@ -27,3 +27,12 @@ Route::get('/start-writing', [EntryController::class, 'showStartWriting'])->name
 Route::post('/start-writing', [EntryController::class, 'saveEntry']);  // POST request to save the new entry
 
 Route::get('/view-all-thoughts', [EntryController::class, 'viewAllEntries'])->name('view-all-thoughts')->middleware('auth');
+
+// View a single entry
+Route::get('/entries/{id}', [EntryController::class, 'showEntry'])->name('entries.show')->middleware('auth');
+
+// Edit an entry
+Route::get('/entries/{id}/edit', [EntryController::class, 'editEntry'])->name('entries.edit')->middleware('auth');
+Route::post('/entries/{id}/update', [EntryController::class, 'updateEntry'])->name('entries.update')->middleware('auth');
+Route::delete('/entry/{id}/delete', [EntryController::class, 'deleteEntry'])->name('delete-entry');
+

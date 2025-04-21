@@ -31,7 +31,7 @@ class EntryController extends Controller
         ]);
 
         // Redirect back to the home/dashboard or to view all entries
-        return redirect()->route('home')->with('message', 'Entry saved successfully!');
+        return redirect()->route('view-all-thoughts')->with('message', 'Entry saved successfully!');
     }
 
     // Show all entries for the logged-in user
@@ -41,4 +41,49 @@ class EntryController extends Controller
 
         return view('view-all-thoughts', compact('entries'));  // Pass entries to the view
     }
+
+    // Show a single entry
+    public function showEntry($id)
+        {
+            $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+            return view('view-single-thought', compact('entry'));
+        }
+
+    // Show the form to edit an entry
+    public function editEntry($id)
+        {
+            $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+            return view('edit-entry', compact('entry'));
+        }
+
+    // Save the updated entry
+    public function updateEntry(Request $request, $id)
+        {
+            $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'body' => 'required|string|min:5',
+            ]);
+
+            $entry->update([
+                'title' => $request->title,
+                'body' => $request->body,
+            ]);
+
+            return redirect()->route('view-all-thoughts')->with('message', 'Entry updated successfully!');
+        }
+
+        public function deleteEntry($id)
+        {
+            // Find the entry by ID, make sure the logged-in user owns it
+            $entry = Entry::where('user_id', auth()->id())->findOrFail($id);
+        
+            // Delete the entry
+            $entry->delete();
+        
+            // Redirect back to view-all-thoughts with a success message
+            return redirect()->route('view-all-thoughts')->with('message', 'Entry deleted successfully!');
+        }
+        
 }
