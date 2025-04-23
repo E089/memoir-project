@@ -6,7 +6,7 @@
 
     <form action="{{ route('entries.update', $entry->id) }}" method="POST">
         @csrf
-        @method('POST')
+        @method('PUT') <!-- Update method, should be PUT for edit -->
 
         <div class="form-group">
             <label for="title">Title</label>
@@ -16,6 +16,19 @@
         <div class="form-group">
             <label for="body">Body</label>
             <textarea name="body" id="body" class="form-control" required>{{ $entry->body }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select name="category_id" id="category" class="form-control">
+                <option value="">Select a category</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" 
+                            {{ $category->id == $entry->category_id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <button type="submit" class="submit-button">Update Entry</button>
@@ -47,7 +60,7 @@
         display: block;
     }
 
-    input, textarea {
+    input, textarea, select {
         width: 100%;
         padding: 0.8rem;
         font-size: 1rem;

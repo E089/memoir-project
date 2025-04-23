@@ -29,7 +29,8 @@
     }
 
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
         width: 100%;
         padding: 0.8rem;
         border: 1px solid #ccc;
@@ -74,6 +75,17 @@
         <div class="form-group">
             <label for="body">Your Thoughts</label>
             <textarea id="body" name="body" required></textarea>
+        </div>
+
+        <!-- Category Dropdown -->
+        <div class="form-group">
+            <label for="category_id">Category</label>
+            <select id="category_id" name="category_id">
+                <option value="">Select a Category (Optional)</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
         </div>
 
         <button type="submit" class="submit-button">Save Entry</button>

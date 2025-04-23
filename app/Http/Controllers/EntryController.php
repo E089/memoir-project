@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Entry;  // Use the Entry model
+use App\Models\Category;
 
 class EntryController extends Controller
 {
     // Show the page for starting to write a new entry
     public function showStartWriting()
     {
-        return view('start-writing');  // View for starting a new entry
+        $categories = Category::all(); // Fetch all categories
+        return view('start-writing', compact('categories')); // Pass categories to the view
     }
+    
 
     // Save the new entry to the database
     public function saveEntry(Request $request)
@@ -35,12 +38,29 @@ class EntryController extends Controller
     }
 
     // Show all entries for the logged-in user
-    public function viewAllEntries()
+    public function viewAllEntries(Request $request)
     {
-        $entries = Entry::where('user_id', auth()->id())->latest()->get();  // Get entries for the logged-in user
+        $query = Entry::where('user_id', auth()->id());
 
-        return view('view-all-thoughts', compact('entries'));  // Pass entries to the view
+        // If a category filter is applied
+        if ($request->has('category') && $request->category != '') {
+            $query->where('category_id', $request->category);
+        }
+
+        // If a search filter is applied
+        if ($request->has('search') && $request->search != '') {
+            $query->where(function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('body', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $entries = $query->latest()->get();
+        $categories = Category::all(); // Fetch categories for the filter dropdown
+
+        return view('view-all-thoughts', compact('entries', 'categories'));
     }
+
 
     // Show a single entry
     public function showEntry($id)
@@ -51,29 +71,40 @@ class EntryController extends Controller
 
     // Show the form to edit an entry
     public function editEntry($id)
-        {
-            $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-            return view('edit-entry', compact('entry'));
-        }
+    {
+        // Find the entry to edit
+        $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+
+        // Fetch all categories for the dropdown
+        $categories = Category::all();
+
+        return view('edit-entry', compact('entry', 'categories')); // Pass both entry and categories to the view
+    }
+
 
     // Save the updated entry
     public function updateEntry(Request $request, $id)
-        {
-            $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+    {
+        // Find the entry to update
+        $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
 
-            $request->validate([
-                'title' => 'required|string|max:255',
-                'body' => 'required|string|min:5',
-            ]);
+        // Validate the input
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string|min:5',
+            'category_id' => 'nullable|exists:categories,id', // Validate category ID if provided
+        ]);
 
-            $entry->update([
-                'title' => $request->title,
-                'body' => $request->body,
-            ]);
+        // Update the entry
+        $entry->update([
+            'title' => $request->title,
+            'body' => $request->body,
+            'category_id' => $request->category_id,  // Update the category if selected
+        ]);
 
-            return redirect()->route('view-all-thoughts')->with('message', 'Entry updated successfully!');
-        }
-
+        // Redirect to the view-all-thoughts page with a success message
+        return redirect()->route('view-all-thoughts')->with('message', 'Entry updated successfully!');
+    }
         public function deleteEntry($id)
         {
             // Find the entry by ID, make sure the logged-in user owns it

@@ -5,6 +5,67 @@
 <div class="container mt-5">
     <h2 class="mb-4">Your Thoughts</h2>
 
+    <!-- Filter and Search -->
+    <div class="d-flex justify-content-between mb-4">
+        <!-- Category Filter Dropdown -->
+        <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex align-items-center">
+            <label for="category" class="mr-2">Category:</label>
+            <select name="category" id="category" class="form-control mr-2">
+                <option value="">All Categories</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ request()->category == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+        </form>
+
+        <!-- Search Bar -->
+        <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex">
+            <input type="text" name="search" class="form-control" placeholder="Search thoughts..." value="{{ request()->search }}">
+            <button type="submit" class="btn btn-primary ml-2">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
+
+        <!-- Add Category Button -->
+        <button class="btn btn-primary mb-4" data-toggle="modal" data-target="#categoryModal">
+            <i class="fas fa-plus"></i> Add Category
+        </button>
+
+    </div>
+
+    <!-- Category Creation Modal -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryModalLabel">Create New Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add action to the form and ensure it uses POST -->
+                    <form id="categoryForm" method="POST" action="{{ route('categories.store') }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="categoryName">Category Name</label>
+                            <input type="text" id="categoryName" class="form-control" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryDescription">Description</label>
+                            <textarea id="categoryDescription" class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Category</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- If there are entries -->
     @if($entries->count())
         <div class="list-group">
@@ -63,6 +124,10 @@
 
         .fas.fa-trash {
             margin-right: 5px;
+        }
+
+        .form-control {
+            max-width: 250px;
         }
     </style>
 @endsection

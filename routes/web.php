@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EntryController;
+use App\Http\Controllers\CategoryController;
 
 // Show the welcome page (optional, could redirect to login if needed)
 Route::get('/', function () {
@@ -33,6 +34,14 @@ Route::get('/entries/{id}', [EntryController::class, 'showEntry'])->name('entrie
 
 // Edit an entry
 Route::get('/entries/{id}/edit', [EntryController::class, 'editEntry'])->name('entries.edit')->middleware('auth');
-Route::post('/entries/{id}/update', [EntryController::class, 'updateEntry'])->name('entries.update')->middleware('auth');
+Route::put('/entries/{id}/update', [EntryController::class, 'updateEntry'])->name('entries.update')->middleware('auth');
 Route::delete('/entry/{id}/delete', [EntryController::class, 'deleteEntry'])->name('delete-entry');
 
+// Categories routes
+Route::resource('categories', CategoryController::class);
+
+// Route for storing categories
+Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+
+// Route to get all categories for the entry form
+Route::get('/categories', [CategoryController::class, 'getAllCategories'])->name('categories.getAll');
