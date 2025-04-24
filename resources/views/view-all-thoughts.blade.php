@@ -5,36 +5,45 @@
 <div class="container mt-5">
     <h2 class="mb-4">Your Thoughts</h2>
 
-    <!-- Filter and Search -->
-    <div class="d-flex justify-content-between mb-4">
-        <!-- Category Filter Dropdown -->
-        <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex align-items-center">
-            <label for="category" class="mr-2">Category:</label>
-            <select name="category" id="category" class="form-control mr-2">
-                <option value="">All Categories</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ request()->category == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                @endforeach
-            </select>
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-filter"></i> Filter
-            </button>
-        </form>
+   <!-- Filter, Search, and Add Category -->
+<div class="mb-4">
+    <div class="row g-3 align-items-end">
+        <!-- Category Filter -->
+        <div class="col-md-5">
+            <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex">
+                <select name="category" id="category" class="form-control">
+                    <option value="">All Categories</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ request()->category == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-outline-primary ml-2">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </form>
+        </div>
+
 
         <!-- Search Bar -->
-        <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex">
-            <input type="text" name="search" class="form-control" placeholder="Search thoughts..." value="{{ request()->search }}">
-            <button type="submit" class="btn btn-primary ml-2">
-                <i class="fas fa-search"></i> Search
-            </button>
-        </form>
+        <div class="col-md-5">
+            <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control" placeholder="Search thoughts..." value="{{ request()->search }}">
+                <button type="submit" class="btn btn-outline-primary ml-2">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
 
         <!-- Add Category Button -->
-        <button class="btn btn-primary mb-4" data-toggle="modal" data-target="#categoryModal">
-            <i class="fas fa-plus"></i> Add Category
-        </button>
-
+        <div class="col-md-2 text-md-right text-left">
+            <button class="btn btn-primary w-100 w-md-auto" data-toggle="modal" data-target="#categoryModal">
+                <i class="fas fa-plus"></i> Add
+            </button>
+        </div>
     </div>
+</div>
+
+
 
     <!-- Category Creation Modal -->
     <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
@@ -67,32 +76,28 @@
 
 
     <!-- If there are entries -->
-    @if($entries->count())
-        <div class="list-group">
+        @if($entries->count())
+        <div class="row">
             @foreach ($entries as $entry)
-                <div class="d-flex justify-content-between mb-3">
-                    <!-- Entry Box (Clickable) -->
-                    <a href="{{ route('entries.show', $entry->id) }}" class="list-group-item list-group-item-action flex-column align-items-start w-100">
-                        <div class="d-flex w-100 justify-content-between">
-                            <div>
-                                <h5 class="mb-1">{{ $entry->title }}</h5>
-                                <p class="mb-1">{{ Str::limit($entry->body, 100) }}</p>
-                            </div>
-                            <!-- Date on the right -->
-                            <div>
-                                <small>{{ $entry->created_at->format('M d, Y') }}</small>
+                <div class="col-md-4 mb-4">
+                    <div class="card sticky-note">
+                        <div class="card-body">
+                            <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
+                                <h5 class="card-title">{{ $entry->title }}</h5>
+                                <p class="card-text">{{ Str::limit($entry->body, 100) }}</p>
+                            </a>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted">{{ $entry->created_at->format('M d, Y') }}</small>
+                                <form action="{{ route('delete-entry', $entry->id) }}" method="POST" style="margin: 0;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-delete" title="Delete Entry">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
-                    </a>
-                    
-                    <!-- Delete Button Outside the Box -->
-                    <form action="{{ route('delete-entry', $entry->id) }}" method="POST" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-delete" title="Delete Entry">
-                            <i class="fas fa-trash"></i> <!-- Font Awesome trash icon -->
-                        </button>
-                    </form>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -101,6 +106,7 @@
             You haven't written any entries yet. Start writing your first thought!
         </div>
     @endif
+
 
 </div>
 
@@ -129,5 +135,30 @@
         .form-control {
             max-width: 250px;
         }
+
+        /* This is the winning combo */
+        .card.sticky-note {
+            background-color: #fff89a !important; /* Sticky note yellow */
+            border-radius: 10px;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease;
+            min-height: 200px;
+        }
+
+        .card.sticky-note:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-yellow {
+        background-color: #fdd835;
+        color: #000;
+        border: none;
+        }
+
+        .btn-yellow:hover {
+            background-color: #fbc02d;
+            color: #000;
+        }
     </style>
 @endsection
+

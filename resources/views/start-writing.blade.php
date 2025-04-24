@@ -3,93 +3,115 @@
 @section('content')
 <style>
     .writing-container {
-        max-width: 800px;
-        margin: 3rem auto;
-        background: #fff;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
+        max-width: 900px;
+        margin: 4rem auto;
+        background: #fffef5;
+        padding: 4rem 3rem;
+        border-radius: 14px;
+        position: relative;
+        border: 1px solid #e0e0e0;
     }
 
-    .writing-container h2 {
-        text-align: center;
-        margin-bottom: 2rem;
-        color: #333;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        color: #555;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-        width: 100%;
-        padding: 0.8rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+    .save-button {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        background-color: #ffde59;
+        border: none;
+        color: #000;
         font-size: 1rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        font-family: 'Comic Neue', cursive;
     }
 
-    .form-group textarea {
-        height: 300px;
+    .save-button:hover {
+        background-color: #ffe873;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        background: none;
+        border: none;
+        color: #555;
+        font-size: 1rem;
+        font-family: 'Segoe UI', sans-serif;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .back-button i {
+        margin-right: 6px;
+        font-size: 1.2rem;
+    }
+
+    .back-button:hover {
+        color: #000;
+        text-decoration: none;
+    }
+
+    .writing-container input[type="text"],
+    .writing-container textarea,
+    .writing-container select {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #bbb;
+        padding: 1rem 0;
+        margin-bottom: 2rem;
+        font-size: 1.15rem;
+        background: transparent;
+        outline: none;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .writing-container textarea {
+        height: 350px;
         resize: vertical;
     }
 
-    .submit-button {
-        background-color: black;
-        color: white;
-        border: none;
-        padding: 1rem 2rem;
-        border-radius: 25px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        display: block;
-        margin: 2rem auto 0;
-        transition: background-color 0.3s ease;
+    .form-group label {
+        display: none;
     }
 
-    .submit-button:hover {
-        background-color: #333;
+    .entry-heading {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 2.5rem;
+        font-family: 'Segoe UI', sans-serif;
     }
 </style>
 
 <div class="writing-container">
-    <h2>Start Writing</h2>
+    <!-- 🡐 Back Button -->
+    <a href="{{ url('/home') }}" class="back-button">
+        <i class="fas fa-arrow-left"></i> 
+    </a>
+
+    <div class="entry-heading">Start Writing</div>
 
     <form method="POST" action="{{ url('/start-writing') }}">
-        @csrf <!-- CSRF token for security -->
+        @csrf
 
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" required>
-        </div>
+        <input type="text" id="title" name="title" placeholder="Title..." required>
 
-        <div class="form-group">
-            <label for="body">Your Thoughts</label>
-            <textarea id="body" name="body" required></textarea>
-        </div>
+        <textarea id="body" name="body" placeholder="Write your thoughts here..." required></textarea>
 
-        <!-- Category Dropdown -->
-        <div class="form-group">
-            <label for="category_id">Category</label>
-            <select id="category_id" name="category_id">
-                <option value="">Select a Category (Optional)</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
-        </div>
+        <select id="category_id" name="category_id">
+            <option value="">Select a Category (Optional)</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
 
-        <button type="submit" class="submit-button">Save Entry</button>
+        <button type="submit" class="save-button">Save</button>
     </form>
 </div>
-
 @endsection
