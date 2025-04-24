@@ -1,95 +1,245 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Default fonts, no custom font needed -->
 <style>
-    /* Container for the home page */
-    .home-container {
+    @import url('https://fonts.googleapis.com/css2?family=Schoolbell&family=Inter:wght@300;400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fragment+Mono&display=swap');
+
+    html, body {
+        height: auto;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: url('{{ asset('images/bg_home.png') }}') no-repeat center center fixed;
+
+        background-size: cover;
+        overflow-x: hidden;
+    }
+
+    .navbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 3rem;
+        padding: 1.5rem 4rem;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
     }
 
-    /* Left section with text */
-    .home-left {
-        flex: 1;
+    .navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: 500;
+        font-size: 1.5rem;
+        font-family: 'Schoolbell', cursive;
+    }
+
+    .navbar-right {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .navbar a {
+        text-decoration: none;
+        color: black;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid black;
+        border-radius: 25px;
+        font-family: 'Schoolbell', cursive;
+    }
+
+    .main-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8rem 4rem 4rem;
+        gap: 4rem;
+        flex-wrap: wrap;
+    }
+
+    .hero {
         text-align: left;
+        max-width: 600px;
+        margin-left: -50px;
     }
 
-    .home-left h1 {
-        font-size: 3rem;
+    .hero h1 {
+        font-size: 6rem;
+        line-height: 1.05;
+        margin-bottom: 2rem;
+        margin-left: -90px;
+    }
+
+    .hero h1 span {
+        display: block;
+    }
+
+    .hero h1 .bold {
+        font-weight: bold;
+    }
+
+    .hero p {
+        margin-top: 2rem;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
         color: #333;
-        margin-bottom: 1rem;
+        font-family: 'Fragment Mono', monospace;
+        margin-left: -90px;
     }
 
-    .home-left p {
-        font-size: 1.2rem;
-        color: #666;
-    }
+    
 
-    /* Right section with buttons */
     .home-right {
-        flex: 0 0 200px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
     }
 
     .home-button {
-        display: inline-block;
         background-color: black;
         color: white;
-        font-size: 1.2rem;
-        padding: 1rem 2rem;
+        font-size: 1.50rem; /* Increased font size */
+        padding: 1.50rem 3rem;  /* Increased padding */
+        width: 100%; /* Ensure full width */
         text-decoration: none;
-        border-radius: 25px;
-        margin: 10px 0;
+        border-radius: 40px;
         transition: background-color 0.3s ease;
-        width: 100%;
         text-align: center;
+        font-family: 'Schoolbell', cursive;
+        border: none;
+        margin-top:30px;
+        display: inline-block;
+    
     }
 
     .home-button:hover {
         background-color: #333;
     }
 
-    /* Responsive design */
     @media (max-width: 768px) {
-        .home-container {
-            flex-direction: column;
-            padding: 2rem;
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
         }
 
-        .home-left {
+        .main-section {
+            flex-direction: column;
             text-align: center;
-            margin-bottom: 2rem;
+            padding: 10rem 2rem 2rem;
+        }
+
+        .navbar {
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .navbar-right {
+            margin-top: 1rem;
         }
 
         .home-right {
-            flex: 0 0 100%;
+            margin-top: 2rem;
+            margin-left:2rem;
+            display: flex;
+            flex-direction: row; /* Changed from column to row */
+            justify-content: center; /* Center horizontally */
             align-items: center;
-        }
-
-        .home-button {
-            font-size: 1rem;
-            padding: 0.8rem 1.5rem;
+            gap: 2rem; /* Adjusted spacing between buttons */
         }
     }
+
+    .features-section {
+        margin-top: 10rem;
+        margin-bottom: 10rem;
+        padding: 4rem;
+        text-align: center;
+        
+    }
+
+    .features-section h2 {
+        font-size: 2.5rem;
+        font-family: 'Schoolbell', cursive;
+        margin-bottom: 6rem;
+    }
+
+    .features-container {
+        display: flex;
+        
+        justify-content: center;
+        gap: 3rem;
+    }
+
+    .feature-card {
+        flex: 1 1 250px;
+        max-width: 300px;
+        background: #FFDB4C;
+        padding: 2rem;
+        
+        font-family: 'Fragment Mono', monospace;
+    }
+
+    .feature-card h3 {
+        margin-bottom: 1rem;
+    }
+
+
+
 </style>
 
-<div class="home-container">
-    <!-- Left Section -->
-    <div class="home-left">
-        <h1>Type Down Your Inner World</h1>
-        <p>Memoir is a place where your thoughts are free to roam. Capture your stories, your ideas, and your dreams, and preserve them for yourself.</p>
+<!-- Navigation bar -->
+<div class="navbar">
+    <div class="navbar-left"></div>
+    <div class="navbar-center">memoir</div>
+    <div class="navbar-right">
+        <a href="#">home.</a>
+        <a href="#">about.</a>
+        <a href="#">contact us.</a>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<div class="main-section" style="margin-top: 40rem;">
+    <div class="hero">
+        <h1>
+            <span>type down</span>
+            <span><em>your</em></span>
+            <span class="bold">inner world.</span>
+        </h1>
+        <p>Memoir is your digital journal — crafted to hold your thoughts, memories, and life’s little details.</p>
     </div>
 
     <!-- Right Section -->
-    <div class="home-right">
-        <a href="{{ route('start-writing') }}" class="home-button">Start Writing</a>
-        <a href="{{ route('view-all-thoughts') }}" class="home-button">View All Thoughts</a>
+    <div class="home-right" style="font: size 30px;">
+        <a href="{{ route('start-writing') }}" class="home-button" >     Start Writing     </a>
+        <a href="{{ route('view-all-thoughts') }}" class="home-button">Wall of Thoughts</a>
     </div>
 </div>
+
+
+<!-- Features Section -->
+
+<div class="features-section">
+    <h2>Recent</h2>
+    <div class="features-container">
+        <div class="feature-card">
+            
+        </div>
+        <div class="feature-card">
+            
+        </div>
+        <div class="feature-card">
+            
+            
+    </div>
+</div>
+
+
 
 @endsection

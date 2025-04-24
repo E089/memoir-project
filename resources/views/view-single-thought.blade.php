@@ -1,50 +1,99 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="single-entry-container">
-    <h1>{{ $entry->title }}</h1>
-    <p>{{ $entry->body }}</p>
+
+<!-- Memoir Title OUTSIDE the container -->
+<div class="navbar-center">Memoir</div>
+
+<!-- Entry content -->
+<div class="single-entry-container position-relative">
+    <a href="{{ url('/view-all-thoughts') }}" class="back-button absolute-top-left">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <h1 class="entry-title">{{ $entry->title }}</h1>
+    <p class="entry-body">{{ $entry->body }}</p>
 
     <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">
-        ✏️ Edit Entry
+        Edit Entry
     </a>
 </div>
 
 <style>
+    body {
+        position: relative;
+    }
+
+    .navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: 500;
+        font-size: 1.5rem;
+        font-family: 'Schoolbell', cursive;
+        margin-top: 40px;
+        z-index: 10;
+    }
+
     .single-entry-container {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 2rem;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 750px;
+        margin: 6rem auto 3rem; /* push down so it doesn't overlap Memoir */
+        padding: 3rem 2rem 2rem;
+        background-color: #fffef5;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        position: relative;
     }
 
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    p {
+    .absolute-top-left {
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
         font-size: 1.2rem;
-        line-height: 1.6;
-        color: #333;
+        color: #444;
+        text-decoration: none;
+    }
+
+    .absolute-top-left:hover {
+        color: #222;
+    }
+
+    .entry-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 0.5rem;
+        color: #222;
+        margin-top: 0.5rem;
+        margin-left: 2.5rem;
+    }
+
+    .entry-body {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #444;
+        white-space: pre-wrap;
+        margin-top: 1.5rem;
+        margin-left: 2.5rem;
+        margin-right: 1rem;
     }
 
     .edit-button {
         display: inline-block;
-        background-color: black;
-        color: white;
-        font-size: 1.1rem;
-        padding: 0.5rem 1.5rem;
+        background-color: #ffde59;
+        color: #000;
+        font-size: 0.95rem;
+        padding: 0.4rem 1rem;
         text-decoration: none;
-        border-radius: 20px;
-        margin-top: 20px;
-        text-align: center;
+        border-radius: 12px;
+        margin-top: 2rem;
+        margin-left: 2.5rem;
+        font-family: 'Comic Neue', cursive;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
     }
 
     .edit-button:hover {
-        background-color: #333;
+        background-color: #ffe873;
     }
 </style>
 @endsection
