@@ -92,8 +92,6 @@
         margin-left: -90px;
     }
 
-    
-
     .home-right {
         display: flex;
         flex-direction: column;
@@ -101,7 +99,7 @@
         gap: 1rem;
     }
 
-    .home-button {
+    .welcome-button {
         background-color: black;
         color: white;
         font-size: 1.50rem; /* Increased font size */
@@ -128,12 +126,6 @@
             line-height: 1.1;
         }
 
-        .main-section {
-            flex-direction: column;
-            text-align: center;
-            padding: 10rem 2rem 2rem;
-        }
-
         .navbar {
             flex-direction: column;
             align-items: center;
@@ -155,77 +147,128 @@
         }
     }
 
-    .features-section {
-        margin-top: 10rem;
-        margin-bottom: 10rem;
-        padding: 4rem;
-        text-align: center;
-        
-    }
-
-    .features-section h2 {
-        font-size: 2.5rem;
-        font-family: 'Schoolbell', cursive;
-        margin-bottom: 6rem;
-    }
-
     .features-container {
-        display: flex;
-        
-        justify-content: center;
-        gap: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    position: relative;
+    margin-top: 3rem; /* Adjusted margin for spacing */
+}
+
+.feature-card {
+    background: #FFDB4C;
+    padding: 2rem;
+    font-family: 'Fragment Mono', monospace;
+    max-width: 300px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1; /* Ensure it's above the background */
+    transition: transform 0.3s ease;
+}
+
+.feature-card h3 {
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #333;
+}
+
+.feature-card:hover {
+    transform: scale(1.05); /* Add subtle hover effect */
+}
+
+.feature-card.overlap {
+    position: absolute;
+    top: 0; /* Start overlapping from the top */
+    left: 50%;
+    transform: translateX(-50%) translateY(-30%); /* Move it slightly upwards and horizontally centered */
+    z-index: 0; /* Send it behind the first card */
+}
+
+@media (max-width: 768px) {
+    .features-container {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
     }
 
     .feature-card {
-        flex: 1 1 250px;
-        max-width: 300px;
-        background: #FFDB4C;
+        max-width: 90%;
+    }
+
+    .feature-card.overlap {
+        position: relative;
+        transform: none; /* Reset the overlap effect on small screens */
+        z-index: 1; /* Bring it to the front */
+    }
+    }
+    .contact-section {
+    background-color: #f9f9f9;
+    padding: 4rem 2rem;
+    text-align: center;
+    }
+
+    .contact-section h2 {
+        font-family: 'Inter', sans-serif;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .contact-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
         padding: 2rem;
-        
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         font-family: 'Fragment Mono', monospace;
-
-        transition: transform 0.3s ease;
     }
 
-    .feature-card:hover {
-    animation: pulse 0.8s infinite;
-    transform: scale(1.05);  /* Slightly enlarge the card on hover */
+    .contact-container p {
+        margin: 1rem 0;
+        font-size: 1.1rem;
     }
 
-    @keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
+    .contact-container a {
+        color: #FFDB4C;
+        text-decoration: none;
     }
 
-    .feature-card h3 {
-        margin-bottom: 1rem;
+    .contact-container a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .contact-container {
+            padding: 1.5rem;
+        }
+        
+        .contact-container p {
+            font-size: 0.9rem;
+        }
     }
 
 
-
+    html {
+    scroll-behavior: smooth;
+    }
 </style>
 
 <!-- Navigation bar -->
 <div class="navbar">
+    <div class="navbar-left"></div>
     <div class="navbar-center">memoir</div>
     <div class="navbar-right">
-        <a href="{{ route('logout') }}" class="logout-button">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
+        <a href="#home">home.</a>
+        <a href="#about">about.</a>
+        <a href="#contact">contact us.</a>
     </div>
 </div>
 
-
-
 <!-- Hero Section -->
-<div class="main-section" style="margin-top: 40rem;">
+<div id="home" class="main-section" style="margin-top: 0rem;">
     <div class="hero">
         <h1>
             <span>type down</span>
@@ -237,24 +280,7 @@
 
     <!-- Right Section -->
     <div class="home-right" style="font: size 30px;">
-        <a href="{{ route('start-writing') }}" class="home-button" >     Start Writing     </a>
-        <a href="{{ route('view-all-thoughts') }}" class="home-button">Wall of Thoughts</a>
-    </div>
-</div>
-
-
-<!-- Features Section -->
-<div class="features-section">
-    <h2>Recent</h2>
-    <div class="features-container">
-        @foreach ($entries as $entry)
-            <div class="feature-card">
-                <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
-                    <h3>{{ $entry->title }}</h3>
-                    <p>{{ Str::limit($entry->body, 100) }}</p>
-                </a>
-            </div>
-        @endforeach
+        <a href="{{ route('register') }}" class="welcome-button" >Login or Sign up</a>
     </div>
 </div>
 

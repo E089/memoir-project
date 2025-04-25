@@ -56,7 +56,7 @@
 
 <!-- Main Content -->
 <div class="container" style="margin-top: 160px;">
-    <!-- Category Creation Modal -->
+   <!-- Category Creation Modal -->
     <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -73,16 +73,16 @@
                             <label for="categoryName">Category Name</label>
                             <input type="text" id="categoryName" class="form-control" name="name" required>
                         </div>
-                        <div class="form-group">
-                            <label for="categoryDescription">Description</label>
-                            <textarea id="categoryDescription" class="form-control" name="description" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-2">Save Category</button>
+                        <button type="submit" class="submit-button">
+                            <i class="fas fa-check"></i>
+                        </button>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
+
 
     <!-- Thought Entries -->
     @if($entries->count())
@@ -218,6 +218,133 @@
     .back-button:hover {
         color: #000;
         text-decoration: none;
+    }
+
+     /* Modal Styling */
+    .modal-content {
+        background-color: #ffffff; /* White background */
+        border-radius: 12px;
+        border: none; /* Remove border */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #eee; /* Light border to separate header */
+        background-color: #f7f7f7; /* Light pastel gray */
+        padding: 1.5rem;
+        position: relative;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        font-family: 'Schoolbell', cursive;
+        color: #333;
+    }
+
+    .close {
+        color: #aaa;
+        font-size: 1.5rem;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: #000;
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .modal-body label {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .modal-body input,
+    .modal-body textarea {
+        width: calc(100% - 40px); /* Adjust width to leave space for the button */
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 0.8rem;
+        background-color: #f9f9f9;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        margin-right: 40px; /* Add some space for the button */
+    }
+
+    .modal-body textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .modal-body button {
+        border-radius: 50%;
+        background-color: transparent;
+        color: #ffde59; /* Soft pastel yellow */
+        border: none;
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: none; /* Remove hover effect */
+        outline: none; /* Remove the blue outline */
+    }
+
+    /* Remove blue border when clicking the check button */
+    .modal-body button:focus {
+        outline: none; /* Ensure no blue border when clicked */
+    }
+
+    /* Ensure modal body stretches input fields */
+    .modal-body .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Remove yellow circle around the check icon */
+    .modal-body button i {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    /* Optional: Enhance the button's position */
+    .modal-body .form-group button {
+        position: relative;
+        top: 5px;
+    }
+
+    .submit-button {
+    background-color: transparent;
+    border: none;
+    color: #ffde59;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    outline: none;
+    }
+
+    .submit-button:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .submit-button i {
+        margin: 0;
+        font-size: 1.2rem;
     }
 </style>
 @endsection

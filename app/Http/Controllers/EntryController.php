@@ -8,6 +8,16 @@ use App\Models\Category;
 
 class EntryController extends Controller
 {
+    public function home()
+    {
+        // Fetch the top 3 most recent entries for the logged-in user
+        $entries = Entry::where('user_id', auth()->id())->latest()->take(3)->get();
+
+        // Return the view with the entries
+        return view('home', compact('entries'));
+    }
+
+  
     // Show the page for starting to write a new entry
     public function showStartWriting()
     {

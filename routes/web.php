@@ -5,9 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\CategoryController;
 
-// Show the welcome page (optional, could redirect to login if needed)
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/welcome-page', function () {
+    return view('welcome-page');
 });
 
 // Registration routes without CSRF protection for testing
@@ -18,10 +17,18 @@ Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
+// Logout
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');  // Logout via GET
+Route::get('/welcome-page', function () {
+    return view('welcome-page');  
+})->name('welcome-page');  
+
 // Home route (protected by auth middleware)
 Route::get('/home', function () {
     return view('home');
 })->name('home')->middleware('auth');  // Protect home route with 'auth' middleware
+
+Route::get('/home', [EntryController::class, 'home'])->name('home');
 
 // Dashboard actions (Start Writing and View All Thoughts)
 Route::get('/start-writing', [EntryController::class, 'showStartWriting'])->name('start-writing')->middleware('auth');

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+
     public function showRegister()
         {
             return view('register');  // Ensure you have a 'register.blade.php' view
@@ -38,7 +39,7 @@ class AuthController extends Controller
             return view('login'); // Ensure you have a 'login.blade.php' view
         }
     
-        public function login(Request $request)
+    public function login(Request $request)
         {
             // Validate input
             $request->validate([
@@ -62,4 +63,18 @@ class AuthController extends Controller
                 ])->withInput();
             }
         }
+
+        public function logout()
+            {
+                Auth::logout();  // Log the user out
+                
+                // Optionally, clear the session
+                session()->invalidate();
+            
+                // Redirect to the 'welcome-page' route
+                return redirect()->route('welcome-page');
+            }
+            
+        
+
 }

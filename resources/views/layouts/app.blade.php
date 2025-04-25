@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +13,12 @@
     <!-- Page-specific styles -->
     @yield('styles')
 
+    <!-- Global Styles -->
+       <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>

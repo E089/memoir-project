@@ -2,6 +2,19 @@
 
 @section('content')
 <style>
+
+    html, body {
+        height: auto;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background: url('{{ asset('writing.png') }}');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 1950px;
+        overflow-x: hidden;
+    }
+    
     .edit-entry-container {
         max-width: 700px;
         margin: 3rem auto;
@@ -75,17 +88,25 @@
         align-items: center;
         text-decoration: none;
     }
+
+    .navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: 500;
+        font-size: 1.5rem;
+        font-family: 'Schoolbell', cursive;
+        margin-top: 40px;
+        z-index: 10;
+    }
+
 </style>
+
 
 <!-- Navigation bar -->
 <div class="navbar">
     <div class="navbar-left"></div>
     <div class="navbar-center">memoir</div>
-    <div class="navbar-right">
-        <a href="#">home.</a>
-        <a href="#">about.</a>
-        <a href="#">contact us.</a>
-    </div>
 </div>
 
 <div class="edit-entry-container">

@@ -4,6 +4,18 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Schoolbell&family=Inter:wght@300;400;600&display=swap');
 
+    html, body {
+        height: auto;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background: url('{{ asset('bg_login.png') }}');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 1950px;
+        overflow-x: hidden;
+    }
+
     .memoir-header {
         font-family: 'Schoolbell', cursive;
         font-size: 3rem;
@@ -13,7 +25,7 @@
     }
 
     .memoir-sub {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Fragment Mono', monoscape;
         text-align: center;
         font-size: 1rem;
         color: #777;
@@ -97,21 +109,21 @@
                 @endif
 
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label" style="font-family: 'Fragment Mono', monospace;">Username</label>
                     <input type="text" class="form-control" name="username" value="{{ old('username') }}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label" style="font-family: 'Fragment Mono', monospace;">Password</label>
                     <input type="password" class="form-control" name="password" required>
                 </div>
 
-                <button type="submit" class="btn btn-dark w-100 rounded-pill">Login</button>
+                <button type="submit" class="btn btn-dark w-100 rounded-pill" sytle="font-family:'Schoolbell', cursive">Login</button>
             </form>
 
             <div class="text-center mt-3">
-                <small class="text-muted">Don't have an account?</small><br>
-                <a href="{{ route('register') }}" class="text-decoration-none" style="font-weight: 500;">Register here</a>
+                <small class="text-muted" style="font-family: 'Fragment Mono', monospace;">Don't have an account?</small><br>
+                <a href="{{ route('register') }}" class="text-decoration-none" style="font-weight: 500; font-family:'Fragment Mono', monoscpace; color: #FFDB4C">Register here</a>
             </div>
         </div>
     </div>

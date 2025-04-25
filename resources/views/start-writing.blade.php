@@ -2,6 +2,17 @@
 
 @section('content')
 <style>
+    html, body {
+        height: auto;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background: url('{{ asset('writing.png') }}');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 1950px;
+        overflow-x: hidden;
+    }
     .writing-container {
         max-width: 900px;
         margin: 4rem auto;

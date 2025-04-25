@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -15,10 +16,11 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        // Create a new category and save it to the database
+        // Create a new category with the logged-in user's ID
         Category::create([
             'name' => $request->name,
             'description' => $request->description,
+            'user_id' => Auth::id(), // Associate category with current user
         ]);
 
         // Redirect or respond as needed

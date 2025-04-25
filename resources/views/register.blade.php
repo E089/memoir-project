@@ -4,6 +4,18 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Schoolbell&family=Inter:wght@300;400;600&display=swap');
 
+    html, body {
+        height: auto;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background: url('{{ asset('bg_login.png') }}');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 1950px;
+        overflow-x: hidden;
+    }
+
     .memoir-header {
         font-family: 'Schoolbell', cursive;
         font-size: 3rem;
@@ -25,6 +37,10 @@
         border-radius: 20px;
         padding: 2rem;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        max-width: 900px;
+        width: 120%;
+        margin-right: -10px;
+        
     }
 
     input.form-control {

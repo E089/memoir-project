@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- Memoir Title OUTSIDE the container -->
-<div class="navbar-center">Memoir</div>
+<div class="navbar-center">memoir</div>
 
 <!-- Entry content -->
 <div class="single-entry-container position-relative">
@@ -22,6 +22,18 @@
 <style>
     body {
         position: relative;
+    }
+    
+    html, body {
+        height: auto;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background: url('{{ asset('writing.png') }}');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 1950px;
+        overflow-x: hidden;
     }
 
     .navbar-center {
@@ -69,14 +81,18 @@
     }
 
     .entry-body {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: #444;
-        white-space: pre-wrap;
-        margin-top: 1.5rem;
-        margin-left: 2.5rem;
-        margin-right: 1rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444;
+    white-space: pre-wrap;
+    margin-top: 1.5rem;
+    margin-left: 2.5rem;
+    margin-right: 1rem;
+    max-height: 400px; /* You can adjust this height */
+    overflow-y: auto; /* Adds vertical scroll if the content overflows */
+    padding-right: 10px; /* Optional: Adds some padding to the right for scroll */
     }
+
 
     .edit-button {
         display: inline-block;
