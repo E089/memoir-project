@@ -23,7 +23,6 @@
     body {
         position: relative;
     }
-    
     html, body {
         height: auto;
         min-height: 100%;
@@ -48,14 +47,34 @@
     }
 
     .single-entry-container {
-        max-width: 750px;
-        margin: 6rem auto 3rem; /* push down so it doesn't overlap Memoir */
-        padding: 3rem 2rem 2rem;
-        background-color: #fffef5;
-        border-radius: 12px;
-        border: 1px solid #e0e0e0;
+        max-width: 800px;
+        background: #fffef5;
+        padding: 4rem 3rem;
+        border-radius: 14px;
         position: relative;
+        border: 1px solid #e0e0e0;
+        font-family: 'Schoolbell', cursive;
+        margin: 5rem auto 2rem auto;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
     }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        font-family: 'Schoolbell', cursive;
+        color: #444;
+        text-align: left;
+    }
+
+    p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #333;
+        font-family: 'Fragment Mono', monospace;
+        white-space: pre-wrap;
+    }
+
 
     .absolute-top-left {
         position: absolute;

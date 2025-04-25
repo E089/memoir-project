@@ -13,14 +13,14 @@
     <div class="navbar-center">memoir</div>
 </div>
 
-<div class="fixed-top py-3" style="z-index: 1030; padding-top: 50px;">
+<div class="pt-5" style="margin-top: 100px;">
     <div class="container">
-        <h2 class="mb-3" style="margin-top: 90px; font-size: 50px;">Wall of Thoughts</h2> <!-- Adjusted the margin-top -->
-        <div class="row g-3 align-items-end">
-            <!-- Category Filter -->
+        <h2 class="wall-title text-center">Wall of Thoughts</h2>
+        <div class="row g-3 align-items-center justify-content-center text-center">
+            <!-- Category Dropdown -->
             <div class="col-md-5">
-                <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex">
-                    <select name="category" id="category" class="form-control">
+                <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex justify-content-center">
+                    <select name="category" id="category" class="custom-input me-2">
                         <option value="">All Categories</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{ request()->category == $category->id ? 'selected' : '' }}>
@@ -28,7 +28,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <button type="submit" class="btn btn-outline-primary ms-2">
+                    <button type="submit" class="btn btn-outline-dark custom-btn">
                         <i class="fas fa-filter"></i>
                     </button>
                 </form>
@@ -36,20 +36,20 @@
 
             <!-- Search Bar -->
             <div class="col-md-5">
-                <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex">
-                    <input type="text" name="search" class="form-control" placeholder="Search thoughts..." value="{{ request()->search }}">
-                    <button type="submit" class="btn btn-outline-primary ms-2">
+                <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex justify-content-center">
+                    <input type="text" name="search" class="custom-input me-2" placeholder="Search thoughts..." value="{{ request()->search }}">
+                    <button type="submit" class="btn btn-outline-dark custom-btn">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
             </div>
 
-            <!-- Add Category Button -->
-            <div class="col-md-2 text-md-end text-start">
-                <button class="btn btn-primary w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#categoryModal">
+             <!-- Add Category Button -->
+             <div class="col-md-2 mt-3 mt-md-0 d-flex justify-content-center">
+                <button class="btn btn-dark custom-btn w-100" data-bs-toggle="modal" data-bs-target="#categoryModal">
                     <i class="fas fa-plus"></i> Add Category
                 </button>
-            </div>
+            </div>  
         </div>
     </div>
 </div>
@@ -85,7 +85,7 @@
 
 
     <!-- Thought Entries -->
-    @if($entries->count())
+     @if($entries->count())
         <div class="row mt-4">
             @foreach ($entries as $entry)
                 <div class="col-md-4 mb-4">
@@ -96,7 +96,7 @@
                                 <p class="card-text">{{ Str::limit($entry->body, 100) }}</p>
                             </a>
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <small class="text-muted">{{ $entry->created_at->format('M d, Y') }}</small>
+                                <small class="text-muted">{{ $entry->created_at->format('M d, Y h:i A') }}</small>
                                 <form action="{{ route('delete-entry', $entry->id) }}" method="POST" class="m-0">
                                     @csrf
                                     @method('DELETE')
@@ -124,17 +124,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Schoolbell&family=Fragment+Mono&display=swap" rel="stylesheet">
 
 <style>
-    body {
+   
+html, body {
+        height: auto;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background: url('{{ asset('writing.png') }}');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 1950px;
+        overflow-x: hidden;
         font-family: 'Fragment Mono', monospace;
     }
 
     h1, h2, h3, .card-title {
         font-family: 'Schoolbell', cursive;
+        font-size: 2rem;
+        margin-top: px;
+        
     }
 
     .card-text, p, small, select, input, textarea {
         font-family: 'Fragment Mono', monospace;
+        
     }
+
 
     .btn-delete {
         background: none;
@@ -154,21 +169,32 @@
     }
 
     .card.sticky-note {
-        background-color: #FFDB4C;
-        border: none;
-        border-radius: 0px;
-        min-height: 340px;
-        padding: 20px;
-        transition: transform 0.2s ease-in-out;
-        font-family: 'Schoolbell', cursive;
-        position: relative;
+    background-color: #FFDB4C;
+    border: none;
+    border-radius: 0px;
+    min-height: 340px;
+    padding: 20px;
+    font-family: 'Schoolbell', cursive;
+    position: relative;
+    transition: transform 0.6s ease-in-out;
     }
 
     .card.sticky-note:hover {
-        transform: scale(1.03);
+        animation: pop 0.6s ease;
     }
 
-    .navbar {
+    @keyframes pop {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+        .navbar {
         position: absolute;
         top: 0;
         left: 0;

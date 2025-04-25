@@ -14,7 +14,7 @@
         background-size: 1950px;
         overflow-x: hidden;
     }
-    
+
     .edit-entry-container {
         max-width: 700px;
         margin: 3rem auto;
@@ -44,7 +44,7 @@
         background-color: #ffe873;
     }
 
-    .edit-entry-container input[type="text"],
+     .edit-entry-container input[type="text"],
     .edit-entry-container textarea,
     .edit-entry-container select {
         width: 100%;
@@ -55,7 +55,7 @@
         font-size: 1.1rem;
         background: transparent;
         outline: none;
-        font-family: 'Segoe UI', sans-serif;
+        font-family: 'Fragment Mono', monospace;
     }
 
     .edit-entry-container textarea {
@@ -68,10 +68,11 @@
     }
 
     h1 {
-        font-size: 1.8rem;
-        text-align: center;
-        margin-bottom: 2rem;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        font-family: 'Schoolbell', cursive;
         color: #444;
+        text-align: center;
     }
 
     .back-button {

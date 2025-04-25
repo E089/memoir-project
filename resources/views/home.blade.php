@@ -28,20 +28,26 @@
         left: 0;
         z-index: 1000;
     }
-
+  
     .navbar-center {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        font-weight: 500;
-        font-size: 1.5rem;
-        font-family: 'Schoolbell', cursive;
+    flex: 0;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.5rem;
+    font-family: 'Schoolbell', cursive;
+    }
+
+    .navbar-left,
+    .navbar-right {
+        flex: 1;
     }
 
     .navbar-right {
-        display: flex;
-        gap: 1rem;
-    }
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 2rem; /* Add more or less spacing here */
+}
+
 
     .navbar a {
         text-decoration: none;
@@ -92,7 +98,12 @@
         margin-left: -90px;
     }
 
-    
+    h3 {
+        font-family: 'Schoolbell', cursive;
+        font-size: 2rem;
+        margin-top: px;
+        
+    }
 
     .home-right {
         display: flex;
@@ -102,25 +113,27 @@
     }
 
     .home-button {
-        background-color: black;
-        color: white;
-        font-size: 1.50rem; /* Increased font size */
-        padding: 1.50rem 3rem;  /* Increased padding */
-        width: 100%; /* Ensure full width */
+        background-color: transparent;
+        color: black;
+        font-size: 1.5rem;
+        padding: 1.5rem 3rem;
+        width: 100%;
         text-decoration: none;
         border-radius: 40px;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
         text-align: center;
         font-family: 'Schoolbell', cursive;
-        border: none;
-        margin-top:30px;
+        border: 2px solid black; /* now has a black outline */
+        margin-top: 30px;
         display: inline-block;
-    
     }
 
     .home-button:hover {
-        background-color: #333;
+        background-color: #FFDB4C; /* soft yellow */
+        color: black; /* keep text readable */
+        border-color: #FFDB4C; /* match border to background */
     }
+
 
     @media (max-width: 768px) {
         .hero h1 {
@@ -207,13 +220,28 @@
     .feature-card h3 {
         margin-bottom: 1rem;
     }
+    .logout-button {
+        background-color: transparent;
+        border: 2px solid black;
+        color: black;
+        font-family: 'Schoolbell', cursive;
+        border-radius: 25px;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
 
+    .logout-button:hover {
+        background-color: #FFDB4C;
+        border-color: #FFDB4C;
+    }
 
 
 </style>
 
 <!-- Navigation bar -->
 <div class="navbar">
+    <div class="navbar-left"></div> <!-- Invisible spacer to help centering -->
     <div class="navbar-center">memoir</div>
     <div class="navbar-right">
         <a href="{{ route('logout') }}" class="logout-button">

@@ -7,35 +7,37 @@
         min-height: 100%;
         margin: 0;
         padding: 0;
-        background: url('{{ asset('writing.png') }}');
+        background: url('{{ asset('bg_login.png') }}');
         background-position: center;
         background-repeat: no-repeat;
         background-size: 1950px;
         overflow-x: hidden;
     }
+
     .writing-container {
-        max-width: 900px;
-        margin: 4rem auto;
+        max-width: 3000rem;
         background: #fffef5;
         padding: 4rem 3rem;
         border-radius: 14px;
         position: relative;
         border: 1px solid #e0e0e0;
+        font-family: 'Schoolbell', cursive;
+        margin-top: -38px;
     }
 
     .save-button {
         position: absolute;
-        top: 25px;
-        right: 25px;
+        top: 20px;
+        right: 20px;
         background-color: #ffde59;
         border: none;
         color: #000;
-        font-size: 1rem;
-        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
         border-radius: 12px;
         cursor: pointer;
         box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-        font-family: 'Comic Neue', cursive;
+        font-family: 'Schoolbell', cursive;
     }
 
     .save-button:hover {
@@ -73,32 +75,66 @@
         width: 100%;
         border: none;
         border-bottom: 1px solid #bbb;
-        padding: 1rem 0;
+        padding: 0.8rem 0;
         margin-bottom: 2rem;
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         background: transparent;
         outline: none;
-        font-family: 'Segoe UI', sans-serif;
+        font-family: 'Fragment Mono', monospace;
     }
 
     .writing-container textarea {
-        height: 350px;
+        height: 250px;
         resize: vertical;
     }
 
-    .form-group label {
-        display: none;
+    .entry-heading {
+        font-size: 1.8rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #444;
+        font-family: 'Schoolbell', cursive;
     }
 
-    .entry-heading {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 2.5rem;
-        font-family: 'Segoe UI', sans-serif;
+    .navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: 500;
+        font-size: 1.5rem;
+        font-family: 'Schoolbell', cursive;
+        margin-top: 40px;
+        
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 4rem;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+    .navbar a {
+        text-decoration: none;
+        color: black;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid black;
+        border-radius: 25px;
+        font-family: 'Schoolbell', cursive;
+
     }
 </style>
+
+<div class="navbar">
+    <div class="navbar-left"></div>
+    <div class="navbar-center">memoir</div>
+</div>
 
 <div class="writing-container">
     <!-- 🡐 Back Button -->
