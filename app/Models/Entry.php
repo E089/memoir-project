@@ -17,6 +17,9 @@ class Entry extends Model
         return $this->belongsTo(User::class);
     }
 
+    // Enable timestamp management explicitly
+    public $timestamps = true;
+
     // Relationship: An entry may belong to a category
     public function category()
     {

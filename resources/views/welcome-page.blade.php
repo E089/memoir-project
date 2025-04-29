@@ -100,8 +100,8 @@
     }
 
     .welcome-button {
-        background-color: black;
-        color: white;
+        background-color: transparent;
+        color: black;
         font-size: 1.50rem; /* Increased font size */
         padding: 1.50rem 3rem;  /* Increased padding */
         width: 100%; /* Ensure full width */
@@ -110,14 +110,15 @@
         transition: background-color 0.3s ease;
         text-align: center;
         font-family: 'Schoolbell', cursive;
-        border: none;
+        border: 2px solid black;
         margin-top:30px;
         display: inline-block;
-    
     }
 
-    .home-button:hover {
-        background-color: #333;
+    .welcome-button:hover {
+        background-color: #FFDB4C; /* soft yellow */
+        color: black; /* keep text readable */
+        border-color: #FFDB4C; /* match border to background */
     }
 
     @media (max-width: 768px) {

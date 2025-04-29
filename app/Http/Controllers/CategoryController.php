@@ -26,4 +26,18 @@ class CategoryController extends Controller
         // Redirect or respond as needed
         return redirect()->route('view-all-thoughts')->with('message', 'Category created successfully!');
     }
+
+    public function destroy($id)
+    {
+        // Find the category by ID
+        $category = Category::findOrFail($id);
+    
+        // Delete the category
+        $category->delete();
+    
+        // Redirect back with a success message
+        return redirect()->route('view-all-thoughts')->with('success', 'Category deleted successfully!');
+    }
+    
+
 }

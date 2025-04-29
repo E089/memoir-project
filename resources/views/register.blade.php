@@ -153,7 +153,7 @@
 
             <div class="text-center mt-3">
                 <small class="text-muted">Already have an account?</small><br>
-                <a href="{{ route('login') }}" class="text-decoration-none" style="font-weight: 500;">Login</a>
+                <a href="{{ route('login') }}" class="text-decoration-none" style="font-weight: 500; font-family:'Fragment Mono', monoscpace; color: #FFDB4C">Login</a>
             </div>
         </div>
     </div>

@@ -15,7 +15,7 @@ Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware
 
 // Login routes without CSRF protection for testing
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::post('/login', [AuthController::class, 'login']);
 
 // Logout
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');  // Logout via GET
@@ -52,3 +52,6 @@ Route::post('/categories', [CategoryController::class, 'store'])->name('categori
 
 // Route to get all categories for the entry form
 Route::get('/categories', [CategoryController::class, 'getAllCategories'])->name('categories.getAll');
+
+//Delete Categories
+Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('delete-category');

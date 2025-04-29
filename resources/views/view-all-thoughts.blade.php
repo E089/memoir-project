@@ -13,49 +13,69 @@
     <div class="navbar-center">memoir</div>
 </div>
 
-<div class="pt-5" style="margin-top: 100px;">
+<div class="pt-0" style="margin-top: 10px;">
     <div class="container">
         <h2 class="wall-title text-center">Wall of Thoughts</h2>
         <div class="row g-3 align-items-center justify-content-center text-center">
             <!-- Category Dropdown -->
-            <div class="col-md-5">
-                <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex justify-content-center">
-                    <select name="category" id="category" class="custom-input me-2">
-                        <option value="">All Categories</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ request()->category == $category->id ? 'selected' : '' }}>
+        <div class="col-md-5">
+            <div class="dropdown">
+                <button class="btn btn-outline-dark dropdown-toggle custom-btn w-100" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false" 
+                    style="border-radius: 30px;">
+                    <!-- Display the category name or default text -->
+                    <span>
+                        @if(request()->has('category'))
+                            {{ $categories->find(request()->category)->name ?? 'Filter by Category' }}
+                        @else
+                            Filter by Category
+                        @endif
+                    </span>
+                </button>
+                <ul class="dropdown-menu w-100 text-center" aria-labelledby="categoryDropdown" style="border-radius: 30px;">
+                    <li>
+                        <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
+                    </li>
+                    @foreach ($categories as $category)
+                        <li class="d-flex justify-content-between align-items-center px-3">
+                            <a class="dropdown-item flex-grow-1 text-start p-0 m-0" href="{{ route('view-all-thoughts', ['category' => $category->id]) }}">
                                 {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btn-outline-dark custom-btn">
-                        <i class="fas fa-filter"></i>
-                    </button>
-                </form>
+                            </a>
+                            <form action="{{ route('delete-category', $category->id) }}" method="POST" onsubmit="return confirm('Delete this category?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-link text-danger p-0 ms-2">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
+        </div>
 
             <!-- Search Bar -->
             <div class="col-md-5">
                 <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex justify-content-center">
-                    <input type="text" name="search" class="custom-input me-2" placeholder="Search thoughts..." value="{{ request()->search }}">
-                    <button type="submit" class="btn btn-outline-dark custom-btn">
+                    <input type="text" name="search" class="custom-input me-2" placeholder="Search thoughts..." value="{{ request()->search }}" 
+                        style="background-color: transparent; border: 1px solid #ccc; color: #333; border-radius: 30px;">
+                    <button type="submit" class="btn custom-btn" style="background-color: transparent; border: 1px solid #333; color: #333; border-radius: 30px;">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
             </div>
-
-             <!-- Add Category Button -->
-             <div class="col-md-2 mt-3 mt-md-0 d-flex justify-content-center">
-                <button class="btn btn-dark custom-btn w-100" data-bs-toggle="modal" data-bs-target="#categoryModal">
+            <!-- Add Category Button -->
+            <div class="col-md-2 mt-3 mt-md-0 d-flex justify-content-center">
+                <button class="btn custom-btn w-100 add-category-btn" data-bs-toggle="modal" data-bs-target="#categoryModal">
                     <i class="fas fa-plus"></i> Add Category
                 </button>
-            </div>  
+            </div>
+
         </div>
     </div>
 </div>
 
 <!-- Main Content -->
-<div class="container" style="margin-top: 160px;">
+<div class="container" style="margin-top: 100px;">
    <!-- Category Creation Modal -->
     <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -84,9 +104,10 @@
     </div>
 
 
-    <!-- Thought Entries -->
-     @if($entries->count())
-        <div class="row mt-4">
+   <!-- Scrollable Entries Container -->
+<div class="container mt-4">
+    <div class="scrollable-wall p-2">
+        <div class="row">
             @foreach ($entries as $entry)
                 <div class="col-md-4 mb-4">
                     <div class="card sticky-note" style="transform: rotate({{ rand(-4, 4) }}deg);">
@@ -110,12 +131,15 @@
                 </div>
             @endforeach
         </div>
-    @else
+    </div>
+
+    @if($entries->isEmpty())
         <div class="alert alert-info mt-4">
             You haven't written any entries yet. Start writing your first thought!
         </div>
     @endif
 </div>
+
 
 @endsection
 
@@ -372,6 +396,37 @@ html, body {
         margin: 0;
         font-size: 1.2rem;
     }
+
+    .wall-title {
+    margin-bottom: 2.5rem; /* or any value you want */
+    }
+
+    .add-category-btn {
+    background-color: transparent;
+    border: 1px solid #333;
+    color: #333;
+    font-size: 1.2rem; /* Adjusted font size */
+    padding:  0.5rem 1rem; /* Adjusted padding */
+    width: auto;
+    text-decoration: none;
+    border-radius: 30px; /* Rounded corners */
+    transition: background-color 0.3s ease;
+    text-align: center;
+    font-family: 'Schoolbell', cursive;
+    }
+
+    .add-category-btn:hover {
+        background-color: black; /* Soft yellow on hover */
+        color: white;
+        border-color: black; /* Match border to background */
+    }
+
+    .scrollable-wall {
+    max-height: 60vh;
+    overflow-y: auto;
+    border-top: 1px dashed #ccc;
+    }
+
 </style>
 @endsection
 	

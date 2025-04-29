@@ -21,7 +21,7 @@ class EntryController extends Controller
     // Show the page for starting to write a new entry
     public function showStartWriting()
     {
-        $categories = Category::all(); // Fetch all categories
+        $categories = Category::where('user_id', auth()->id())->get();
         return view('start-writing', compact('categories')); // Pass categories to the view
     }
     
@@ -66,7 +66,7 @@ class EntryController extends Controller
         }
 
         $entries = $query->latest()->get();
-        $categories = Category::all(); // Fetch categories for the filter dropdown
+        $categories = Category::where('user_id', auth()->id())->get();
 
         return view('view-all-thoughts', compact('entries', 'categories'));
     }
@@ -85,8 +85,9 @@ class EntryController extends Controller
         // Find the entry to edit
         $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
 
-        // Fetch all categories for the dropdown
-        $categories = Category::all();
+        // Fetch category
+        $categories = Category::where('user_id', auth()->id())->get();
+
 
         return view('edit-entry', compact('entry', 'categories')); // Pass both entry and categories to the view
     }
