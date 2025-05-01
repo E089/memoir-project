@@ -32,18 +32,19 @@ class EntryController extends Controller
         // Validate the input
         $request->validate([
             'title' => 'required|string|max:255',
-            'body' => 'required|string|min:5',  // Body should be at least 5 characters long
+            'body' => 'required|string|min:5',
+            'tags' => 'nullable|string', // already a JSON string
         ]);
 
         // Create a new entry
         Entry::create([
             'title' => $request->title,
             'body' => $request->body,
-            'user_id' => auth()->id(),  // Associate the entry with the logged-in user
-            'category_id' => $request->category_id,  // Optional: Handle the category if provided
+            'tags' => $request->tags, // Save the JSON string of tags
+            'user_id' => auth()->id(),
+            'category_id' => $request->category_id,
         ]);
 
-        // Redirect back to the home/dashboard or to view all entries
         return redirect()->route('view-all-thoughts')->with('message', 'Entry saved successfully!');
     }
 
@@ -79,17 +80,21 @@ class EntryController extends Controller
             return view('view-single-thought', compact('entry'));
         }
 
-    // Show the form to edit an entry
+  // Show the form to edit an entry
     public function editEntry($id)
     {
         // Find the entry to edit
         $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
 
-        // Fetch category
+        // Fetch categories for the current user
         $categories = Category::where('user_id', auth()->id())->get();
 
+        // Safe way to extract tag names
+        $existingTags = $entry->tags ?? []; // JSON-decoded array from DB
 
-        return view('edit-entry', compact('entry', 'categories')); // Pass both entry and categories to the view
+
+        // Pass the entry, categories, and existing tags to the view
+        return view('edit-entry', compact('entry', 'categories', 'existingTags'));
     }
 
 
@@ -104,12 +109,17 @@ class EntryController extends Controller
             'title' => 'required|string|max:255',
             'body' => 'required|string|min:5',
             'category_id' => 'nullable|exists:categories,id', // Validate category ID if provided
+            'tags_json' => 'nullable|string', // already a JSON string
         ]);
+
+        // Decode the tag JSON string to array
+         $tags = json_decode($request->tags_json, true) ?? [];
 
         // Update the entry
         $entry->update([
             'title' => $request->title,
             'body' => $request->body,
+            'tags' => $tags, // This will be casted to JSON because of model cast
             'category_id' => $request->category_id,  // Update the category if selected
         ]);
 

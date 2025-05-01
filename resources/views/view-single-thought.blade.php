@@ -12,10 +12,26 @@
     </a>
 
     <h1 class="entry-title">{{ $entry->title }}</h1>
+
+    <!-- Display tags if available -->
+    @if($entry->tags)
+        <div class="entry-tags">
+            @foreach(explode(',', $entry->tags) as $tag)  <!-- Assuming tags are comma-separated -->
+                @php
+                    $tag = trim($tag);  // Remove any extra spaces
+                    $tag = htmlspecialchars_decode($tag);  // Decode any HTML entities like &quot;
+                    $tag = preg_replace('/[^a-zA-Z0-9 ]/', '', $tag); // Remove any unwanted symbols, e.g., quotes
+                @endphp
+                <span class="tag-badge">{{ $tag }}</span>  <!-- Only display cleaned tags -->
+            @endforeach
+        </div>
+    @endif
+
     <p class="entry-body">{{ $entry->body }}</p>
 
+    <!-- Edit Entry Button with Pen Icon inside a Box -->
     <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">
-        Edit Entry
+        <i class="fas fa-pencil-alt"></i>  <!-- Pen icon with box -->
     </a>
 </div>
 
@@ -56,15 +72,36 @@
         font-family: 'Schoolbell', cursive;
         margin: 5rem auto 2rem auto;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-
     }
 
     h1 {
         font-size: 2rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
         font-family: 'Schoolbell', cursive;
         color: #444;
         text-align: left;
+    }
+
+    .entry-tags {
+        margin-top: 1rem;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .tag-badge {
+        background-color: #ffde59;
+        color: #333;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-family: 'Comic Neue', cursive;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .tag-badge:hover {
+        background-color: #ffe873;
+        cursor: pointer;
     }
 
     p {
@@ -74,7 +111,6 @@
         font-family: 'Fragment Mono', monospace;
         white-space: pre-wrap;
     }
-
 
     .absolute-top-left {
         position: absolute;
@@ -89,46 +125,29 @@
         color: #222;
     }
 
-    .entry-title {
-        font-size: 1.8rem;
-        font-weight: 600;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 0.5rem;
-        color: #222;
-        margin-top: 0.5rem;
-        margin-left: 2.5rem;
-    }
-
-    .entry-body {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #444;
-    white-space: pre-wrap;
-    margin-top: 1.5rem;
-    margin-left: 2.5rem;
-    margin-right: 1rem;
-    max-height: 400px; /* You can adjust this height */
-    overflow-y: auto; /* Adds vertical scroll if the content overflows */
-    padding-right: 10px; /* Optional: Adds some padding to the right for scroll */
-    }
-
-
+    /* Edit Button Styling */
     .edit-button {
-        display: inline-block;
-        background-color: #ffde59;
-        color: #000;
-        font-size: 0.95rem;
-        padding: 0.4rem 1rem;
-        text-decoration: none;
+        position: absolute;  /* Absolute positioning */
+        top: 1rem;  /* Top distance */
+        right: 1rem;  /* Right distance */
+        background-color: transparent;
+        padding: 5px 10px;  /* Padding for a neat box */
         border-radius: 12px;
-        margin-top: 2rem;
-        margin-left: 2.5rem;
-        font-family: 'Comic Neue', cursive;
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
+        font-size: 0.5rem;  /* Icon size */
+        color: #444;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
 
     .edit-button:hover {
-        background-color: #ffe873;
+        background-color: #ffde59;  /* Background change on hover */
+        color: #222;
+        border-color: #ffe873;  /* Lighter border color */
+    }
+
+    .edit-button i {
+        font-size: 1.8rem;  /* Adjust icon size */
     }
 </style>
+
 @endsection

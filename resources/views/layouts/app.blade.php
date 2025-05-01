@@ -9,24 +9,35 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Schoolbell&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" />
 
+    <!-- Trix Editor CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/trix@1.3.1/dist/trix.css" rel="stylesheet">
+  
     <!-- Page-specific styles -->
     @yield('styles')
 
     <!-- Global Styles -->
-       <style>
+    <style>
         html {
             scroll-behavior: smooth;
         }
     </style>
-    <!-- Scripts -->
+
+    <!-- Scripts loaded early (if any need to be in head) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Global JS -->
+    <script src="https://cdn.jsdelivr.net/npm/trix@1.3.1/dist/trix.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+
 </head>
 
 <body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh;">
     <div class="container">
         @yield('content')
     </div>
+
+    <!-- Page-specific scripts -->
+    @stack('scripts')
 </body>
 </html>
-

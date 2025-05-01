@@ -104,7 +104,6 @@
         font-size: 1.5rem;
         font-family: 'Schoolbell', cursive;
         margin-top: 40px;
-        
     }
 
     .navbar {
@@ -127,7 +126,6 @@
         border: 1px solid black;
         border-radius: 25px;
         font-family: 'Schoolbell', cursive;
-
     }
 </style>
 
@@ -149,16 +147,51 @@
 
         <input type="text" id="title" name="title" placeholder="Title..." required>
 
-        <textarea id="body" name="body" placeholder="Write your thoughts here..." required></textarea>
+        <!-- Trix Editor -->
+        <input id="body" type="hidden" name="body">
+        <trix-editor input="body"></trix-editor>
 
         <select id="category_id" name="category_id">
-            <option value="">Select a Category (Optional)</option>
+            <option value="">Category</option>
             @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
             @endforeach
         </select>
 
+        <label for="tags" style="font-family: 'Schoolbell', cursive; font-size: 1.1rem; color: #444;">Tags</label>
+        <input type="text" name="tags" id="tags" placeholder="Add tags...">
+
+        <!-- Submit button -->
         <button type="submit" class="save-button">Save</button>
     </form>
+
+    @push('scripts')
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+
+            // Tagify setup
+            const existingTags = ["daily", "inspiration", "urgent", "random", "dream"];
+            let tagInput = document.querySelector('#tags');
+            let tagify = new Tagify(tagInput, {
+                whitelist: existingTags,
+                dropdown: {
+                    maxItems: 10,
+                    classname: "tags-look",
+                    enabled: 0,
+                    closeOnSelect: false
+                },
+                enforceWhitelist: false,
+            });
+
+            // Store as JSON array in hidden input before form submit
+            tagInput.form.addEventListener('submit', function (e) {
+                let tagData = tagify.value.map(tag => tag.value);
+                tagInput.value = JSON.stringify(tagData);
+            });
+        });
+    </script>
+    @endpush
 </div>
 @endsection

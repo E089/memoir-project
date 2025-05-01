@@ -9,7 +9,10 @@ class Entry extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'body', 'user_id', 'category_id'];
+    protected $fillable = ['title', 'body', 'user_id', 'category_id']; 
+
+
+    public $timestamps = true;
 
     // Relationship: An entry belongs to a user
     public function user()
@@ -17,12 +20,10 @@ class Entry extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Enable timestamp management explicitly
-    public $timestamps = true;
-
     // Relationship: An entry may belong to a category
     public function category()
     {
-        return $this->belongsTo(Category::class); // Assuming you have a Category model
+        return $this->belongsTo(Category::class);
     }
+
 }

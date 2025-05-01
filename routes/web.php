@@ -55,3 +55,10 @@ Route::get('/categories', [CategoryController::class, 'getAllCategories'])->name
 
 //Delete Categories
 Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('delete-category');
+
+// Route for storing tags - new route for tag saving
+Route::post('/tags/save', [EntryController::class, 'saveTags'])->name('tags.save');
+
+// Route for storing entries
+Route::post('/save-entry', [EntryController::class, 'saveEntry'])->name('save-entry');
+

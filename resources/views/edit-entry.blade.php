@@ -134,7 +134,35 @@
             @endforeach
         </select>
 
-        <button type="submit" class="save-button">Update Entry</button>
-    </form>
-</div>
+        <label for="tags" style="font-family: 'Schoolbell', cursive; font-size: 1.1rem; color: #444;">Tags</label>
+        <input type="text" name="tags" id="tags" placeholder="Add tags...">
+
+<!-- Submit button -->
+    <button type="submit" class="save-button">Save</button>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const existingTags = ["daily", "inspiration", "urgent", "random", "dream"];
+
+            let tagInput = document.querySelector('#tags');
+            let tagify = new Tagify(tagInput, {
+                whitelist: existingTags,
+                dropdown: {
+                    maxItems: 10,
+                    classname: "tags-look",
+                    enabled: 0,
+                    closeOnSelect: false
+                },
+                enforceWhitelist: false,
+            });
+
+            // Store as JSON array in hidden input before form submit
+            tagInput.form.addEventListener('submit', function (e) {
+                let tagData = tagify.value.map(tag => tag.value);
+                tagInput.value = JSON.stringify(tagData);
+            });
+        });
+    </script>
+    @endpush
 @endsection
