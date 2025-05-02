@@ -100,6 +100,71 @@
         margin-top: 40px;
         z-index: 10;
     }
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .tag {
+        background-color: #ffde59;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 1rem;
+        color: #333;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .tag:hover {
+        background-color: #ffe873;
+    }
+
+    .tag i {
+        margin-left: 5px;
+        font-size: 1rem;
+    }
+
+    .tag input {
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #333;
+    outline: none;
+    width: auto; /* Let it shrink to the tag's size */
+    text-align: center;
+    min-width: 30px; /* Make it smaller by default */
+    max-width: 100px; /* You can adjust this to make it more compact */
+    padding: 2px 4px; /* Reduce the padding for a more compact feel */
+    }
+
+    .tag input:focus {
+        border-bottom: 1px solid #333; /* Keeps a subtle underline when focused */
+    }
+
+    .add-tag {
+        background-color: #ffde59;
+        border: none;
+        color: #333;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s;
+    }
+
+    .add-tag:hover {
+        background-color: #ffe873;
+    }
+
+    .add-tag i {
+        margin-right: 5px;
+    }
 
 </style>
 
@@ -133,36 +198,127 @@
                 </option>
             @endforeach
         </select>
+        
+        <div class="tags-container" id="tags-container">
+            <!-- Pre-populate existing tags -->
+                @foreach ($entry->tags as $tag)
+                    <div class="tag">
+                        {{ $tag->name }} <i class="fas fa-times"></i>
+                    </div>
+                @endforeach
+        </div>
 
-        <label for="tags" style="font-family: 'Schoolbell', cursive; font-size: 1.1rem; color: #444;">Tags</label>
-        <input type="text" name="tags" id="tags" placeholder="Add tags...">
+        <input type="text" id="tag-input" placeholder="Add a tag..." class="input-tag" style="margin-bottom: 1rem;">
 
-<!-- Submit button -->
-    <button type="submit" class="save-button">Save</button>
+        <button type="button" class="add-tag" id="add-tag-btn">
+            <i class="fas fa-plus"></i> Add Tag
+        </button>
 
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const existingTags = ["daily", "inspiration", "urgent", "random", "dream"];
+        <input type="hidden" name="tags" id="tags-input">
 
-            let tagInput = document.querySelector('#tags');
-            let tagify = new Tagify(tagInput, {
-                whitelist: existingTags,
-                dropdown: {
-                    maxItems: 10,
-                    classname: "tags-look",
-                    enabled: 0,
-                    closeOnSelect: false
-                },
-                enforceWhitelist: false,
+        <script>
+    document.getElementById('add-tag-btn').addEventListener('click', function() {
+        let tagInput = document.getElementById('tag-input');
+        let tagValue = tagInput.value.trim();
+
+        if (tagValue) {
+            // Create the tag element
+            let tagElement = document.createElement('div');
+            tagElement.classList.add('tag');
+            tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
+
+            // Add functionality to delete the tag
+            tagElement.querySelector('i').addEventListener('click', function() {
+                tagElement.remove();
+                updateTagsInput();  // Update the hidden tags input after deletion
             });
 
-            // Store as JSON array in hidden input before form submit
-            tagInput.form.addEventListener('submit', function (e) {
-                let tagData = tagify.value.map(tag => tag.value);
-                tagInput.value = JSON.stringify(tagData);
+            // Add double-tap (double-click) functionality to edit the tag
+            tagElement.addEventListener('dblclick', function() {
+                let inputField = document.createElement('input');
+                inputField.value = tagValue; // Set the tag's current value
+                tagElement.innerHTML = ''; // Clear the current tag content
+                tagElement.appendChild(inputField);
+                inputField.focus();
+
+                // When the input field loses focus or Enter is pressed, save the new value
+                inputField.addEventListener('blur', function() {
+                    if (inputField.value.trim()) {
+                        tagElement.innerHTML = `${inputField.value} <i class="fas fa-times"></i>`;
+                        // Re-attach delete functionality after editing
+                        tagElement.querySelector('i').addEventListener('click', function() {
+                            tagElement.remove();
+                            updateTagsInput();  // Update the hidden tags input after deletion
+                        });
+                        updateTagsInput();  // Update the hidden tags input
+                    } else {
+                        tagElement.remove();
+                        updateTagsInput();  // Update the hidden tags input after deletion
+                    }
+                });
+
+                inputField.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        inputField.blur();
+                    }
+                });
+            });
+
+            // Append the new tag to the container
+            document.getElementById('tags-container').appendChild(tagElement);
+
+            // Clear the input
+            tagInput.value = '';
+
+            updateTagsInput();  // Update the hidden tags input
+        }
+    });
+
+   // Update the hidden input field with current tags
+    function updateTagsInput() {
+        const tags = [];
+        document.querySelectorAll('.tag').forEach(tag => {
+            tags.push(tag.innerText.trim().replace(' ×', ''));
+        });
+
+        // Set the tags in the hidden input field
+        document.getElementById('tags-input').value = JSON.stringify(tags);
+    }
+
+    // Ensure existing tags are editable
+    document.querySelectorAll('.tag').forEach(tagElement => {
+        tagElement.addEventListener('dblclick', function() {
+            let currentTag = tagElement.innerText.trim().replace(' ×', '');
+            let inputField = document.createElement('input');
+            inputField.value = currentTag; // Set the tag's current value
+            tagElement.innerHTML = ''; // Clear the current tag content
+            tagElement.appendChild(inputField);
+            inputField.focus();
+
+            // When the input field loses focus or Enter is pressed, save the new value
+            inputField.addEventListener('blur', function() {
+                if (inputField.value.trim()) {
+                    tagElement.innerHTML = `${inputField.value} <i class="fas fa-times"></i>`;
+                    // Re-attach delete functionality after editing
+                    tagElement.querySelector('i').addEventListener('click', function() {
+                        tagElement.remove();
+                        updateTagsInput();  // Update the hidden tags input after deletion
+                    });
+                    updateTagsInput();  // Update the hidden tags input
+                } else {
+                    tagElement.remove();
+                    updateTagsInput();  // Update the hidden tags input after deletion
+                }
+            });
+
+            inputField.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    inputField.blur();
+                }
             });
         });
-    </script>
-    @endpush
+    });
+</script>
+<!-- Submit button -->
+    <button type="submit" class="save-button">Save</button>
 @endsection

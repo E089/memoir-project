@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Entry;  // Use the Entry model
 use App\Models\Category;
+use App\Models\Tag;
 
 class EntryController extends Controller
 {
@@ -26,25 +27,41 @@ class EntryController extends Controller
     }
     
 
-    // Save the new entry to the database
     public function saveEntry(Request $request)
     {
         // Validate the input
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string|min:5',
-            'tags' => 'nullable|string', // already a JSON string
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|string', // JSON string of tag names
         ]);
-
-        // Create a new entry
-        Entry::create([
+    
+        // Create the entry
+        $entry = Entry::create([
             'title' => $request->title,
             'body' => $request->body,
-            'tags' => $request->tags, // Save the JSON string of tags
             'user_id' => auth()->id(),
             'category_id' => $request->category_id,
         ]);
-
+    
+        // Handle tags
+        if ($request->filled('tags')) {
+            $tagNames = json_decode($request->tags, true);
+            $tagIds = [];
+        
+            foreach ($tagNames as $name) {
+                $trimmed = trim($name);
+                if ($trimmed === '') continue;
+        
+                // Ensure user_id is passed when creating the tag
+                $tag = Tag::firstOrCreate(['name' => $trimmed, 'user_id' => auth()->id()]);
+                $tagIds[] = $tag->id;
+            }
+        
+            $entry->tags()->sync($tagIds);
+        }
+    
         return redirect()->route('view-all-thoughts')->with('message', 'Entry saved successfully!');
     }
 
@@ -66,11 +83,13 @@ class EntryController extends Controller
             });
         }
 
-        $entries = $query->latest()->get();
+        // Eager load tags
+        $entries = $query->with('tags')->latest()->get();
         $categories = Category::where('user_id', auth()->id())->get();
 
         return view('view-all-thoughts', compact('entries', 'categories'));
     }
+
 
 
     // Show a single entry
@@ -85,47 +104,54 @@ class EntryController extends Controller
     {
         // Find the entry to edit
         $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-
-        // Fetch categories for the current user
+    
+        // Fetch categories
         $categories = Category::where('user_id', auth()->id())->get();
-
-        // Safe way to extract tag names
-        $existingTags = $entry->tags ?? []; // JSON-decoded array from DB
-
-
-        // Pass the entry, categories, and existing tags to the view
-        return view('edit-entry', compact('entry', 'categories', 'existingTags'));
+    
+        return view('edit-entry', compact('entry', 'categories'));
     }
-
 
     // Save the updated entry
     public function updateEntry(Request $request, $id)
     {
-        // Find the entry to update
         $entry = Entry::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
 
-        // Validate the input
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string|min:5',
-            'category_id' => 'nullable|exists:categories,id', // Validate category ID if provided
-            'tags_json' => 'nullable|string', // already a JSON string
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|string', // Should be a JSON string of tag names
         ]);
-
-        // Decode the tag JSON string to array
-         $tags = json_decode($request->tags_json, true) ?? [];
 
         // Update the entry
         $entry->update([
             'title' => $request->title,
             'body' => $request->body,
-            'tags' => $tags, // This will be casted to JSON because of model cast
-            'category_id' => $request->category_id,  // Update the category if selected
+            'category_id' => $request->category_id,
         ]);
 
-        // Redirect to the view-all-thoughts page with a success message
+        // Check if tags are passed and update association
+        if ($request->filled('tags')) {
+            // Decode the tags from JSON
+            $tagNames = json_decode($request->tags, true);
+            $tagIds = [];
+
+            foreach ($tagNames as $name) {
+                $trimmed = trim($name);
+                if ($trimmed === '') continue;
+
+                // Ensure user_id is passed when creating the tag
+                $tag = Tag::firstOrCreate(['name' => $trimmed, 'user_id' => auth()->id()]);
+                $tagIds[] = $tag->id;
+            }
+
+            // Sync tags with the entry (this will add new tags and remove old ones)
+            $entry->tags()->sync($tagIds);
+        }
+
         return redirect()->route('view-all-thoughts')->with('message', 'Entry updated successfully!');
     }
+
         public function deleteEntry($id)
         {
             // Find the entry by ID, make sure the logged-in user owns it

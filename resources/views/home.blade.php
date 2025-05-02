@@ -219,7 +219,12 @@
 
     .feature-card h3 {
         margin-bottom: 1rem;
+        white-space: nowrap;        /* Prevents wrapping of the title */
+        overflow: hidden;           /* Hides overflowed content */
+        text-overflow: ellipsis;    /* Adds the ellipsis when the text overflows */
+        max-width: 250px;           /* Adjust to fit within the container */
     }
+
     .logout-button {
         background-color: transparent;
         border: 2px solid black;

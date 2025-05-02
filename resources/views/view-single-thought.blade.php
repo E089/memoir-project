@@ -13,20 +13,23 @@
 
     <h1 class="entry-title">{{ $entry->title }}</h1>
 
-    <!-- Display tags if available -->
-    @if($entry->tags)
-        <div class="entry-tags">
-            @foreach(explode(',', $entry->tags) as $tag)  <!-- Assuming tags are comma-separated -->
-                @php
-                    $tag = trim($tag);  // Remove any extra spaces
-                    $tag = htmlspecialchars_decode($tag);  // Decode any HTML entities like &quot;
-                    $tag = preg_replace('/[^a-zA-Z0-9 ]/', '', $tag); // Remove any unwanted symbols, e.g., quotes
-                @endphp
-                <span class="tag-badge">{{ $tag }}</span>  <!-- Only display cleaned tags -->
-            @endforeach
-        </div>
-    @endif
+    <!-- Tags Section -->
+    <div class="tags-container">
+        @php
+            $visibleTags = array_slice($entry->tags->toArray(), 0, 8);  // Display only first 8 tags
+            $hiddenTags = array_slice($entry->tags->toArray(), 8);      // Remaining tags to be shown on 'See More'
+        @endphp
 
+        @foreach ($entry->tags as $index => $tag)
+            <div class="tag {{ $index >= 8 ? 'hidden-tag' : '' }}">{{ $tag->name }}</div>
+        @endforeach
+
+
+        <!-- See More Button -->
+        @if (count($hiddenTags) > 0)
+            <button class="see-more-btn">See More</button>
+        @endif
+    </div>
     <p class="entry-body">{{ $entry->body }}</p>
 
     <!-- Edit Entry Button with Pen Icon inside a Box -->
@@ -34,6 +37,25 @@
         <i class="fas fa-pencil-alt"></i>  <!-- Pen icon with box -->
     </a>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const seeMoreButton = document.querySelector(".see-more-btn");
+        const hiddenTags = document.querySelectorAll(".hidden-tag");
+
+        if (seeMoreButton) {
+            seeMoreButton.addEventListener("click", function() {
+                hiddenTags.forEach(tag => {
+                    tag.classList.toggle("show");
+                });
+
+                seeMoreButton.textContent = seeMoreButton.textContent === "See More" ? "See Less" : "See More";
+            });
+        }
+    });
+</script>
+
+
 
 <style>
     body {
@@ -148,6 +170,74 @@
     .edit-button i {
         font-size: 1.8rem;  /* Adjust icon size */
     }
+
+    .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    justify-content: left;
+    }
+
+    .tag {
+        background-color: #ffde59;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 1rem;
+        color: #333;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .tag:hover {
+        background-color: #ffe873;
+        transform: translateY(-2px);
+    }
+
+    .tag i {
+        margin-left: 5px;
+        font-size: 1.2rem;
+    }
+
+    .entry-title {
+    white-space: nowrap; /* Prevent the title from wrapping to the next line */
+    overflow: hidden; /* Hide the overflowed content */
+    text-overflow: ellipsis; /* Add ellipsis when the text overflows */
+    max-width: 100%; /* Ensure the title fits within its container */
+    }
+
+    .see-more-btn {
+        background-color: transparent;
+        border: 1px solid #ffde59;
+        color: #ffde59;
+        padding: 8px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 10px;
+        font-family: 'Schoolbell', cursive;
+        transition: background-color 0.3s;
+    }
+
+    .see-more-btn:hover {
+        background-color: #ffde59;
+        color: white;
+    }
+
+    .hidden-tag {
+    display: none;
+    }
+
+    .hidden-tag.show {
+    display: inline-flex;
+    }
+
+
+
 </style>
 
 @endsection

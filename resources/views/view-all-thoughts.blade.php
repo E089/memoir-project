@@ -35,20 +35,41 @@
                     <li>
                         <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
                     </li>
-                    @foreach ($categories as $category)
-                        <li class="d-flex justify-content-between align-items-center px-3">
-                            <a class="dropdown-item flex-grow-1 text-start p-0 m-0" href="{{ route('view-all-thoughts', ['category' => $category->id]) }}">
-                                {{ $category->name }}
-                            </a>
-                            <form action="{{ route('delete-category', $category->id) }}" method="POST" onsubmit="return confirm('Delete this category?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-link text-danger p-0 ms-2">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </li>
-                    @endforeach
+                    @foreach ($entries as $entry)
+                    <div class="col-md-4 mb-4">
+                        <div class="card sticky-note" style="transform: rotate({{ rand(-4, 4) }}deg);">
+                            <div class="card-body d-flex flex-column justify-content-between h-100">
+                                <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
+                                    <h5 class="card-title">{{ $entry->title }}</h5>
+
+                                    <!-- Tags Section -->
+                                    <div class="tags-container">
+                                        @foreach ($entry->tags as $tag)
+                                            <div class="tag">
+                                                {{ $tag->name }} <!-- Access the 'name' of the tag -->
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                    <p class="card-text">{{ Str::limit($entry->body, 100) }}</p>
+                                </a>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="text-muted">{{ $entry->created_at->format('M d, Y h:i A') }}</small>
+                                    <form action="{{ route('delete-entry', $entry->id) }}" method="POST" class="m-0">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-delete" title="Delete Entry">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+
+
                 </ul>
             </div>
         </div>
@@ -426,6 +447,15 @@ html, body {
     overflow-y: auto;
     border-top: 1px dashed #ccc;
     }
+
+    .card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Adjust the max width if necessary */
+    display: block;
+    font-size: 1.5rem; /* Adjust as needed */
+}
 
 </style>
 @endsection
