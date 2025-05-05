@@ -16,21 +16,26 @@
     <!-- Tags Section -->
     <div class="tags-container">
         @php
-            $visibleTags = array_slice($entry->tags->toArray(), 0, 8);  // Display only first 8 tags
-            $hiddenTags = array_slice($entry->tags->toArray(), 8);      // Remaining tags to be shown on 'See More'
+            $visibleTags = array_slice($entry->tags->toArray(), 0, 3);  // Display only first 8 tags
+            $hiddenTags = array_slice($entry->tags->toArray(), 3);      // Remaining tags to be shown on 'See More'
         @endphp
 
         @foreach ($entry->tags as $index => $tag)
-            <div class="tag {{ $index >= 8 ? 'hidden-tag' : '' }}">{{ $tag->name }}</div>
+            <div class="tag {{ $index >= 3 ? 'hidden-tag' : '' }}">
+                <span title="{{ $tag->name }}">{{ \Illuminate\Support\Str::limit($tag->name, 10) }}</span>
+            </div>
         @endforeach
-
-
         <!-- See More Button -->
         @if (count($hiddenTags) > 0)
             <button class="see-more-btn">See More</button>
         @endif
     </div>
-    <p class="entry-body">{{ $entry->body }}</p>
+    <!-- Scrollable wrapper for entry body -->
+    <div class="entry-body-wrapper">
+        <div class="entry-body">{!! $entry->body !!}</div>
+    </div>
+
+
 
     <!-- Edit Entry Button with Pen Icon inside a Box -->
     <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">
@@ -235,6 +240,43 @@
     .hidden-tag.show {
     display: inline-flex;
     }
+
+    .entry-body {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem 0;
+    line-height: 1.6;
+}
+
+.entry-body h1, 
+.entry-body h2, 
+.entry-body h3 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.entry-body p {
+    margin-bottom: 1rem;
+}
+
+.entry-body ul,
+.entry-body ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.entry-body-wrapper {
+    max-height: 400px; /* or any height you prefer */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-top: 1rem;
+    border: 1px dashed #e0e0e0;
+    background-color: #fffefc;
+    border-radius: 8px;
+}
 
 
 

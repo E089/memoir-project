@@ -32,45 +32,61 @@
                     </span>
                 </button>
                 <ul class="dropdown-menu w-100 text-center" aria-labelledby="categoryDropdown" style="border-radius: 30px;">
-                    <li>
-                        <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
-                    </li>
-                    @foreach ($entries as $entry)
-                    <div class="col-md-4 mb-4">
-                        <div class="card sticky-note" style="transform: rotate({{ rand(-4, 4) }}deg);">
-                            <div class="card-body d-flex flex-column justify-content-between h-100">
-                                <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
-                                    <h5 class="card-title">{{ $entry->title }}</h5>
+                <!-- All Categories Link -->
+                <li>
+                    <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
+                </li>
 
+                <!-- Categories List -->
+                @foreach ($categories as $category)
+                    <li>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a class="dropdown-item text-truncate" href="{{ route('view-all-thoughts', ['category' => $category->id]) }}" style="max-width: calc(100% - 2rem);">
+                                {{ $category->name }}
+                            </a>
+
+                            <!-- Delete Category Form -->
+                            <form action="{{ route('delete-category', $category->id) }}" method="POST" class="m-0">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link text-danger" title="Delete Category">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+            <!-- Entries List (as Cards) -->
+            <ul class="dropdown-menu w-100 text-center mt-3" aria-labelledby="entriesDropdown" style="border-radius: 30px;">
+                @foreach ($entries as $entry)
+                    <li class="dropdown-item">
+                        <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
+                            <div class="card sticky-note" style="transform: rotate({{ rand(-4, 4) }}deg);">
+                                <div class="card-body d-flex flex-column justify-content-between h-100">
+                                    <h5 class="card-title">{{ $entry->title }}</h5>
+                                    
                                     <!-- Tags Section -->
                                     <div class="tags-container">
                                         @foreach ($entry->tags as $tag)
                                             <div class="tag">
-                                                {{ $tag->name }} <!-- Access the 'name' of the tag -->
+                                                <span class="badge tag-style">
+                                                    {{ $tag->name }}
+                                                </span>
                                             </div>
                                         @endforeach
                                     </div>
 
-                                    <p class="card-text">{{ Str::limit($entry->body, 100) }}</p>
-                                </a>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <small class="text-muted">{{ $entry->created_at->format('M d, Y h:i A') }}</small>
-                                    <form action="{{ route('delete-entry', $entry->id) }}" method="POST" class="m-0">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-delete" title="Delete Entry">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    <p class="card-text text-truncate-multiline">
+                                        {{ $entry->body }}
+                                    </p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </a>
+                    </li>
                 @endforeach
+            </ul>
 
-
-
-                </ul>
             </div>
         </div>
 
@@ -135,7 +151,32 @@
                         <div class="card-body d-flex flex-column justify-content-between h-100">
                             <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
                                 <h5 class="card-title">{{ $entry->title }}</h5>
-                                <p class="card-text">{{ Str::limit($entry->body, 100) }}</p>
+                                @if ($entry->tags->count())
+                                    <div class="mb-2">
+                                    @if ($entry->tags->count())
+                                        <div class="mb-2">
+                                        @php
+                                            $visibleTags = $entry->tags->take(3);
+                                            $remainingCount = $entry->tags->count() - $visibleTags->count();
+                                        @endphp
+
+                                        @foreach ($visibleTags as $tag)
+                                            <span class="tag-style" title="{{ $tag->name }}">
+                                                {{ $tag->name }}
+                                            </span>
+                                        @endforeach
+
+                                        @if ($remainingCount > 0)
+                                            <span class="tag-style">+{{ $remainingCount }} more</span>
+                                        @endif
+                                        </div>
+                                    @endif
+                                    </div>
+                                @endif
+                                <div class="card-text text-truncate-multiline">
+                                    {!! strip_tags($entry->body) !!}
+                                </div>
+
                             </a>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <small class="text-muted">{{ $entry->created_at->format('M d, Y h:i A') }}</small>
@@ -455,7 +496,39 @@ html, body {
     max-width: 100%; /* Adjust the max width if necessary */
     display: block;
     font-size: 1.5rem; /* Adjust as needed */
-}
+    }
+
+    .tag-style {
+    background: transparent;
+    border: 1px solid black;
+    color: black;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-family: 'Schoolbell', cursive;
+    margin-right: 4px;
+
+    
+    /* Ellipsis Styling */
+    max-width: 70px; /* Adjust to match approx. 5 characters */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+    }
+
+    .text-truncate-multiline {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5em;
+    max-height: 4.5em; /* 3 lines x 1.5em */
+    }
+
+
 
 </style>
 @endsection

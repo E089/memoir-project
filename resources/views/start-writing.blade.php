@@ -260,61 +260,88 @@
 </div>
 
 <script>
-    document.getElementById('add-tag-btn').addEventListener('click', function() {
+document.getElementById('add-tag-btn').addEventListener('click', function() {
     let tagInput = document.getElementById('tag-input');
     let tagValue = tagInput.value.trim();
 
-    if (tagValue) {
-        // Create the tag element
-        let tagElement = document.createElement('div');
-        tagElement.classList.add('tag');
-        tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
-
-        // Add functionality to delete the tag
-        tagElement.querySelector('i').addEventListener('click', function() {
-            tagElement.remove();
-            updateTagsInput();  // Update the hidden tags input after deletion
-        });
-
-        // Add double-tap (double-click) functionality to edit the tag
-        tagElement.addEventListener('dblclick', function() {
-            let inputField = document.createElement('input');
-            inputField.value = tagValue; // Set the tag's current value
-            tagElement.innerHTML = ''; // Clear the current tag content
-            tagElement.appendChild(inputField);
-            inputField.focus();
-
-            // When the input field loses focus or Enter is pressed, save the new value
-            inputField.addEventListener('blur', function() {
-                if (inputField.value.trim()) {
-                    tagElement.innerHTML = `${inputField.value} <i class="fas fa-times"></i>`;
-                    // Re-attach delete functionality after editing
-                    tagElement.querySelector('i').addEventListener('click', function() {
-                        tagElement.remove();
-                        updateTagsInput();  // Update the hidden tags input after deletion
-                    });
-                    updateTagsInput();  // Update the hidden tags input
-                } else {
-                    tagElement.remove();
-                    updateTagsInput();  // Update the hidden tags input after deletion
-                }
-            });
-
-            inputField.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    inputField.blur();
-                }
-            });
-        });
-
-        // Append the new tag to the container
-        document.getElementById('tags-container').appendChild(tagElement);
-
-        // Clear the input
-        tagInput.value = '';
-
-        updateTagsInput();  // Update the hidden tags input
+    if (tagValue.length > 20) {
+        alert("Tag must not exceed 20 characters.");
+        return;
     }
+
+    if (!tagValue) return;
+
+    // Check for duplicate tags (case insensitive)
+    const existingTags = Array.from(document.querySelectorAll('.tag'))
+        .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
+
+    if (existingTags.includes(tagValue.toLowerCase())) {
+        alert("This tag already exists.");
+        return;
+    }
+
+    // Create the tag element
+    let tagElement = document.createElement('div');
+    tagElement.classList.add('tag');
+    tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
+
+    // Delete functionality
+    tagElement.querySelector('i').addEventListener('click', function() {
+        tagElement.remove();
+        updateTagsInput();
+    });
+
+    // Edit functionality
+    tagElement.addEventListener('dblclick', function() {
+        let inputField = document.createElement('input');
+        inputField.value = tagValue;
+        tagElement.innerHTML = '';
+        tagElement.appendChild(inputField);
+        inputField.focus();
+
+        inputField.addEventListener('blur', function() {
+            let newValue = inputField.value.trim();
+
+            if (newValue.length > 20) {
+                alert("Tag must not exceed 20 characters.");
+                inputField.focus();
+                return;
+            }
+
+            // Check for duplicates again on edit (excluding self)
+            const otherTags = Array.from(document.querySelectorAll('.tag'))
+                .filter(tag => tag !== tagElement)
+                .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
+
+            if (otherTags.includes(newValue.toLowerCase())) {
+                alert("This tag already exists.");
+                inputField.focus();
+                return;
+            }
+
+            if (newValue) {
+                tagElement.innerHTML = `${newValue} <i class="fas fa-times"></i>`;
+                tagElement.querySelector('i').addEventListener('click', function() {
+                    tagElement.remove();
+                    updateTagsInput();
+                });
+                updateTagsInput();
+            } else {
+                tagElement.remove();
+                updateTagsInput();
+            }
+        });
+
+        inputField.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                inputField.blur();
+            }
+        });
+    });
+
+    document.getElementById('tags-container').appendChild(tagElement);
+    tagInput.value = '';
+    updateTagsInput();
 });
 
 function updateTagsInput() {
@@ -322,12 +349,11 @@ function updateTagsInput() {
     document.querySelectorAll('.tag').forEach(tag => {
         tags.push(tag.innerText.trim().replace(' ×', ''));
     });
-
-    // Set the tags in the hidden input field
     document.getElementById('tags-input').value = JSON.stringify(tags);
 }
-
 </script>
+
+
 <!-- Quill JS and CSS -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
@@ -337,10 +363,19 @@ function updateTagsInput() {
         theme: 'snow'
     });
 
-    // On form submit, transfer content to hidden input
-    document.querySelector('form').addEventListener('submit', function () {
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const content = quill.getText().trim(); // getText ignores HTML tags
+
+        if (content.length === 0) {
+            e.preventDefault(); // Stop form submission
+            alert("Please fill in the body before submitting.");
+            return;
+        }
+
+        // Transfer HTML content to hidden input if not empty
         document.querySelector('#body').value = quill.root.innerHTML;
     });
 </script>
+
 
 @endsection

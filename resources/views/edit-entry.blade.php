@@ -123,9 +123,16 @@
         background-color: #ffe873;
     }
 
+    .tag .tag-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
     .tag i {
-        margin-left: 5px;
-        font-size: 1rem;
+       flex-shrink: 0;
+    cursor: pointer;
     }
 
     .tag input {
@@ -166,6 +173,16 @@
         margin-right: 5px;
     }
 
+    #editor {
+    height: 400px; /* or any height you want */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #fffef5;
+}
+
+
 </style>
 
 
@@ -188,7 +205,11 @@
 
         <input type="text" name="title" id="title" value="{{ $entry->title }}" placeholder="Edit your title..." required>
 
-        <textarea name="body" id="body" placeholder="Edit your thoughts here..." required>{{ $entry->body }}</textarea>
+        <!-- Use a hidden textarea for submission -->
+        <textarea name="body" id="body" hidden>{{ $entry->body }}</textarea>
+
+        <!-- Show rich content in a div for editing -->
+        <div id="editor">{!! $entry->body !!}</div>
 
         <select name="category_id" id="category">
             <option value="">Select a Category (Optional)</option>
@@ -202,9 +223,11 @@
         <div class="tags-container" id="tags-container">
             <!-- Pre-populate existing tags -->
                 @foreach ($entry->tags as $tag)
-                    <div class="tag">
-                        {{ $tag->name }} <i class="fas fa-times"></i>
-                    </div>
+                <div class="tag" title="{{ $tag->name }}">
+                    <span class="tag-text">{{ $tag->name }}</span>
+                    <i class="fas fa-times"></i>
+                </div>
+
                 @endforeach
         </div>
 
@@ -216,74 +239,105 @@
 
         <input type="hidden" name="tags" id="tags-input">
 
-        <script>
-    document.getElementById('add-tag-btn').addEventListener('click', function() {
-        let tagInput = document.getElementById('tag-input');
-        let tagValue = tagInput.value.trim();
+    <script>
+        document.getElementById('add-tag-btn').addEventListener('click', function() {
+    let tagInput = document.getElementById('tag-input');
+    let tagValue = tagInput.value.trim();
 
-        if (tagValue) {
-            // Create the tag element
-            let tagElement = document.createElement('div');
-            tagElement.classList.add('tag');
-            tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
+    if (tagValue.length > 20) {
+        alert("Tag must not exceed 20 characters.");
+        return;
+    }
 
-            // Add functionality to delete the tag
-            tagElement.querySelector('i').addEventListener('click', function() {
-                tagElement.remove();
-                updateTagsInput();  // Update the hidden tags input after deletion
-            });
+    if (!tagValue) return;
 
-            // Add double-tap (double-click) functionality to edit the tag
-            tagElement.addEventListener('dblclick', function() {
-                let inputField = document.createElement('input');
-                inputField.value = tagValue; // Set the tag's current value
-                tagElement.innerHTML = ''; // Clear the current tag content
-                tagElement.appendChild(inputField);
-                inputField.focus();
+    // Check for duplicate tags (case insensitive)
+    const existingTags = Array.from(document.querySelectorAll('.tag'))
+        .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
 
-                // When the input field loses focus or Enter is pressed, save the new value
-                inputField.addEventListener('blur', function() {
-                    if (inputField.value.trim()) {
-                        tagElement.innerHTML = `${inputField.value} <i class="fas fa-times"></i>`;
-                        // Re-attach delete functionality after editing
-                        tagElement.querySelector('i').addEventListener('click', function() {
-                            tagElement.remove();
-                            updateTagsInput();  // Update the hidden tags input after deletion
-                        });
-                        updateTagsInput();  // Update the hidden tags input
-                    } else {
-                        tagElement.remove();
-                        updateTagsInput();  // Update the hidden tags input after deletion
-                    }
-                });
+    if (existingTags.includes(tagValue.toLowerCase())) {
+        alert("This tag already exists.");
+        return;
+    }
 
-                inputField.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        inputField.blur();
-                    }
-                });
-            });
+    // Create the tag element
+    let tagElement = document.createElement('div');
+    tagElement.classList.add('tag');
+    tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
 
-            // Append the new tag to the container
-            document.getElementById('tags-container').appendChild(tagElement);
-
-            // Clear the input
-            tagInput.value = '';
-
-            updateTagsInput();  // Update the hidden tags input
-        }
+    // Add delete functionality
+    tagElement.querySelector('i').addEventListener('click', function() {
+        tagElement.remove();
+        updateTagsInput();
     });
 
-   // Update the hidden input field with current tags
-    function updateTagsInput() {
-        const tags = [];
-        document.querySelectorAll('.tag').forEach(tag => {
-            tags.push(tag.innerText.trim().replace(' ×', ''));
+    // Edit functionality
+    tagElement.addEventListener('dblclick', function() {
+        let currentTag = tagValue;
+        let inputField = document.createElement('input');
+        inputField.value = currentTag; // Set the tag's current value
+        tagElement.innerHTML = ''; // Clear the current tag content
+        tagElement.appendChild(inputField);
+        inputField.focus();
+
+        // When the input field loses focus or Enter is pressed, save the new value
+        inputField.addEventListener('blur', function() {
+            let newValue = inputField.value.trim();
+
+            if (newValue.length > 20) {
+                alert("Tag must not exceed 20 characters.");
+                inputField.focus();
+                return;
+            }
+
+            // Check for duplicates again on edit (excluding self)
+            const otherTags = Array.from(document.querySelectorAll('.tag'))
+                .filter(tag => tag !== tagElement)
+                .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
+
+            if (otherTags.includes(newValue.toLowerCase())) {
+                alert("This tag already exists.");
+                inputField.focus();
+                return;
+            }
+
+            if (newValue) {
+                tagElement.innerHTML = `${newValue} <i class="fas fa-times"></i>`;
+                // Re-attach delete functionality after editing
+                tagElement.querySelector('i').addEventListener('click', function() {
+                    tagElement.remove();
+                    updateTagsInput();
+                });
+                updateTagsInput();
+            } else {
+                tagElement.remove();
+                updateTagsInput();
+            }
         });
 
-        // Set the tags in the hidden input field
-        document.getElementById('tags-input').value = JSON.stringify(tags);
-    }
+        inputField.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                inputField.blur();
+            }
+        });
+    });
+
+    document.getElementById('tags-container').appendChild(tagElement);
+    tagInput.value = '';
+    updateTagsInput();
+});
+
+// Function to update the hidden input field with current tags
+function updateTagsInput() {
+    const tags = [];
+    document.querySelectorAll('.tag').forEach(tag => {
+        tags.push(tag.innerText.trim().replace(' ×', ''));
+    });
+
+    // Set the tags in the hidden input field
+    document.getElementById('tags-input').value = JSON.stringify(tags);
+}
+
 
     // Ensure existing tags are editable
     document.querySelectorAll('.tag').forEach(tagElement => {
