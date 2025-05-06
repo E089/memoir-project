@@ -174,9 +174,8 @@
                                     </div>
                                 @endif
                                 <div class="card-text text-truncate-multiline">
-                                    {!! strip_tags($entry->body) !!}
+                                    {!! $entry->body !!}
                                 </div>
-
                             </a>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <small class="text-muted">{{ $entry->created_at->format('M d, Y h:i A') }}</small>
