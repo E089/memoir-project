@@ -45,7 +45,7 @@
     .navbar-right {
     display: flex;
     justify-content: flex-end;
-    padding-right: 2rem; /* Add more or less spacing here */
+    padding-right: 2rem; 
 }
 
 
@@ -66,7 +66,7 @@
         padding: 8rem 4rem 4rem;
         gap: 4rem;
         flex-wrap: wrap;
-        margin-top: 8rem; /* Added this */  
+        margin-top: 8rem;
     }
 
 
@@ -125,15 +125,15 @@
         transition: all 0.3s ease;
         text-align: center;
         font-family: 'Schoolbell', cursive;
-        border: 2px solid black; /* now has a black outline */
+        border: 2px solid black;
         margin-top: 30px;
         display: inline-block;
     }
 
     .home-button:hover {
-        background-color: #FFDB4C; /* soft yellow */
-        color: black; /* keep text readable */
-        border-color: #FFDB4C; /* match border to background */
+        background-color: #FFDB4C; 
+        color: black; 
+        border-color: #FFDB4C; 
     }
 
 
@@ -163,10 +163,10 @@
             margin-top: 2rem;
             margin-left:2rem;
             display: flex;
-            flex-direction: row; /* Changed from column to row */
-            justify-content: center; /* Center horizontally */
+            flex-direction: row; 
+            justify-content: center; 
             align-items: center;
-            gap: 2rem; /* Adjusted spacing between buttons */
+            gap: 2rem; 
         }
     }
 
@@ -203,19 +203,19 @@
     }
 
     .feature-card p {
-    white-space: pre-line; /* Ensure line breaks are respected */
+    white-space: pre-line; 
     overflow: hidden;
-    text-overflow: ellipsis; /* Truncate if the text exceeds the max length */
-    max-height: 5em; /* Limit height to show only a few lines */
+    text-overflow: ellipsis; 
+    max-height: 5em; 
     font-family: 'Fragment Mono', monospace;
     line-height: 1.5;
-    margin-bottom: 1.5rem; /* Space between content */
+    margin-bottom: 1.5rem; 
     }
 
 
     .feature-card:hover {
     animation: pulse 0.8s infinite;
-    transform: scale(1.05);  /* Slightly enlarge the card on hover */
+    transform: scale(1.05);  
     }
 
     @keyframes pulse {
@@ -232,10 +232,10 @@
 
     .feature-card h3 {
         margin-bottom: 1rem;
-        white-space: nowrap;        /* Prevents wrapping of the title */
-        overflow: hidden;           /* Hides overflowed content */
-        text-overflow: ellipsis;    /* Adds the ellipsis when the text overflows */
-        max-width: 250px;           /* Adjust to fit within the container */
+        white-space: nowrap;       
+        overflow: hidden;           
+        text-overflow: ellipsis;    
+        max-width: 250px;          
     }
 
     .logout-button {
