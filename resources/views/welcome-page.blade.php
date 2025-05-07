@@ -4,21 +4,43 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Schoolbell&family=Inter:wght@300;400;600&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Fragment+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600&display=swap');
+    @import url('https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css');
+
+    
+    @keyframes paintReveal {
+        0% {
+            clip-path: inset(0 100% 0 0);
+        }
+        100% {
+            clip-path: inset(0 0 0 0);
+        }
+    }
+
+    .painted-reveal {
+    animation: paintReveal 1.2s ease-out forwards;
+    overflow: hidden;
+    }
+
+    
 
     html, body {
         height: auto;
         min-height: 100%;
         margin: 0;
         padding: 0;
-        font-family: 'Arial', sans-serif;
-        background: url('{{ asset('images/bg_home.png') }}') no-repeat center center fixed;
-
+        
+        background: url('{{ asset('welcome.png') }}') no-repeat center center fixed;
         background-size: cover;
         overflow-x: hidden;
     }
 
     .navbar {
+        
         display: flex;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(4px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         justify-content: space-between;
         align-items: center;
         padding: 1.5rem 4rem;
@@ -52,6 +74,17 @@
         border-radius: 25px;
         font-family: 'Schoolbell', cursive;
     }
+    .panel {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(4px);
+        /* border-radius: 20px; */
+        padding: 6rem 2rem;
+        /* margin: 1rem auto; */
+        width: 500%;
+        max-width: 150%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-left:-20rem
+    }
 
     .main-section {
         display: flex;
@@ -66,6 +99,9 @@
         text-align: left;
         max-width: 600px;
         margin-left: -50px;
+        margin-top:50rem;
+        margin-bottom:15rem;
+        font-size:700;
     }
 
     .hero h1 {
@@ -73,6 +109,7 @@
         line-height: 1.05;
         margin-bottom: 2rem;
         margin-left: -90px;
+        
     }
 
     .hero h1 span {
@@ -96,6 +133,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-top:20rem;
         gap: 1rem;
     }
 
@@ -149,44 +187,44 @@
     }
 
     .features-container {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    position: relative;
-    margin-top: 3rem; /* Adjusted margin for spacing */
-}
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        position: relative;
+        margin-top: 3rem; /* Adjusted margin for spacing */
+    }
 
-.feature-card {
-    background: #FFDB4C;
-    padding: 2rem;
-    font-family: 'Fragment Mono', monospace;
-    max-width: 300px;
-    width: 100%;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 1; /* Ensure it's above the background */
-    transition: transform 0.3s ease;
-}
+    .feature-card {
+        background: #FFDB4C;
+        padding: 2rem;
+        font-family: 'Fragment Mono', monospace;
+        max-width: 300px;
+        width: 100%;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 1; /* Ensure it's above the background */
+        transition: transform 0.3s ease;
+    }
 
-.feature-card h3 {
-    margin-bottom: 1rem;
-}
+    .feature-card h3 {
+        margin-bottom: 1rem;
+    }
 
-.feature-card p {
-    color: #333;
-}
+    .feature-card p {
+        color: #333;
+    }
 
-.feature-card:hover {
-    transform: scale(1.05); /* Add subtle hover effect */
-}
+    .feature-card:hover {
+        transform: scale(1.05); /* Add subtle hover effect */
+    }
 
-.feature-card.overlap {
-    position: absolute;
-    top: 0; /* Start overlapping from the top */
-    left: 50%;
-    transform: translateX(-50%) translateY(-30%); /* Move it slightly upwards and horizontally centered */
-    z-index: 0; /* Send it behind the first card */
-}
+    .feature-card.overlap {
+        position: absolute;
+        top: 0; /* Start overlapping from the top */
+        left: 50%;
+        transform: translateX(-50%) translateY(-30%); /* Move it slightly upwards and horizontally centered */
+        z-index: 0; /* Send it behind the first card */
+    }
 
 @media (max-width: 768px) {
     .features-container {
@@ -269,23 +307,68 @@
 </div>
 
 <!-- Hero Section -->
-<div id="home" class="main-section" style="margin-top: 0rem;">
-    <div class="hero">
-        <h1>
-            <span>type down</span>
-            <span><em>your</em></span>
-            <span class="bold">inner world.</span>
+<div id="home" class="main-section" style="margin-top: 40rem;">
+    <div class="hero" data-aos="fade-right" style="margin-left:5rem;">
+        <h1 style="line-height: 0.80;">
+            <span  style="font-family:'Fragment Mono', monoscape">type down</span>
+            <span style="font-family:'Schoolbell', cursive; margin-left:50px; font-size:7rem;">your</span>
+            <span class="bold" style="font-family:'Arial', sans-serif; font-weight:1500px; font-size:120px; letter-spacing:0.5">inner world.</span>
         </h1>
-        <p>Memoir is your digital journal — crafted to hold your thoughts, memories, and life’s little details.</p>
+        <p style="font-size:25px;">Memoir is your digital journal — crafted to hold your thoughts, memories, and life’s little details.</p>
     </div>
 
     <!-- Right Section -->
-    <div class="home-right" style="font: size 30px;">
+    <div class="home-right" style="font: size 30px;" data-aos="slide-up">
         <a href="{{ route('register') }}" class="welcome-button" >Login or Sign up</a>
     </div>
 </div>
 
 
+<!-- About Section -->
+<div id="about" class="panel">
+    <div class="about-content paint-reveal" style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;"  >
+        <div style="flex: 1; min-width: 200px; margin-top:100px;">
+            <h3 style="font-family:'Fragment Mono', monospace; margin-left:15rem;font-size:80px;line-height:0.90">
+                What is<br>
+                <span style="margin-left: 40px; font-family:'Schoolbell', cursive;font-size:6rem;margin-top:20px;">memoir?</span>
+            </h3>
+        </div>
+        <div style="flex: 2; font-size:25px;font-family:'Fragment Mono', monospace; margin-left:2rem;">
+            <div style="max-width: 400px; margin-left:20rem;background-color:rgb(255, 239, 19);padding: 2rem 2rem;">
+                <p> Memoir is a peaceful corner of the internet where you can write, remember, and reflect.<br></span></p>
+            </div>
+            <div style="max-width: 400px; margin-left:35rem;font-family:'Fragment Mono', monospace;background-color:rgb(255, 239, 19);padding: 2rem 2rem;">
+                <p>Whether it’s a travel memory, a daily thought, or a life-changing moment— Memoir gives you the space to preserve it.</span></p>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Beliefs Section -->
+<div class="panel" style="background-color: #f2f2f0;">
+    <h2 style="font-family: 'Schoolbell', cursive; font-size: 4rem; text-align: center;">we believe in</h2>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-around; text-align: center; margin-top: 2rem;">
+        <div style="max-width: 300px;font-family:'Fragment Mono', monscapce;">
+            <h5>Writing is healing</h5>
+            <p>Self-expression helps us understand who we are.</p>
+        </div>
+        <div style="max-width: 300px;font-family:'Fragment Mono', monscapce;">
+            <h5>Memories Matter</h5>
+            <p>Even the little things deserve to be remembered.</p>
+        </div>
+        <div style="max-width: 300px;font-family:'Fragment Mono', monscapce;">
+            <h5>Simplicity is power</h5>
+            <p>A clean, quiet space encourages true reflection.</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1200,
+        once: true,
+    });
+</script>
 
 @endsection
