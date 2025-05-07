@@ -132,10 +132,8 @@
     flex-wrap: wrap;
     gap: 6px;
     padding: 6px 10px;
-    border: 1px solid #ccc;
     border-radius: 6px;
     min-height: 40px;
-    background-color: #f9f9f9;
     align-items: center;
     }
 

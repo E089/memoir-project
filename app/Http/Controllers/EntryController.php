@@ -65,16 +65,22 @@ class EntryController extends Controller
         return redirect()->route('view-all-thoughts')->with('message', 'Entry saved successfully!');
     }
 
-    // Show all entries for the logged-in user
     public function viewAllEntries(Request $request)
     {
         $query = Entry::where('user_id', auth()->id());
-
+    
         // If a category filter is applied
         if ($request->has('category') && $request->category != '') {
             $query->where('category_id', $request->category);
         }
-
+    
+        // If a tag filter is applied
+        if ($request->has('tag') && $request->tag != '') {
+            $query->whereHas('tags', function($q) use ($request) {
+                $q->where('tags.id', $request->tag);
+            });
+        }
+    
         // If a search filter is applied
         if ($request->has('search') && $request->search != '') {
             $query->where(function($q) use ($request) {
@@ -82,14 +88,17 @@ class EntryController extends Controller
                 ->orWhere('body', 'like', '%' . $request->search . '%');
             });
         }
-
+    
         // Eager load tags
         $entries = $query->with('tags')->latest()->get();
+    
+        // Get categories and tags for filtering
         $categories = Category::where('user_id', auth()->id())->get();
-
-        return view('view-all-thoughts', compact('entries', 'categories'));
+        $tags = Tag::where('user_id', auth()->id())->get(); // Retrieve tags for filter
+    
+        return view('view-all-thoughts', compact('entries', 'categories', 'tags'));
     }
-
+    
 
 
     // Show a single entry

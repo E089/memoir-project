@@ -57,6 +57,33 @@
                     </li>
                 @endforeach
             </ul>
+            <!-- Tag Dropdown -->
+            <div class="col-md-5">
+                <div class="dropdown">
+                    <button class="btn btn-outline-dark dropdown-toggle custom-btn w-100" type="button" id="tagDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+                        style="border-radius: 30px;">
+                        <span>
+                            @if(request()->has('tag'))
+                                {{ $tags->find(request()->tag)->name ?? 'Filter by Tag' }}
+                            @else
+                                Filter by Tag
+                            @endif
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu w-100 text-center" aria-labelledby="tagDropdown" style="border-radius: 30px;">
+                        <!-- All Tags -->
+                        <li><a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Tags</a></li>
+                        <!-- Tag List -->
+                        @foreach ($tags as $tag)
+                            <li>
+                                <a class="dropdown-item text-truncate" href="{{ route('view-all-thoughts', ['tag' => $tag->id]) }}">
+                                    {{ $tag->name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
             <!-- Entries List (as Cards) -->
             <ul class="dropdown-menu w-100 text-center mt-3" aria-labelledby="entriesDropdown" style="border-radius: 30px;">
                 @foreach ($entries as $entry)
