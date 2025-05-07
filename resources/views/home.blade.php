@@ -45,7 +45,7 @@
     .navbar-right {
     display: flex;
     justify-content: flex-end;
-    padding-right: 2rem; /* Add more or less spacing here */
+    padding-right: 2rem; 
 }
 
 
@@ -66,7 +66,9 @@
         padding: 8rem 4rem 4rem;
         gap: 4rem;
         flex-wrap: wrap;
+        margin-top: 8rem;
     }
+
 
     .hero {
         text-align: left;
@@ -123,15 +125,15 @@
         transition: all 0.3s ease;
         text-align: center;
         font-family: 'Schoolbell', cursive;
-        border: 2px solid black; /* now has a black outline */
+        border: 2px solid black;
         margin-top: 30px;
         display: inline-block;
     }
 
     .home-button:hover {
-        background-color: #FFDB4C; /* soft yellow */
-        color: black; /* keep text readable */
-        border-color: #FFDB4C; /* match border to background */
+        background-color: #FFDB4C; 
+        color: black; 
+        border-color: #FFDB4C; 
     }
 
 
@@ -161,10 +163,10 @@
             margin-top: 2rem;
             margin-left:2rem;
             display: flex;
-            flex-direction: row; /* Changed from column to row */
-            justify-content: center; /* Center horizontally */
+            flex-direction: row; 
+            justify-content: center; 
             align-items: center;
-            gap: 2rem; /* Adjusted spacing between buttons */
+            gap: 2rem; 
         }
     }
 
@@ -200,9 +202,20 @@
         transition: transform 0.3s ease;
     }
 
+    .feature-card p {
+    white-space: pre-line; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    max-height: 5em; 
+    font-family: 'Fragment Mono', monospace;
+    line-height: 1.5;
+    margin-bottom: 1.5rem; 
+    }
+
+
     .feature-card:hover {
     animation: pulse 0.8s infinite;
-    transform: scale(1.05);  /* Slightly enlarge the card on hover */
+    transform: scale(1.05);  
     }
 
     @keyframes pulse {
@@ -219,10 +232,10 @@
 
     .feature-card h3 {
         margin-bottom: 1rem;
-        white-space: nowrap;        /* Prevents wrapping of the title */
-        overflow: hidden;           /* Hides overflowed content */
-        text-overflow: ellipsis;    /* Adds the ellipsis when the text overflows */
-        max-width: 250px;           /* Adjust to fit within the container */
+        white-space: nowrap;       
+        overflow: hidden;           
+        text-overflow: ellipsis;    
+        max-width: 250px;          
     }
 
     .logout-button {
@@ -240,6 +253,83 @@
         background-color: #FFDB4C;
         border-color: #FFDB4C;
     }
+    .card.sticky-note {
+    background-color: #FFDB4C;
+    border: none;
+    border-radius: 0px;
+    min-height: 340px;
+    padding: 20px;
+    font-family: 'Schoolbell', cursive;
+    position: relative;
+    transition: transform 0.6s ease-in-out;
+    }
+
+    .text-truncate-multiline {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5em;
+    max-height: 4.5em; /* 3 lines x 1.5em */
+    }
+
+    .tag-style {
+    background: transparent;
+    border: 1px solid black;
+    color: black;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-family: 'Schoolbell', cursive;
+    margin-right: 4px;
+
+    
+    /* Ellipsis Styling */
+    max-width: 70px; /* Adjust to match approx. 5 characters */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+    }
+
+    .card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Adjust the max width if necessary */
+    display: block;
+    font-size: 1.5rem; /* Adjust as needed */
+    }
+
+    
+    .card.sticky-note:hover {
+        animation: pop 0.6s ease;
+    }
+
+    @keyframes pop {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .recent-title {
+    font-family: 'Schoolbell', cursive;
+    font-size: 2.5rem;
+    color: #000;
+    background-color: #FFDB4C;
+    display: inline-block;
+    padding: 0.5rem 2rem;
+    border-radius: 40px;
+    box-shadow: 2px 2px 0px #000;
+}
 
 
 </style>
@@ -258,7 +348,7 @@
 
 
 <!-- Hero Section -->
-<div class="main-section" style="margin-top: 40rem;">
+<div class="main-section">
     <div class="hero">
         <h1>
             <span>type down</span>
@@ -275,21 +365,55 @@
     </div>
 </div>
 
-
-<!-- Features Section -->
-<div class="features-section">
-    <h2>Recent</h2>
-    <div class="features-container">
-        @foreach ($entries as $entry)
-            <div class="feature-card">
-                <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
-                    <h3>{{ $entry->title }}</h3>
-                    <p>{{ Str::limit($entry->body, 100) }}</p>
-                </a>
-            </div>
-        @endforeach
+<div class="container mt-4">
+    <div class="recent-header text-center mb-5">
+            <h2 class="recent-title">recent ✿</h2>
     </div>
-</div>
+
+    <div class="scrollable-wall p-2">
+        <div class="row">
+            @foreach ($entries as $entry)
+                <div class="col-md-4 mb-4">
+                    <div class="card sticky-note" style="transform: rotate({{ rand(-4, 4) }}deg);">
+                        <div class="card-body d-flex flex-column justify-content-between h-100">
+                            <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
+                                <h5 class="card-title">{{ $entry->title }}</h5>
+                                @if ($entry->tags->count())
+                                    <div class="mb-2">
+                                    @if ($entry->tags->count())
+                                        <div class="mb-2">
+                                        @php
+                                            $visibleTags = $entry->tags->take(3);
+                                            $remainingCount = $entry->tags->count() - $visibleTags->count();
+                                        @endphp
+
+                                        @foreach ($visibleTags as $tag)
+                                            <span class="tag-style" title="{{ $tag->name }}">
+                                                {{ $tag->name }}
+                                            </span>
+                                        @endforeach
+
+                                        @if ($remainingCount > 0)
+                                            <span class="tag-style">+{{ $remainingCount }} more</span>
+                                        @endif
+                                        </div>
+                                    @endif
+                                    </div>
+                                @endif
+                                <div class="card-text text-truncate-multiline">
+                                    {!! $entry->body !!}
+                                </div>
+                            </a>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted">{{ $entry->created_at->format('M d, Y h:i A') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
 
 
 

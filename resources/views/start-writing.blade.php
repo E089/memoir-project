@@ -127,72 +127,53 @@
         border-radius: 25px;
         font-family: 'Schoolbell', cursive;
     }
-
     .tags-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    min-height: 40px;
+    align-items: center;
     }
 
     .tag {
-        background-color: #ffde59;
-        padding: 8px 12px;
-        border-radius: 20px;
-        font-size: 1rem;
+        background-color: #e0e0e0;
         color: #333;
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 13px;
         display: flex;
         align-items: center;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .tag:hover {
-        background-color: #ffe873;
+        gap: 6px;
+        max-width: 200px;
+        white-space: nowrap;
     }
 
     .tag i {
-        margin-left: 5px;
-        font-size: 1rem;
+        margin-left: 0.5rem;
+        cursor: pointer;
+        color: #007acc;
     }
 
     .tag input {
-    border: none;
-    background: transparent;
-    font-size: 1rem;
-    color: #333;
-    outline: none;
-    width: auto; /* Let it shrink to the tag's size */
-    text-align: center;
-    min-width: 30px; /* Make it smaller by default */
-    max-width: 100px; /* You can adjust this to make it more compact */
-    padding: 2px 4px; /* Reduce the padding for a more compact feel */
-    }
-
-    .tag input:focus {
-        border-bottom: 1px solid #333; /* Keeps a subtle underline when focused */
-    }
-
-    .add-tag {
-        background-color: #ffde59;
         border: none;
-        color: #333;
-        padding: 8px 12px;
-        border-radius: 20px;
-        font-size: 1rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        transition: background-color 0.3s;
+        background: transparent;
+        font-size: 0.875rem;
+        outline: none;
+        width: auto;
     }
 
-    .add-tag:hover {
-        background-color: #ffe873;
+    .input-tag {
+        border: none;
+        outline: none;
+        font-size: 13px;
+        padding: 4px 6px;
+        min-width: 100px;
+        flex-grow: 1;
+        background: transparent;
     }
 
-    .add-tag i {
-        margin-right: 5px;
-    }
 
     #editor-container {
     height: 200px;
@@ -242,61 +223,89 @@
             @endforeach
         </select>
 
-         <!-- Tags Section -->
-         <div class="tags-container" id="tags-container">
-        <!-- Tags will appear here -->
+        <div class="tags-container" id="tags-container">
+            <!-- Tags dynamically injected here -->
+                <input type="text" id="tag-input" placeholder="Add a tag..." class="input-tag" style="flex: 1; min-width: 120px; border: none; outline: none;">
+                </div>
+
+                <input type="hidden" name="tags" id="tags-input">
+                <button type="submit" class="save-button">Save</button>
+            </form>
         </div>
 
-        <input type="text" id="tag-input" placeholder="Add a tag..." class="input-tag" style="margin-bottom: 1rem;">
-
-        <button type="button" class="add-tag" id="add-tag-btn">
-            <i class="fas fa-plus"></i> Add Tag
-        </button>
-
-        <!-- Submit button -->
-        <input type="hidden" name="tags" id="tags-input">
-        <button type="submit" class="save-button">Save</button>
-    </form>
-</div>
-
 <script>
-    document.getElementById('add-tag-btn').addEventListener('click', function() {
-    let tagInput = document.getElementById('tag-input');
-    let tagValue = tagInput.value.trim();
+    document.getElementById('tag-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent form submit
 
-    if (tagValue) {
-        // Create the tag element
-        let tagElement = document.createElement('div');
+        const tagInput = e.target;
+        const tagValue = tagInput.value.trim();
+
+        if (tagValue.length > 20) {
+            alert("Tag must not exceed 20 characters.");
+            return;
+        }
+
+        if (!tagValue) return;
+
+        // Check for duplicates (case-insensitive)
+        const existingTags = Array.from(document.querySelectorAll('.tag'))
+            .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
+
+        if (existingTags.includes(tagValue.toLowerCase())) {
+            alert("This tag already exists.");
+            return;
+        }
+
+        // Create tag element
+        const tagElement = document.createElement('div');
         tagElement.classList.add('tag');
         tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
 
-        // Add functionality to delete the tag
+        // Delete tag
         tagElement.querySelector('i').addEventListener('click', function() {
             tagElement.remove();
-            updateTagsInput();  // Update the hidden tags input after deletion
+            updateTagsInput();
         });
 
-        // Add double-tap (double-click) functionality to edit the tag
+        // Edit tag on double-click
         tagElement.addEventListener('dblclick', function() {
-            let inputField = document.createElement('input');
-            inputField.value = tagValue; // Set the tag's current value
-            tagElement.innerHTML = ''; // Clear the current tag content
+            const inputField = document.createElement('input');
+            inputField.value = tagValue;
+            tagElement.innerHTML = '';
             tagElement.appendChild(inputField);
             inputField.focus();
 
-            // When the input field loses focus or Enter is pressed, save the new value
             inputField.addEventListener('blur', function() {
-                if (inputField.value.trim()) {
-                    tagElement.innerHTML = `${inputField.value} <i class="fas fa-times"></i>`;
-                    // Re-attach delete functionality after editing
+                let newValue = inputField.value.trim();
+
+                if (newValue.length > 20) {
+                    alert("Tag must not exceed 20 characters.");
+                    inputField.focus();
+                    return;
+                }
+
+                // Check for duplicates (excluding self)
+                const otherTags = Array.from(document.querySelectorAll('.tag'))
+                    .filter(tag => tag !== tagElement)
+                    .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
+
+                if (otherTags.includes(newValue.toLowerCase())) {
+                    alert("This tag already exists.");
+                    inputField.focus();
+                    return;
+                }
+
+                if (newValue) {
+                    tagElement.innerHTML = `${newValue} <i class="fas fa-times"></i>`;
                     tagElement.querySelector('i').addEventListener('click', function() {
                         tagElement.remove();
-                        updateTagsInput();  // Update the hidden tags input after deletion
+                        updateTagsInput();
                     });
-                    updateTagsInput();  // Update the hidden tags input
+                    updateTagsInput();
                 } else {
                     tagElement.remove();
-                    updateTagsInput();  // Update the hidden tags input after deletion
+                    updateTagsInput();
                 }
             });
 
@@ -307,27 +316,23 @@
             });
         });
 
-        // Append the new tag to the container
-        document.getElementById('tags-container').appendChild(tagElement);
-
-        // Clear the input
+        document.getElementById('tags-container').insertBefore(tagElement, tagInput);
         tagInput.value = '';
-
-        updateTagsInput();  // Update the hidden tags input
+        updateTagsInput();
     }
 });
+
 
 function updateTagsInput() {
     const tags = [];
     document.querySelectorAll('.tag').forEach(tag => {
         tags.push(tag.innerText.trim().replace(' ×', ''));
     });
-
-    // Set the tags in the hidden input field
     document.getElementById('tags-input').value = JSON.stringify(tags);
 }
-
 </script>
+
+
 <!-- Quill JS and CSS -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
@@ -337,10 +342,19 @@ function updateTagsInput() {
         theme: 'snow'
     });
 
-    // On form submit, transfer content to hidden input
-    document.querySelector('form').addEventListener('submit', function () {
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const content = quill.getText().trim(); // getText ignores HTML tags
+
+        if (content.length === 0) {
+            e.preventDefault(); // Stop form submission
+            alert("Please fill in the body before submitting.");
+            return;
+        }
+
+        // Transfer HTML content to hidden input if not empty
         document.querySelector('#body').value = quill.root.innerHTML;
     });
 </script>
+
 
 @endsection
