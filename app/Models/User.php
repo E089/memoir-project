@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasFactory;
 
     protected $fillable = ['username', 'email', 'password'];
 
@@ -20,16 +21,4 @@ class User extends Authenticatable
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
-    // public static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::creating(function ($user) {
-    //         if (isset($user->password)) {
-    //             $user->password = bcrypt($user->password);
-    //         }
-    //     });
-    // }
 }
-

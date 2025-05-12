@@ -5,25 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
 
 class CategoryController extends Controller
 {
     public function store(Request $request)
     {
-        // Validate the data
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                // Ensure uniqueness *per user*, case-insensitive
+                Rule::unique('categories')->where(function ($query) {
+                    return $query->where('user_id', Auth::id());
+                }),
+            ],
             'description' => 'nullable|string',
         ]);
 
-        // Create a new category with the logged-in user's ID
         Category::create([
             'name' => $request->name,
             'description' => $request->description,
-            'user_id' => Auth::id(), // Associate category with current user
+            'user_id' => Auth::id(),
         ]);
 
-        // Redirect or respond as needed
         return redirect()->route('view-all-thoughts')->with('message', 'Category created successfully!');
     }
 

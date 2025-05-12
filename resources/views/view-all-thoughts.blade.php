@@ -17,45 +17,54 @@
     <div class="container">
         <h2 class="wall-title text-center">Wall of Thoughts</h2>
         <div class="row g-3 align-items-center justify-content-center text-center">
-            <!-- Category Dropdown -->
+        <!-- Category Dropdown -->
         <div class="col-md-5">
-            <div class="dropdown">
-                <button class="btn btn-outline-dark dropdown-toggle custom-btn w-100" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false" 
-                    style="border-radius: 30px;">
-                    <!-- Display the category name or default text -->
-                    <span>
-                        @if(request()->has('category'))
-                            {{ $categories->find(request()->category)->name ?? 'Filter by Category' }}
-                        @else
-                            Filter by Category
-                        @endif
-                    </span>
-                </button>
-                <ul class="dropdown-menu w-100 text-center" aria-labelledby="categoryDropdown" style="border-radius: 30px;">
-                <!-- All Categories Link -->
+            @if ($errors->has('name'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        alert("{{ $errors->first('name') }}");
+                    });
+                </script>
+            @endif
+        <div class="dropdown">
+            <button class="btn btn-outline-dark dropdown-toggle custom-btn w-100" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false" 
+                style="border-radius: 30px;">
+                <!-- Display the category name or default text -->
+                <span>
+                    @if(request()->has('category'))
+                        {{ $categories->find(request()->category)->name ?? 'Filter by Category' }}
+                    @else
+                        Filter by Category
+                    @endif
+                </span>
+            </button>
+            <ul class="dropdown-menu w-100 text-center" aria-labelledby="categoryDropdown" style="border-radius: 30px;">
+            <!-- All Categories Link -->
+            <li>
+                <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
+            </li>
+
+            <!-- Categories List -->
+            @foreach ($categories->unique('name') as $category)
                 <li>
-                    <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a class="dropdown-item text-truncate" 
+                        href="{{ route('view-all-thoughts', ['category' => $category->id]) }}" 
+                        style="max-width: calc(100% - 2rem);">
+                            {{ $category->name }}
+                        </a>
+
+                        <!-- Delete Category Form -->
+                        <form action="{{ route('delete-category', $category->id) }}" method="POST" class="m-0">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-link text-danger" title="Delete Category">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
                 </li>
-
-                <!-- Categories List -->
-                @foreach ($categories as $category)
-                    <li>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a class="dropdown-item text-truncate" href="{{ route('view-all-thoughts', ['category' => $category->id]) }}" style="max-width: calc(100% - 2rem);">
-                                {{ $category->name }}
-                            </a>
-
-                            <!-- Delete Category Form -->
-                            <form action="{{ route('delete-category', $category->id) }}" method="POST" class="m-0">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-link text-danger" title="Delete Category">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </li>
-                @endforeach
+            @endforeach
             </ul>
             <!-- Tag Dropdown -->
             <div class="col-md-5">

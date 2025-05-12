@@ -102,14 +102,14 @@
     }
     
     .tags-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    min-height: 40px;
-    align-items: center;
-    }
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        min-height: 40px;
+        align-items: center;
+        }
 
     .tag {
         background-color: #e0e0e0;
@@ -138,16 +138,15 @@
         width: auto;
     }
 
-    .input-tag {
+   .input-tag {
         border: none;
         outline: none;
-        font-size: 13px;
-        padding: 4px 6px;
-        min-width: 100px;
-        flex-grow: 1;
+        font-size: 10px;
+        min-width: 120px;
         background: transparent;
+        margin-top: 10px;
+        align-items: center;
     }
-
 
     #editor {
     height: 400px; /* or any height you want */
@@ -221,6 +220,14 @@ document.getElementById('tag-input').addEventListener('keydown', function(e) {
 
         const tagInput = e.target;
         const tagValue = tagInput.value.trim();
+
+         // Check if max tag limit is reached
+        const tagElements = document.querySelectorAll('.tag');
+        if (tagElements.length >= 10) {
+            alert("You can only add up to 10 tags.");
+            return;
+        }
+
 
         if (tagValue.length > 20) {
             alert("Tag must not exceed 20 characters.");

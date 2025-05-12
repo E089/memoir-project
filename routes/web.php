@@ -9,11 +9,11 @@ Route::get('/welcome-page', function () {
     return view('welcome-page');
 });
 
-// Registration routes without CSRF protection for testing
+// Registration routes
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::post('/register', [AuthController::class, 'register'])
+    ->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);  
 
-// Login routes without CSRF protection for testing
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 

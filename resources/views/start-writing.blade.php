@@ -241,6 +241,14 @@
         const tagInput = e.target;
         const tagValue = tagInput.value.trim();
 
+        // Check if max tag limit is reached
+        const tagElements = document.querySelectorAll('.tag');
+        if (tagElements.length >= 10) {
+            alert("You can only add up to 10 tags.");
+            return;
+        }
+
+
         if (tagValue.length > 20) {
             alert("Tag must not exceed 20 characters.");
             return;

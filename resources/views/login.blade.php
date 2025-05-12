@@ -110,7 +110,7 @@
 
                 <div class="mb-3">
                     <label for="username" class="form-label" style="font-family: 'Fragment Mono', monospace;">Username</label>
-                    <input type="text" class="form-control" name="username" value="{{ old('username') }}" required>
+                    <input type="text" class="form-control" name="username" value="{{ old('username') }}" required maxlength="25">
                 </div>
 
                 <div class="mb-3">
