@@ -99,8 +99,6 @@ class EntryController extends Controller
         return view('view-all-thoughts', compact('entries', 'categories', 'tags'));
     }
     
-
-
     // Show a single entry
     public function showEntry($id)
         {
