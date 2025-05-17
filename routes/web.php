@@ -14,6 +14,8 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])
     ->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);  
 
+Route::view('/terms', 'terms')->name('terms');
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -29,6 +31,8 @@ Route::get('/home', function () {
 })->name('home')->middleware('auth');  // Protect home route with 'auth' middleware
 
 Route::get('/home', [EntryController::class, 'home'])->name('home');
+
+
 
 // Dashboard actions (Start Writing and View All Thoughts)
 Route::get('/start-writing', [EntryController::class, 'showStartWriting'])->name('start-writing')->middleware('auth');

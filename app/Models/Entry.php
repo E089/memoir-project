@@ -9,7 +9,7 @@ class Entry extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'body', 'user_id', 'category_id']; 
+    protected $fillable = ['title', 'body', 'user_id', 'category_id', 'favorite']; 
 
 
     public $timestamps = true;

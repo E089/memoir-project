@@ -43,6 +43,7 @@ class EntryController extends Controller
             'body' => $request->body,
             'user_id' => auth()->id(),
             'category_id' => $request->category_id,
+            'favorite' => $request->boolean('favorite'), // 👈 Add this line
         ]);
     
         // Handle tags

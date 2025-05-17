@@ -148,6 +148,19 @@
                     @enderror
                 </div>
 
+                <div class="mb-3 form-check text-start" style="font-family: 'Inter', sans-serif; font-size: 0.9rem;">
+                    <input type="checkbox" class="form-check-input" id="terms" name="terms" {{ old('terms') ? 'checked' : '' }} required>
+                    <label class="form-check-label" for="terms">
+                        I agree to the 
+                        <a href="/terms" target="_blank" class="text-decoration-none" style="color: #FFDB4C; font-weight: 500;">
+                            Terms & Conditions
+                        </a>
+                    </label>
+                    @error('terms')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <button type="submit" class="btn btn-dark w-100 rounded-pill">Create Account</button>
             </form>
 

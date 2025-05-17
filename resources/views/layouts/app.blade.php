@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" />
 
+    
+
     <!-- Trix Editor CSS -->
     <link href="https://cdn.jsdelivr.net/npm/trix@1.3.1/dist/trix.css" rel="stylesheet">
   
@@ -23,6 +25,15 @@
             scroll-behavior: smooth;
         }
     </style>
+
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <!-- jQuery (required by Toastr) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <!-- Scripts loaded early (if any need to be in head) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

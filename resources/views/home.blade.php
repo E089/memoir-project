@@ -377,7 +377,12 @@
                     <div class="card sticky-note" style="transform: rotate({{ rand(-4, 4) }}deg);">
                         <div class="card-body d-flex flex-column justify-content-between h-100">
                             <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
-                                <h5 class="card-title">{{ $entry->title }}</h5>
+                                <h5 class="card-title d-flex justify-content-between align-items-center">
+                                    <span>{{ $entry->title }}</span>
+                                    @if ($entry->favorite)
+                                        <i class="fas fa-heart text-danger" title="Favorite"></i>
+                                    @endif
+                                </h5>
                                 @if ($entry->tags->count())
                                     <div class="mb-2">
                                     @if ($entry->tags->count())

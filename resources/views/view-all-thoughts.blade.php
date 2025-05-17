@@ -38,7 +38,9 @@
                     @endif
                 </span>
             </button>
-            <ul class="dropdown-menu w-100 text-center" aria-labelledby="categoryDropdown" style="border-radius: 30px;">
+            <ul class="dropdown-menu w-100 text-center" aria-labelledby="categoryDropdown"
+                style="border-radius: 30px; max-height: 250px; overflow-y: auto;">
+
             <!-- All Categories Link -->
             <li>
                 <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
@@ -79,7 +81,8 @@
                             @endif
                         </span>
                     </button>
-                    <ul class="dropdown-menu w-100 text-center" aria-labelledby="tagDropdown" style="border-radius: 30px;">
+                    <ul class="dropdown-menu w-100 text-center" aria-labelledby="tagDropdown"
+                        style="border-radius: 30px; max-height: 250px; overflow-y: auto;">
                         <!-- All Tags -->
                         <li><a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Tags</a></li>
                         <!-- Tag List -->
@@ -186,7 +189,13 @@
                     <div class="card sticky-note" style="transform: rotate({{ rand(-4, 4) }}deg);">
                         <div class="card-body d-flex flex-column justify-content-between h-100">
                             <a href="{{ route('entries.show', $entry->id) }}" class="text-dark text-decoration-none">
-                                <h5 class="card-title">{{ $entry->title }}</h5>
+                                <h5 class="card-title d-flex justify-content-between align-items-center">
+                                    <span>{{ $entry->title }}</span>
+                                    @if ($entry->favorite)
+                                        <i class="fas fa-heart text-danger" title="Favorite"></i>
+                                    @endif
+                                </h5>
+
                                 @if ($entry->tags->count())
                                     <div class="mb-2">
                                     @if ($entry->tags->count())
@@ -213,12 +222,13 @@
                                     {!! $entry->body !!}
                                 </div>
                             </a>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
+                           <div class="d-flex justify-content-between align-items-center mt-3">
                                 <small class="text-muted">{{ $entry->created_at->format('M d, Y h:i A') }}</small>
-                                <form action="{{ route('delete-entry', $entry->id) }}" method="POST" class="m-0">
+
+                                <form action="{{ route('delete-entry', $entry->id) }}" method="POST" class="m-0 delete-entry-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-delete" title="Delete Entry">
+                                    <button type="button" class="btn-delete show-confirm" title="Delete Entry">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -566,5 +576,30 @@ html, body {
 
 
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.show-confirm').forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('form');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This entry will be lost forever 🥺",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#e3342f',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
+
 @endsection
 	
