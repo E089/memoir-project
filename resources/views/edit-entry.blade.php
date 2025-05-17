@@ -16,32 +16,41 @@
     }
 
     .edit-entry-container {
-        max-width: 700px;
-        margin: 3rem auto;
-        background: #fffef5;
+        max-width: 1000px;
+        margin: 2rem auto; */
+        background: #FFDB4C;
+        background-color: #FFDB4C;
         padding: 3rem 2rem;
-        border-radius: 12px;
         position: relative;
-        border: 1px solid #e0e0e0;
+        transform: rotate(-3deg);
+        margin: 2rem auto;
+        box-shadow: 20px 20px 3px rgba(0, 0, 0, 0.2);
+        height: 800px;
+        scrollbar-width: none;
+
+      
     }
 
     .save-button {
         position: absolute;
         top: 20px;
         right: 20px;
-        background-color: #ffde59;
-        border: none;
+        background-color:transparent;
+        border: 1px none;
         color: #000;
-        font-size: 0.9rem;
         padding: 0.5rem 1rem;
-        border-radius: 12px;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
         cursor: pointer;
         box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-        font-family: 'Comic Neue', cursive;
+        font-family: 'Schoolbell', cursive;
+        border: 2px solid black;
     }
 
     .save-button:hover {
         background-color: #ffe873;
+        background-color:black;
+        color: white;
     }
 
      .edit-entry-container input[type="text"],
@@ -49,7 +58,7 @@
     .edit-entry-container select {
         width: 100%;
         border: none;
-        border-bottom: 1px solid #bbb;
+        /* border-bottom: 1px solid #bbb; */
         padding: 0.8rem 0;
         margin-bottom: 2rem;
         font-size: 1.1rem;
@@ -77,17 +86,43 @@
 
     .back-button {
         position: absolute;
-        top: 25px;
-        left: 25px;
-        background: none;
+        top: -20px;
+        left: -20px;
+        background:rgb(223, 62, 33);
         border: none;
         color: #555;
-        font-size: 1rem;
-        font-family: 'Segoe UI', sans-serif;
+        font-size: 1.2rem;
+        font-family: 'Schoolbell', cursive;
         cursor: pointer;
-        display: flex;
-        align-items: center;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50%;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        transform: rotate(-15deg);
+        transition: transform 0.2s;
+    }
+
+    .back-button i {
+        margin-right: 6px;
+        font-size: 1.2rem;    
+        
+    }
+
+    .back-button:hover {
+        color: #000;
         text-decoration: none;
+        transform: rotate(0deg);
+    }
+    .navbar {
+        display: flex;
+    
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 4rem;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
     }
 
     .navbar-center {
@@ -97,22 +132,20 @@
         font-weight: 500;
         font-size: 1.5rem;
         font-family: 'Schoolbell', cursive;
-        margin-top: 40px;
-        z-index: 10;
     }
     
     .tags-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 6px 10px;
-        border-radius: 6px;
-        min-height: 40px;
-        align-items: center;
-        }
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    min-height: 40px;
+    align-items: center;
+    }
 
     .tag {
-        background-color: #e0e0e0;
+        background-color:transparent;
         color: #333;
         padding: 4px 10px;
         border-radius: 15px;
@@ -122,12 +155,15 @@
         gap: 6px;
         max-width: 200px;
         white-space: nowrap;
+        border: 2px solid black;
+        margin-bottom:30px;
+
     }
 
     .tag i {
         margin-left: 0.5rem;
         cursor: pointer;
-        color: #007acc;
+        color:rgb(19, 17, 17);
     }
 
     .tag input {
@@ -138,27 +174,106 @@
         width: auto;
     }
 
-   .input-tag {
+    .input-tag {
         border: none;
         outline: none;
-        font-size: 10px;
-        min-width: 120px;
+        font-size: 13px;
+        padding: 4px 6px;
+        min-width: 100px;
+        flex-grow: 1;
         background: transparent;
-        margin-top: 10px;
-        align-items: center;
     }
+
+    .input-tag {
+        border: none;
+        outline: none;
+        font-size: 13px;
+        padding: 4px 6px;
+        min-width: 100px;
+        flex-grow: 1;
+        background: transparent;
+    }
+
 
     #editor {
     height: 400px; /* or any height you want */
     overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border-color:transparent;
     padding: 1rem;
-    background-color: #fffef5;
+    font-family:'Fragment Mono', 'monospace';   
+}
+    .favorite-button {
+        position: absolute;
+        top: 27px;
+        right: 90px; /* Now placed to the LEFT of Save */
+        background: none;
+        border: none;
+        font-family: 'Schoolbell', cursive;
+        font-size: 1.4rem; /* Increased icon size */
+        color: #666;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.3s ease;
+    }
+
+    .favorite-button i {
+    color: gray;
+    font-size: 1.6rem; /* larger heart icon */
+    transition: color 0.3s ease;
 }
 
 
+    .favorite-button.added {
+        color: #e63946;
+    }
+
+    .favorite-button.added i {
+        color: #e63946;
+    }
+
+    /* Pulse animation on hover */
+    .favorite-button:hover i {
+        animation: pulse 0.4s ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.3);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .heart-pop {
+        position: absolute;
+        font-size: 20px;
+        animation: pop 0.6s ease-out forwards;
+        opacity: 0;
+        pointer-events: none;
+        color: #e63946;
+    }
+
+    @keyframes pop {
+        0% {
+            transform: scale(0.5) translate(0, 0);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.2) translate(var(--x), var(--y));
+            opacity: 0;
+        }
+    }
+
+
+
 </style>
+
 
 
 <!-- Navigation bar -->
@@ -168,7 +283,6 @@
 </div>
 
 <div class="edit-entry-container">
-     <!-- 🡐 Back Button -->
      <a href="{{ url('/view-all-thoughts') }}" class="back-button">
         <i class="fas fa-arrow-left"></i> 
     </a>
@@ -187,7 +301,7 @@
         <div id="editor">{!! $entry->body !!}</div>
 
         <select name="category_id" id="category">
-            <option value="">Select a Category (Optional)</option>
+            <option value="">Category</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ $category->id == $entry->category_id ? 'selected' : '' }}>
                     {{ $category->name }}
@@ -207,153 +321,224 @@
                 <!-- Input field -->
                 <input type="text" id="tag-input" placeholder="Add a tag..." class="input-tag" style="flex: 1; min-width: 120px; border: none; outline: none;">
             </div>
-
-            <input type="hidden" name="tags" id="tags-input">
-            <button type="submit" class="save-button">Save</button>
+            <button type="button" id="favorite-btn" class="favorite-button" title="Add to Favorite">
+                    <i class="fas fa-heart"></i>
+            </button>
+                <input type="hidden" name="tags" id="tags-input">
+                <button type="submit" class="save-button">Save</button>
+                <input type="hidden" name="favorite" id="favorite-hidden" value="0">
             </form>
         </div>
 
-        <script>
-document.getElementById('tag-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
+<script>
+    let lastToastrMessage = null;
+        let lastToastrTime = 0;
 
-        const tagInput = e.target;
-        const tagValue = tagInput.value.trim();
+        function showToastr(type, message, title) {
+            const now = Date.now();
+            if (lastToastrMessage === message && now - lastToastrTime < 2000) {
+                return; // Suppress duplicate message within 2 seconds
+            }
 
-         // Check if max tag limit is reached
-        const tagElements = document.querySelectorAll('.tag');
-        if (tagElements.length >= 10) {
-            alert("You can only add up to 10 tags.");
-            return;
+            lastToastrMessage = message;
+            lastToastrTime = now;
+
+            toastr[type](message, title, {
+                closeButton: true,
+                progressBar: true,
+                positionClass: "toast-top-center"
+            });
         }
+    document.getElementById('tag-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
 
+            const tagInput = e.target;
+            const tagValue = tagInput.value.trim();
 
-        if (tagValue.length > 20) {
-            alert("Tag must not exceed 20 characters.");
-            return;
-        }
-
-        if (!tagValue) return;
-
-        const existingTags = Array.from(document.querySelectorAll('.tag'))
-            .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
-
-        if (existingTags.includes(tagValue.toLowerCase())) {
-            alert("This tag already exists.");
-            return;
-        }
-
-        const tagElement = createTagElement(tagValue);
-        document.getElementById('tags-container').insertBefore(tagElement, tagInput);
-        tagInput.value = '';
-        updateTagsInput();
-    }
-});
-
-function createTagElement(tagValue) {
-    const tagElement = document.createElement('div');
-    tagElement.classList.add('tag');
-    tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
-
-    // Delete
-    tagElement.querySelector('i').addEventListener('click', function () {
-        tagElement.remove();
-        updateTagsInput();
-    });
-
-    // Edit on double-click
-    tagElement.addEventListener('dblclick', function () {
-        const inputField = document.createElement('input');
-        inputField.value = tagValue;
-        tagElement.innerHTML = '';
-        tagElement.appendChild(inputField);
-        inputField.focus();
-
-        inputField.addEventListener('blur', function () {
-            let newValue = inputField.value.trim();
-
-            if (newValue.length > 20) {
-                alert("Tag must not exceed 20 characters.");
-                inputField.focus();
+            const tagElements = document.querySelectorAll('.tag');
+            if (tagElements.length >= 9) {
+                showToastr('error', "You can only add up to 9 tags.", "🚫 Limit Reached");
                 return;
             }
 
-            const otherTags = Array.from(document.querySelectorAll('.tag'))
-                .filter(tag => tag !== tagElement)
+             if (tagValue.length > 20) {
+                showToastr('warning', "Tag must not exceed 20 characters.", "⚠️ Too Long");
+                return;
+            }
+
+            if (!tagValue) return;
+
+            const existingTags = Array.from(document.querySelectorAll('.tag'))
                 .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
 
-            if (otherTags.includes(newValue.toLowerCase())) {
-                alert("This tag already exists.");
-                inputField.focus();
+             if (existingTags.includes(tagValue.toLowerCase())) {
+                showToastr('warning', "This tag already exists!", "⚠️ Duplicate");
                 return;
             }
 
-            if (newValue) {
-                const updatedTag = createTagElement(newValue);
-                tagElement.replaceWith(updatedTag);
-            } else {
-                tagElement.remove();
-            }
+            const tagElement = createTagElement(tagValue);
+            document.getElementById('tags-container').insertBefore(tagElement, tagInput);
+            tagInput.value = '';
+            updateTagsInput();
+        }
+    });
+
+    function createTagElement(tagValue) {
+        const tagElement = document.createElement('div');
+        tagElement.classList.add('tag');
+        tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
+
+        // Delete
+        tagElement.querySelector('i').addEventListener('click', function () {
+            tagElement.remove();
             updateTagsInput();
         });
 
-        inputField.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                inputField.blur();
-            }
+        // Edit on double-click
+        tagElement.addEventListener('dblclick', function () {
+            const inputField = document.createElement('input');
+            inputField.value = tagValue;
+            tagElement.innerHTML = '';
+            tagElement.appendChild(inputField);
+            inputField.focus();
+
+            inputField.addEventListener('blur', function () {
+                let newValue = inputField.value.trim();
+
+                if (newValue.length > 20) {
+                    showToastr('warning', "Tag must not exceed 20 characters.", "⚠️ Too Long");
+                    return;
+                }
+
+                const otherTags = Array.from(document.querySelectorAll('.tag'))
+                    .filter(tag => tag !== tagElement)
+                    .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
+
+                if (otherTags.includes(newValue.toLowerCase())) {
+                    showToastr('warning', "This tag already exists!", "⚠️ Duplicate");
+                     return;
+                }
+
+                if (newValue) {
+                    const updatedTag = createTagElement(newValue);
+                    tagElement.replaceWith(updatedTag);
+                } else {
+                    tagElement.remove();
+                }
+                updateTagsInput();
+            });
+
+            inputField.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    inputField.blur();
+                }
+            });
         });
+
+        return tagElement;
+    }
+
+    function updateTagsInput() {
+        const tags = [];
+        document.querySelectorAll('.tag').forEach(tag => {
+            tags.push(tag.innerText.trim().replace(' ×', ''));
+        });
+        document.getElementById('tags-input').value = JSON.stringify(tags);
+    }
+
+    // Enhance pre-populated tags
+    window.addEventListener('DOMContentLoaded', () => {
+        const tagElements = document.querySelectorAll('.tag');
+        tagElements.forEach(tagEl => {
+            const textSpan = tagEl.querySelector('.tag-text');
+            const tagValue = textSpan ? textSpan.textContent.trim() : tagEl.textContent.trim().replace('×', '');
+
+            // Replace with a fresh tag element that has events
+            const newTag = createTagElement(tagValue);
+            tagEl.replaceWith(newTag);
+        });
+
+        updateTagsInput(); // Populate hidden input on load
     });
+    </script>
 
-    return tagElement;
-}
+    <!-- Quill JS and CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-function updateTagsInput() {
-    const tags = [];
-    document.querySelectorAll('.tag').forEach(tag => {
-        tags.push(tag.innerText.trim().replace(' ×', ''));
-    });
-    document.getElementById('tags-input').value = JSON.stringify(tags);
-}
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow'
+        });
 
-// Enhance pre-populated tags
-window.addEventListener('DOMContentLoaded', () => {
-    const tagElements = document.querySelectorAll('.tag');
-    tagElements.forEach(tagEl => {
-        const textSpan = tagEl.querySelector('.tag-text');
-        const tagValue = textSpan ? textSpan.textContent.trim() : tagEl.textContent.trim().replace('×', '');
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const content = quill.getText().trim(); // getText ignores HTML tags
 
-        // Replace with a fresh tag element that has events
-        const newTag = createTagElement(tagValue);
-        tagEl.replaceWith(newTag);
-    });
+            if (content.length === 0) {
+                e.preventDefault(); // Stop form submission
+                alert("Please fill in the body before submitting.");
+                return;
+            }
 
-    updateTagsInput(); // Populate hidden input on load
-});
-</script>
+            // Transfer HTML content to hidden input if not empty
+            document.querySelector('#body').value = quill.root.innerHTML;
+        });
+    </script>
 
-<!-- Quill JS and CSS -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+    const btn = document.getElementById('favorite-btn');
+    const favoriteHidden = document.getElementById('favorite-hidden');
+    const form = document.querySelector('form');
 
-<script>
-    const quill = new Quill('#editor', {
-        theme: 'snow'
-    });
+    function heartPop() {
+        const rect = btn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
 
-    document.querySelector('form').addEventListener('submit', function (e) {
-        const content = quill.getText().trim(); // getText ignores HTML tags
+        for (let i = 0; i < 8; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-pop');
+            heart.textContent = '❤️';
 
-        if (content.length === 0) {
-            e.preventDefault(); // Stop form submission
-            alert("Please fill in the body before submitting.");
-            return;
+            const angle = (Math.PI * 2 * i) / 8;
+            const distance = 30 + Math.random() * 20;
+
+            const offsetX = Math.cos(angle) * distance;
+            const offsetY = Math.sin(angle) * distance;
+
+            heart.style.position = 'fixed';
+            heart.style.left = `${centerX - 10}px`;
+            heart.style.top = `${centerY}px`;
+            heart.style.setProperty('--x', `${offsetX}px`);
+            heart.style.setProperty('--y', `${offsetY}px`);
+
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 600);
         }
+    }
 
-        // Transfer HTML content to hidden input if not empty
-        document.querySelector('#body').value = quill.root.innerHTML;
+    btn.addEventListener('click', function () {
+        btn.classList.toggle('added');
+
+        const isFavorite = btn.classList.contains('added');
+        if (isFavorite) {
+            heartPop();
+        }
     });
-</script>
 
- 
-@endsection
+    form.addEventListener('submit', function (e) {
+        // Ensure favorite value is set on submit
+        const isFavorite = btn.classList.contains('added');
+        favoriteHidden.value = isFavorite ? '1' : '0';
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const isFavorite = {{ $entry->favorite ? 'true' : 'false' }};
+        if (isFavorite) {
+            btn.classList.add('added');
+        }
+    });
+
+</script>
+    @endsection

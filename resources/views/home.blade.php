@@ -339,13 +339,11 @@
     <div class="navbar-left"></div> <!-- Invisible spacer to help centering -->
     <div class="navbar-center">memoir</div>
     <div class="navbar-right">
-        <a href="{{ route('logout') }}" class="logout-button">
+        <a href="{{ route('logout') }}" class="logout-button" id="logout-link">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>
     </div>
 </div>
-
-
 
 <!-- Hero Section -->
 <div class="main-section">

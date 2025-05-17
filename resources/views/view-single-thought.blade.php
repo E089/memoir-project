@@ -3,11 +3,16 @@
 @section('content')
 
 <!-- Memoir Title OUTSIDE the container -->
-<div class="navbar-center">memoir</div>
+<div class="navbar">
+    <div class="navbar-left"></div> <!-- Invisible spacer to help centering -->
+    <div class="navbar-center">memoir</div>
+    <div class="navbar-right">
+    </div>
+</div>
 
 <!-- Entry content -->
 <div class="single-entry-container position-relative">
-    <a href="{{ url('/view-all-thoughts') }}" class="back-button absolute-top-left">
+    <a href="{{ url('/view-all-thoughts') }}" class="back-button">
         <i class="fas fa-arrow-left"></i>
     </a>
 
@@ -38,9 +43,7 @@
 
 
     <!-- Edit Entry Button with Pen Icon inside a Box -->
-    <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">
-        <i class="fas fa-pencil-alt"></i>  <!-- Pen icon with box -->
-    </a>
+    <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">Edit</a>
 </div>
 
 <script>
@@ -85,20 +88,51 @@
         font-weight: 500;
         font-size: 1.5rem;
         font-family: 'Schoolbell', cursive;
-        margin-top: 40px;
+        margin-top: 5px;
         z-index: 10;
     }
 
-    .single-entry-container {
-        max-width: 800px;
-        background: #fffef5;
-        padding: 4rem 3rem;
-        border-radius: 14px;
-        position: relative;
-        border: 1px solid #e0e0e0;
+        .back-button {
+        position: absolute;
+        top: -10px;
+        left: -20px;
+        background:rgb(223, 62, 33);
+        border: none;
+        color: #555;
+        font-size: 1.2rem;
         font-family: 'Schoolbell', cursive;
-        margin: 5rem auto 2rem auto;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50%;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        transform: rotate(-15deg);
+        transition: transform 0.2s;
+    }
+
+    .back-button i {
+        margin-right: 6px;
+        font-size: 1.2rem;
+        
+        
+    }
+
+    .back-button:hover {
+        color: #000;
+        text-decoration: none;
+        transform: rotate(0deg);
+    }
+
+    .single-entry-container {
+        height: 600px;
+        max-width: 1000px;
+        margin: 2rem auto;
+        background: #FFDB4C;
+        padding: 4rem 3rem;
+        position: relative;
+        font-family: 'Schoolbell', cursive;
+        box-shadow: 20px 20px 3px rgba(0, 0, 0, 0.2);
+        transform: rotate(3deg);
+        height: 750px;
     }
 
     h1 {
@@ -117,19 +151,32 @@
     }
 
     .tag-badge {
-        background-color: #ffde59;
+        background-color:transparent;
         color: #333;
         padding: 5px 10px;
+        border-color:black;
         border-radius: 20px;
         font-size: 0.9rem;
-        font-family: 'Comic Neue', cursive;
+        font-family: 'Schoolbell', cursive;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
     }
 
     .tag-badge:hover {
-        background-color: #ffe873;
+       background-color:rgb(0, 0, 0);
+        color:white;
         cursor: pointer;
     }
+
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        justify-content: left;
+    }
+
 
     p {
         font-size: 1.1rem;
@@ -154,26 +201,25 @@
 
     /* Edit Button Styling */
     .edit-button {
-        position: absolute;  /* Absolute positioning */
-        top: 1rem;  /* Top distance */
-        right: 1rem;  /* Right distance */
-        background-color: transparent;
-        padding: 5px 10px;  /* Padding for a neat box */
-        border-radius: 12px;
-        font-size: 0.5rem;  /* Icon size */
-        color: #444;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color:transparent;
+        color: #000;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+         text-decoration: none; 
         cursor: pointer;
-        transition: all 0.3s ease;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        font-family: 'Schoolbell', cursive;
+        border: 2px solid black;
+        color: black;
     }
 
     .edit-button:hover {
-        background-color: #ffde59;  /* Background change on hover */
-        color: #222;
-        border-color: #ffe873;  /* Lighter border color */
-    }
-
-    .edit-button i {
-        font-size: 1.8rem;  /* Adjust icon size */
+         background-color:black;
+        color: white;
     }
 
     .tags-container {
@@ -186,20 +232,20 @@
     }
 
     .tag {
-        background-color: #ffde59;
         padding: 8px 12px;
-        border-radius: 20px;
+        border-radius: 26px;
         font-size: 1rem;
-        color: #333;
         display: flex;
         align-items: center;
         cursor: pointer;
-        transition: background-color 0.3s;
+        background-color: transparent;
+        color: black;
+        border: 1px solid black; /* ✅ FIXED */
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
     }
 
-    .tag:hover {
-        background-color: #ffe873;
+      .tag:hover {
         transform: translateY(-2px);
     }
 
@@ -217,28 +263,38 @@
 
     .see-more-btn {
         background-color: transparent;
-        border: 1px solid #ffde59;
-        color: #ffde59;
+        border: 2px rgb(0, 0, 0);
+        color:rgb(199, 153, 25);
         padding: 8px 12px;
         border-radius: 20px;
         cursor: pointer;
         font-size: 1rem;
         margin-top: 10px;
         font-family: 'Schoolbell', cursive;
-        transition: background-color 0.3s;
+        transition: all background-color 0.3s;
     }
 
     .see-more-btn:hover {
-        background-color: #ffde59;
-        color: white;
+        transform: translateY(-2px);    
+        
     }
+
 
     .hidden-tag {
     display: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
     }
 
     .hidden-tag.show {
     display: inline-flex;
+    max-height: 100px;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s 0s;
+    opacity: 1;
     }
 
     .entry-body {
@@ -269,14 +325,26 @@
 }
 
 .entry-body-wrapper {
-    max-height: 400px; /* or any height you prefer */
-    overflow-y: auto;
-    padding-right: 0.5rem;
-    margin-top: 1rem;
-    border: 1px dashed #e0e0e0;
-    background-color: #fffefc;
-    border-radius: 8px;
+      max-height: 500px; 
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        margin-top: 1rem;
+
+        
 }
+
+ @media (max-width: 768px) {
+
+        .navbar {
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .navbar-right {
+            margin-top: 1rem;
+        }
+    }
 
 
 

@@ -183,15 +183,6 @@
         background: transparent;
     }
 
-    /* #editor-container {
-        height: 200px;
-        margin-bottom: 2rem;
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        overflow-y: auto;
-    } */
-
     #editor {
         height: 100%;
         font-family: 'Fragment Mono', monospace;
@@ -201,12 +192,9 @@
         height: 300px;
         margin-bottom: 2rem;
         background: transparent;
-        /* border: 1px solid #bbb; */
-        /* border-radius: 8px; */
         overflow-y: auto;
-        /* padding: 10px; */
         position: relative;
-        overflow: hidden; /* Prevent container scrolling */   
+        overflow: hidden; 
     }
 
     .favorite-button {
@@ -277,29 +265,6 @@
         }
     }
 
-    .toast-warning {
-    background-color: #ffe0f0 !important; /* soft pink */
-    color: #6f2a4d !important;           /* deeper pink text */
-    border: 2px solid #f5b3c2;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    border-radius: 12px;
-}
-
-
-.toast-error {
-    background-color: #fdecea !important;  /* soft red background */
-    color: #a94442 !important;             /* dark red text */
-    border: 2px solid #f5c6cb;
-    font-family: 'Segoe UI', sans-serif;
-    border-radius: 10px;
-}
-
-.toast-error .toast-close-button {
-    color: #a94442 !important;
-}
-
-
-
 </style>
 
 <div class="navbar">
@@ -320,7 +285,6 @@
 
         <input type="text" id="title" name="title" placeholder="Title..." required>
 
-      <!-- Quill Editor -->
         <div id="editor-container">
             <div id="editor"></div>
         </div>
@@ -354,6 +318,25 @@
 
 
 <script>
+    let lastToastrMessage = null;
+    let lastToastrTime = 0;
+
+    function showToastr(type, message, title) {
+        const now = Date.now();
+        if (lastToastrMessage === message && now - lastToastrTime < 2000) {
+            return; // Suppress duplicate message within 2 seconds
+        }
+
+        lastToastrMessage = message;
+        lastToastrTime = now;
+
+        toastr[type](message, title, {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-center"
+        });
+    }
+
     document.getElementById('tag-input').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault(); // Prevent form submit
@@ -364,20 +347,12 @@
             // Check if max tag limit is reached
             const tagElements = document.querySelectorAll('.tag');
             if (tagElements.length >= 9) {
-                toastr.error("You can only add up to 9 tags.", "🚫 Limit Reached", {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: "toast-top-center"
-                });
+                showToastr('error', "You can only add up to 9 tags.", "🚫 Limit Reached");
                 return;
             }
 
             if (tagValue.length > 20) {
-                toastr.warning("Tag must not exceed 20 characters.", "⚠️ Too Long", {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: "toast-top-center"
-                });
+                showToastr('warning', "Tag must not exceed 20 characters.", "⚠️ Too Long");
                 return;
             }
 
@@ -388,11 +363,7 @@
                 .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
 
             if (existingTags.includes(tagValue.toLowerCase())) {
-                toastr.warning("This tag already exists!", "⚠️ Duplicate", {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: "toast-top-center"
-                });
+                showToastr('warning', "This tag already exists!", "⚠️ Duplicate");
                 return;
             }
 
@@ -452,8 +423,6 @@
         document.getElementById('tags-input').value = JSON.stringify(tags);
     }
 </script>
-
-
 
 <!-- Quill JS and CSS -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">

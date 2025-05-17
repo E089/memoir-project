@@ -129,6 +129,7 @@ class EntryController extends Controller
             'body' => 'required|string|min:5',
             'category_id' => 'nullable|exists:categories,id',
             'tags' => 'nullable|string', // Should be a JSON string of tag names
+            'favorite' => 'nullable|boolean', // Validate favorite
         ]);
 
         // Update the entry
@@ -136,11 +137,11 @@ class EntryController extends Controller
             'title' => $request->title,
             'body' => $request->body,
             'category_id' => $request->category_id,
+            'favorite' => $request->has('favorite') ? $request->boolean('favorite') : false,
         ]);
 
         // Check if tags are passed and update association
         if ($request->filled('tags')) {
-            // Decode the tags from JSON
             $tagNames = json_decode($request->tags, true);
             $tagIds = [];
 
@@ -148,17 +149,16 @@ class EntryController extends Controller
                 $trimmed = trim($name);
                 if ($trimmed === '') continue;
 
-                // Ensure user_id is passed when creating the tag
                 $tag = Tag::firstOrCreate(['name' => $trimmed, 'user_id' => auth()->id()]);
                 $tagIds[] = $tag->id;
             }
 
-            // Sync tags with the entry (this will add new tags and remove old ones)
             $entry->tags()->sync($tagIds);
         }
 
         return redirect()->route('view-all-thoughts')->with('message', 'Entry updated successfully!');
     }
+
 
         public function deleteEntry($id)
         {
