@@ -200,11 +200,11 @@
     .favorite-button {
         position: absolute;
         top: 27px;
-        right: 90px; /* Now placed to the LEFT of Save */
+        right: 90px; 
         background: none;
         border: none;
         font-family: 'Schoolbell', cursive;
-        font-size: 1.4rem; /* Increased icon size */
+        font-size: 1.4rem;
         color: #666;
         cursor: pointer;
         display: flex;
@@ -214,10 +214,10 @@
     }
 
     .favorite-button i {
-    color: gray;
-    font-size: 1.6rem; /* larger heart icon */
-    transition: color 0.3s ease;
-}
+        color: gray;
+        font-size: 1.6rem;
+        transition: color 0.3s ease;
+    }
 
 
     .favorite-button.added {
@@ -228,7 +228,6 @@
         color: #e63946;
     }
 
-    /* Pulse animation on hover */
     .favorite-button:hover i {
         animation: pulse 0.4s ease-in-out;
     }
@@ -273,7 +272,6 @@
 </div>
 
 <div class="writing-container">
-    <!-- 🡐 Back Button -->
     <a href="{{ url('/home') }}" class="back-button">
         <i class="fas fa-arrow-left"></i> 
     </a>
@@ -299,7 +297,6 @@
         </select>
 
         <div class="tags-container" id="tags-container">
-            <!-- Tags dynamically injected here -->
                 <input type="text" id="tag-input" placeholder="Add a tag..." class="input-tag" style="flex: 1; min-width: 120px; border: none; outline: none;">
                 </div>
 
@@ -324,7 +321,7 @@
     function showToastr(type, message, title) {
         const now = Date.now();
         if (lastToastrMessage === message && now - lastToastrTime < 2000) {
-            return; // Suppress duplicate message within 2 seconds
+            return; 
         }
 
         lastToastrMessage = message;
@@ -339,12 +336,11 @@
 
     document.getElementById('tag-input').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent form submit
+            e.preventDefault(); 
 
             const tagInput = e.target;
             const tagValue = tagInput.value.trim();
 
-            // Check if max tag limit is reached
             const tagElements = document.querySelectorAll('.tag');
             if (tagElements.length >= 9) {
                 showToastr('error', "You can only add up to 9 tags.", "🚫 Limit Reached");
@@ -358,7 +354,6 @@
 
             if (!tagValue) return;
 
-            // Check for duplicates (case-insensitive)
             const existingTags = Array.from(document.querySelectorAll('.tag'))
                 .map(tag => tag.innerText.trim().replace(' ×', '').toLowerCase());
 
@@ -367,18 +362,15 @@
                 return;
             }
 
-            // Create tag element
             const tagElement = document.createElement('div');
             tagElement.classList.add('tag');
             tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
 
-            // Delete tag
             tagElement.querySelector('i').addEventListener('click', function() {
                 tagElement.remove();
                 updateTagsInput();
             });
 
-            // Edit tag on double-click
             tagElement.addEventListener('dblclick', function() {
                 const inputField = document.createElement('input');
                 inputField.value = tagValue;
@@ -424,7 +416,6 @@
     }
 </script>
 
-<!-- Quill JS and CSS -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
@@ -434,15 +425,13 @@
     });
 
     document.querySelector('form').addEventListener('submit', function (e) {
-        const content = quill.getText().trim(); // getText ignores HTML tags
+        const content = quill.getText().trim(); 
 
         if (content.length === 0) {
-            e.preventDefault(); // Stop form submission
+            e.preventDefault(); 
             alert("Please fill in the body before submitting.");
             return;
         }
-
-        // Transfer HTML content to hidden input if not empty
         document.querySelector('#body').value = quill.root.innerHTML;
     });
 
@@ -490,14 +479,8 @@
     });
 
     form.addEventListener('submit', function (e) {
-        // Ensure favorite value is set on submit
         const isFavorite = btn.classList.contains('added');
         favoriteHidden.value = isFavorite ? '1' : '0';
     });
 </script>
-
-
-
-
-
 @endsection

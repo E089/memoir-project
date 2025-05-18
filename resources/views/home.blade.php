@@ -203,20 +203,20 @@
     }
 
     .feature-card p {
-    white-space: pre-line; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    max-height: 5em; 
-    font-family: 'Fragment Mono', monospace;
-    line-height: 1.5;
-    margin-bottom: 1.5rem; 
-    }
+        white-space: pre-line; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        max-height: 5em; 
+        font-family: 'Fragment Mono', monospace;
+        line-height: 1.5;
+        margin-bottom: 1.5rem; 
+        }
 
 
     .feature-card:hover {
-    animation: pulse 0.8s infinite;
-    transform: scale(1.05);  
-    }
+        animation: pulse 0.8s infinite;
+        transform: scale(1.05);  
+        }
 
     @keyframes pulse {
     0% {
@@ -253,26 +253,27 @@
         background-color: #FFDB4C;
         border-color: #FFDB4C;
     }
+
     .card.sticky-note {
-    background-color: #FFDB4C;
-    border: none;
-    border-radius: 0px;
-    min-height: 340px;
-    padding: 20px;
-    font-family: 'Schoolbell', cursive;
-    position: relative;
-    transition: transform 0.6s ease-in-out;
-    }
+        background-color: #FFDB4C;
+        border: none;
+        border-radius: 0px;
+        min-height: 340px;
+        padding: 20px;
+        font-family: 'Schoolbell', cursive;
+        position: relative;
+        transition: transform 0.6s ease-in-out;
+        }
 
     .text-truncate-multiline {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.5em;
-    max-height: 4.5em; /* 3 lines x 1.5em */
-    }
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.5em;
+        max-height: 4.5em;
+        }
 
     .tag-style {
     background: transparent;
@@ -283,10 +284,7 @@
     font-size: 0.8rem;
     font-family: 'Schoolbell', cursive;
     margin-right: 4px;
-
-    
-    /* Ellipsis Styling */
-    max-width: 70px; /* Adjust to match approx. 5 characters */
+    max-width: 70px; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -298,9 +296,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%; /* Adjust the max width if necessary */
+    max-width: 100%; 
     display: block;
-    font-size: 1.5rem; /* Adjust as needed */
+    font-size: 1.5rem; 
     }
 
     
@@ -321,22 +319,21 @@
     }
 
     .recent-title {
-    font-family: 'Schoolbell', cursive;
-    font-size: 2.5rem;
-    color: #000;
-    background-color: #FFDB4C;
-    display: inline-block;
-    padding: 0.5rem 2rem;
-    border-radius: 40px;
-    box-shadow: 2px 2px 0px #000;
-}
+        font-family: 'Schoolbell', cursive;
+        font-size: 2.5rem;
+        color: #000;
+        background-color: #FFDB4C;
+        display: inline-block;
+        padding: 0.5rem 2rem;
+        border-radius: 40px;
+        box-shadow: 2px 2px 0px #000;
+    }
 
 
 </style>
 
-<!-- Navigation bar -->
 <div class="navbar">
-    <div class="navbar-left"></div> <!-- Invisible spacer to help centering -->
+    <div class="navbar-left"></div>
     <div class="navbar-center">memoir</div>
     <div class="navbar-right">
         <a href="{{ route('logout') }}" class="logout-button" id="logout-link">
@@ -345,7 +342,6 @@
     </div>
 </div>
 
-<!-- Hero Section -->
 <div class="main-section">
     <div class="hero">
         <h1>
@@ -356,7 +352,6 @@
         <p>Memoir is your digital journal — crafted to hold your thoughts, memories, and life’s little details.</p>
     </div>
 
-    <!-- Right Section -->
     <div class="home-right" style="font: size 30px;">
         <a href="{{ route('start-writing') }}" class="home-button" >     Start Writing     </a>
         <a href="{{ route('view-all-thoughts') }}" class="home-button">Wall of Thoughts</a>
@@ -416,9 +411,4 @@
             @endforeach
         </div>
     </div>
-
-
-
-
-
 @endsection

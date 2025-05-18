@@ -27,33 +27,27 @@ class EntryControllerTest extends TestCase
 
     public function test_save_entry_creates_entry_and_redirects()
     {
-        // Create a user and authenticate
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        // Optional: create a category
         $category = Category::create([
             'name' => 'Test Category',
             'description' => 'For testing',
             'user_id' => $user->id,
         ]);
 
-        // Create fake request
         $request = Request::create('/save-entry', 'POST', [
             'title' => 'My First Entry',
             'body' => 'This is a test entry body.',
             'category_id' => $category->id,
         ]);
 
-        // Call controller
         $controller = new EntryController();
         $response = $controller->saveEntry($request);
 
-        // Assert redirect
         $this->assertEquals(302, $response->status());
         $this->assertEquals(route('view-all-thoughts'), $response->getTargetUrl());
 
-        // Check DB
         $this->assertDatabaseHas('entries', [
             'title' => 'My First Entry',
             'body' => 'This is a test entry body.',
@@ -141,11 +135,9 @@ class EntryControllerTest extends TestCase
 
     public function test_edit_entry_loads_correct_view_and_data()
     {
-        // Create a user and authenticate
         $user = User::factory()->create();
         Auth::login($user);
 
-        // Create a category and entry
         $category = Category::create([
             'name' => 'Personal',
             'description' => 'Private stuff',
@@ -159,18 +151,15 @@ class EntryControllerTest extends TestCase
             'category_id' => $category->id,
         ]);
 
-        // Add a tag to the entry
         $tag = Tag::create([
             'name' => 'Important',
             'user_id' => $user->id,
         ]);
         $entry->tags()->attach($tag->id);
 
-        // Call the controller method
         $controller = new EntryController();
         $response = $controller->editEntry($entry->id);
 
-        // Assert view name and data
         $this->assertEquals('edit-entry', $response->getName());
 
         $viewData = $response->getData();
@@ -181,11 +170,9 @@ class EntryControllerTest extends TestCase
 
     public function test_update_entry_updates_entry_and_tags_correctly()
     {
-        // Create and authenticate user
         $user = User::factory()->create();
         Auth::login($user);
 
-        // Create initial category and entry
         $initialCategory = Category::create([
             'name' => 'Initial Category',
             'description' => 'Initial',
@@ -199,7 +186,6 @@ class EntryControllerTest extends TestCase
             'category_id' => $initialCategory->id,
         ]);
 
-        // Create an existing tag for syncing
         $existingTag = Tag::create([
             'name' => 'existing',
             'user_id' => $user->id,
@@ -207,21 +193,18 @@ class EntryControllerTest extends TestCase
 
         $entry->tags()->attach($existingTag->id);
 
-        // Simulate request data for update
         $request = Request::create(route('entries.update', $entry->id), 'PUT', [
             'title' => 'Updated Title',
             'body' => '<p>Updated Body</p>',
             'category_id' => $initialCategory->id,
-            'tags' => json_encode(['newtag', 'existing']), // include both new and old tags
+            'tags' => json_encode(['newtag', 'existing']), 
         ]);
 
         $controller = new EntryController();
         $response = $controller->updateEntry($request, $entry->id);
 
-        // Reload the entry
         $entry->refresh();
 
-        // Assertions
         $this->assertEquals('Updated Title', $entry->title);
         $this->assertEquals('<p>Updated Body</p>', $entry->body);
         $this->assertEquals($initialCategory->id, $entry->category_id);
@@ -237,28 +220,22 @@ class EntryControllerTest extends TestCase
 
     public function test_delete_entry_removes_entry_and_redirects()
     {
-        // Create a user and authenticate
         $user = User::factory()->create();
         Auth::login($user);
 
-        // Create an entry for the user
         $entry = Entry::create([
             'title' => 'Delete Me',
             'body' => 'Temporary content',
             'user_id' => $user->id,
         ]);
 
-        // Assert it's in the database
         $this->assertDatabaseHas('entries', ['id' => $entry->id]);
 
-        // Instantiate controller and call delete
         $controller = new EntryController();
         $response = $controller->deleteEntry($entry->id);
 
-        // Assert it's been removed
         $this->assertDatabaseMissing('entries', ['id' => $entry->id]);
 
-        // Assert it redirected properly
         $this->assertInstanceOf(\Illuminate\Http\RedirectResponse::class, $response);
         $this->assertEquals(route('view-all-thoughts'), $response->getTargetUrl());
     }

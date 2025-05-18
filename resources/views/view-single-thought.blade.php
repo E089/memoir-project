@@ -2,69 +2,6 @@
 
 @section('content')
 
-<!-- Memoir Title OUTSIDE the container -->
-<div class="navbar">
-    <div class="navbar-left"></div> <!-- Invisible spacer to help centering -->
-    <div class="navbar-center">memoir</div>
-    <div class="navbar-right">
-    </div>
-</div>
-
-<!-- Entry content -->
-<div class="single-entry-container position-relative">
-    <a href="{{ url('/view-all-thoughts') }}" class="back-button">
-        <i class="fas fa-arrow-left"></i>
-    </a>
-
-    <h1 class="entry-title">{{ $entry->title }}</h1>
-
-    <!-- Tags Section -->
-    <div class="tags-container">
-        @php
-            $visibleTags = array_slice($entry->tags->toArray(), 0, 3);  // Display only first 8 tags
-            $hiddenTags = array_slice($entry->tags->toArray(), 3);      // Remaining tags to be shown on 'See More'
-        @endphp
-
-        @foreach ($entry->tags as $index => $tag)
-            <div class="tag {{ $index >= 3 ? 'hidden-tag' : '' }}">
-                <span title="{{ $tag->name }}">{{ \Illuminate\Support\Str::limit($tag->name, 10) }}</span>
-            </div>
-        @endforeach
-        <!-- See More Button -->
-        @if (count($hiddenTags) > 0)
-            <button class="see-more-btn">See More</button>
-        @endif
-    </div>
-    <!-- Scrollable wrapper for entry body -->
-    <div class="entry-body-wrapper">
-        <div class="entry-body">{!! $entry->body !!}</div>
-    </div>
-
-
-
-    <!-- Edit Entry Button with Pen Icon inside a Box -->
-    <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">Edit</a>
-</div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const seeMoreButton = document.querySelector(".see-more-btn");
-        const hiddenTags = document.querySelectorAll(".hidden-tag");
-
-        if (seeMoreButton) {
-            seeMoreButton.addEventListener("click", function() {
-                hiddenTags.forEach(tag => {
-                    tag.classList.toggle("show");
-                });
-
-                seeMoreButton.textContent = seeMoreButton.textContent === "See More" ? "See Less" : "See More";
-            });
-        }
-    });
-</script>
-
-
-
 <style>
     body {
         position: relative;
@@ -349,5 +286,69 @@
 
 
 </style>
+
+<!-- Memoir Title OUTSIDE the container -->
+<div class="navbar">
+    <div class="navbar-left"></div> <!-- Invisible spacer to help centering -->
+    <div class="navbar-center">memoir</div>
+    <div class="navbar-right">
+    </div>
+</div>
+
+<!-- Entry content -->
+<div class="single-entry-container position-relative">
+    <a href="{{ url('/view-all-thoughts') }}" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <h1 class="entry-title">{{ $entry->title }}</h1>
+
+    <!-- Tags Section -->
+    <div class="tags-container">
+        @php
+            $visibleTags = array_slice($entry->tags->toArray(), 0, 3);  // Display only first 8 tags
+            $hiddenTags = array_slice($entry->tags->toArray(), 3);      // Remaining tags to be shown on 'See More'
+        @endphp
+
+        @foreach ($entry->tags as $index => $tag)
+            <div class="tag {{ $index >= 3 ? 'hidden-tag' : '' }}">
+                <span title="{{ $tag->name }}">{{ \Illuminate\Support\Str::limit($tag->name, 10) }}</span>
+            </div>
+        @endforeach
+        <!-- See More Button -->
+        @if (count($hiddenTags) > 0)
+            <button class="see-more-btn">See More</button>
+        @endif
+    </div>
+    <!-- Scrollable wrapper for entry body -->
+    <div class="entry-body-wrapper">
+        <div class="entry-body">{!! $entry->body !!}</div>
+    </div>
+
+
+
+    <!-- Edit Entry Button with Pen Icon inside a Box -->
+    <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">Edit</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const seeMoreButton = document.querySelector(".see-more-btn");
+        const hiddenTags = document.querySelectorAll(".hidden-tag");
+
+        if (seeMoreButton) {
+            seeMoreButton.addEventListener("click", function() {
+                hiddenTags.forEach(tag => {
+                    tag.classList.toggle("show");
+                });
+
+                seeMoreButton.textContent = seeMoreButton.textContent === "See More" ? "See Less" : "See More";
+            });
+        }
+    });
+</script>
+
+
+
 
 @endsection

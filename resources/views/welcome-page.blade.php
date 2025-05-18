@@ -140,9 +140,9 @@
     .welcome-button {
         background-color: transparent;
         color: black;
-        font-size: 1.50rem; /* Increased font size */
-        padding: 1.50rem 3rem;  /* Increased padding */
-        width: 100%; /* Ensure full width */
+        font-size: 1.50rem; 
+        padding: 1.50rem 3rem;
+        width: 100%; 
         text-decoration: none;
         border-radius: 40px;
         transition: background-color 0.3s ease;
@@ -154,9 +154,9 @@
     }
 
     .welcome-button:hover {
-        background-color: #FFDB4C; /* soft yellow */
-        color: black; /* keep text readable */
-        border-color: #FFDB4C; /* match border to background */
+        background-color: #FFDB4C; 
+        color: black; 
+        border-color: #FFDB4C; 
     }
 
     @media (max-width: 768px) {
@@ -179,10 +179,10 @@
             margin-top: 2rem;
             margin-left:2rem;
             display: flex;
-            flex-direction: row; /* Changed from column to row */
-            justify-content: center; /* Center horizontally */
+            flex-direction: row; 
+            justify-content: center; 
             align-items: center;
-            gap: 2rem; /* Adjusted spacing between buttons */
+            gap: 2rem; 
         }
     }
 
@@ -191,7 +191,7 @@
         justify-content: center;
         gap: 2rem;
         position: relative;
-        margin-top: 3rem; /* Adjusted margin for spacing */
+        margin-top: 3rem; 
     }
 
     .feature-card {
@@ -202,7 +202,7 @@
         width: 100%;
         box-sizing: border-box;
         position: relative;
-        z-index: 1; /* Ensure it's above the background */
+        z-index: 1; 
         transition: transform 0.3s ease;
     }
 
@@ -215,15 +215,15 @@
     }
 
     .feature-card:hover {
-        transform: scale(1.05); /* Add subtle hover effect */
+        transform: scale(1.05); 
     }
 
     .feature-card.overlap {
         position: absolute;
-        top: 0; /* Start overlapping from the top */
+        top: 0; 
         left: 50%;
-        transform: translateX(-50%) translateY(-30%); /* Move it slightly upwards and horizontally centered */
-        z-index: 0; /* Send it behind the first card */
+        transform: translateX(-50%) translateY(-30%); 
+        z-index: 0; 
     }
 
 @media (max-width: 768px) {
@@ -239,8 +239,8 @@
 
     .feature-card.overlap {
         position: relative;
-        transform: none; /* Reset the overlap effect on small screens */
-        z-index: 1; /* Bring it to the front */
+        transform: none; 
+        z-index: 1; 
     }
     }
     .contact-section {
@@ -289,13 +289,11 @@
         }
     }
 
-
     html {
     scroll-behavior: smooth;
     }
 </style>
 
-<!-- Navigation bar -->
 <div class="navbar">
     <div class="navbar-left"></div>
     <div class="navbar-center">memoir</div>
@@ -306,7 +304,6 @@
     </div>
 </div>
 
-<!-- Hero Section -->
 <div id="home" class="main-section" style="margin-top: 40rem;">
     <div class="hero" data-aos="fade-right" style="margin-left:5rem;">
         <h1 style="line-height: 0.80;">
@@ -317,14 +314,11 @@
         <p style="font-size:25px;">Memoir is your digital journal — crafted to hold your thoughts, memories, and life’s little details.</p>
     </div>
 
-    <!-- Right Section -->
     <div class="home-right" style="font: size 30px;" data-aos="slide-up">
         <a href="{{ route('register') }}" class="welcome-button" >Login or Sign up</a>
     </div>
 </div>
 
-
-<!-- About Section -->
 <div id="about" class="panel">
     <div class="about-content paint-reveal" style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;"  >
         <div style="flex: 1; min-width: 200px; margin-top:100px;">
@@ -344,7 +338,6 @@
     </div>
 </div>
 
-<!-- Beliefs Section -->
 <div class="panel" style="background-color: #f2f2f0;">
     <h2 style="font-family: 'Schoolbell', cursive; font-size: 4rem; text-align: center;">we believe in</h2>
     <div style="display: flex; flex-wrap: wrap; justify-content: space-around; text-align: center; margin-top: 2rem;">

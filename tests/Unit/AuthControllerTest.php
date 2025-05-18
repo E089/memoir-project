@@ -16,8 +16,6 @@ class AuthControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Set up in-memory SQLite DB (safe, doesn't touch your real DB)
         config()->set('database.default', 'sqlite');
         config()->set('database.connections.sqlite.database', ':memory:');
         $this->artisan('migrate');
@@ -25,20 +23,17 @@ class AuthControllerTest extends TestCase
 
     public function test_login_redirects_to_home_on_valid_credentials()
     {
-        // Create user
         $user = User::create([
             'username' => 'testuser',
             'email' => 'test@example.com',
             'password' => bcrypt('password123'),
         ]);
 
-        // Build a fake login request
         $request = Request::create('/login', 'POST', [
             'username' => 'testuser',
             'password' => 'password123',
         ]);
 
-        // Call the controller
         $controller = new AuthController();
         $response = $controller->login($request);
 
@@ -48,7 +43,6 @@ class AuthControllerTest extends TestCase
 
     public function test_register_creates_user_and_redirects_to_login()
     {
-        // Build a fake registration request
         $request = Request::create('/register', 'POST', [
             'username' => 'newuser',
             'email' => 'newuser@example.com',
@@ -56,15 +50,11 @@ class AuthControllerTest extends TestCase
             'password_confirmation' => 'securePass123',
         ]);
 
-        // Call the controller
         $controller = new AuthController();
         $response = $controller->register($request);
 
-        // Assert redirect to login
         $this->assertEquals(302, $response->status());
         $this->assertEquals(route('login'), $response->getTargetUrl());
-
-        // Assert user exists in the database
         $this->assertDatabaseHas('users', [
             'username' => 'newuser',
             'email' => 'newuser@example.com',

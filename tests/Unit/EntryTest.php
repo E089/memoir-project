@@ -75,7 +75,7 @@ class EntryTest extends TestCase
 
         $entry->tags()->attach([$tag1->id, $tag2->id]);
 
-        $entry->refresh(); // reload relationships
+        $entry->refresh(); 
 
         $this->assertCount(2, $entry->tags);
         $this->assertTrue($entry->tags->contains($tag1));

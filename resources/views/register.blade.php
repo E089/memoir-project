@@ -91,17 +91,17 @@
     }
 
     .form-error {
-    font-size: 0.85rem;
-    color: #ff4d4f;
-    margin-top: 0.25rem;
-    margin-left: 0.25rem;
-    font-weight: 500;
-    }
+        font-size: 0.85rem;
+        color: #ff4d4f;
+        margin-top: 0.25rem;
+        margin-left: 0.25rem;
+        font-weight: 500;
+        }
 
     body.dark-mode .form-error {    
-    color: #ff7a7a;
-    text-shadow: 0 0 4px rgba(255, 122, 122, 0.6);
-    }
+        color: #ff7a7a;
+        text-shadow: 0 0 4px rgba(255, 122, 122, 0.6);
+        }
 
 </style>
 

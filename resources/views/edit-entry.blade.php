@@ -53,12 +53,11 @@
         color: white;
     }
 
-     .edit-entry-container input[type="text"],
+    .edit-entry-container input[type="text"],
     .edit-entry-container textarea,
     .edit-entry-container select {
         width: 100%;
         border: none;
-        /* border-bottom: 1px solid #bbb; */
         padding: 0.8rem 0;
         margin-bottom: 2rem;
         font-size: 1.1rem;
@@ -135,14 +134,14 @@
     }
     
     .tags-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    min-height: 40px;
-    align-items: center;
-    }
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        min-height: 40px;
+        align-items: center;
+        }
 
     .tag {
         background-color:transparent;
@@ -196,20 +195,20 @@
 
 
     #editor {
-    height: 400px; /* or any height you want */
-    overflow-y: auto;
-    border-color:transparent;
-    padding: 1rem;
-    font-family:'Fragment Mono', 'monospace';   
-}
+        height: 400px; 
+        overflow-y: auto;
+        border-color:transparent;
+        padding: 1rem;
+        font-family:'Fragment Mono', 'monospace';   
+    }
     .favorite-button {
         position: absolute;
         top: 27px;
-        right: 90px; /* Now placed to the LEFT of Save */
+        right: 90px; 
         background: none;
         border: none;
         font-family: 'Schoolbell', cursive;
-        font-size: 1.4rem; /* Increased icon size */
+        font-size: 1.4rem; 
         color: #666;
         cursor: pointer;
         display: flex;
@@ -220,7 +219,7 @@
 
     .favorite-button i {
     color: gray;
-    font-size: 1.6rem; /* larger heart icon */
+    font-size: 1.6rem; 
     transition: color 0.3s ease;
 }
 
@@ -233,7 +232,6 @@
         color: #e63946;
     }
 
-    /* Pulse animation on hover */
     .favorite-button:hover i {
         animation: pulse 0.4s ease-in-out;
     }
@@ -270,13 +268,8 @@
         }
     }
 
-
-
 </style>
 
-
-
-<!-- Navigation bar -->
 <div class="navbar">
     <div class="navbar-left"></div>
     <div class="navbar-center">memoir</div>
@@ -294,10 +287,8 @@
 
         <input type="text" name="title" id="title" value="{{ $entry->title }}" placeholder="Edit your title..." required>
 
-        <!-- Use a hidden textarea for submission -->
         <textarea name="body" id="body" hidden>{{ $entry->body }}</textarea>
 
-        <!-- Show rich content in a div for editing -->
         <div id="editor">{!! $entry->body !!}</div>
 
         <select name="category_id" id="category">
@@ -310,15 +301,12 @@
         </select>
         
         <div class="tags-container" id="tags-container">
-        <!-- Pre-populate existing tags -->
                 @foreach ($entry->tags as $tag)
                     <div class="tag" title="{{ $tag->name }}">
                         <span class="tag-text">{{ $tag->name }}</span>
                         <i class="fas fa-times"></i>
                     </div>
                 @endforeach
-
-                <!-- Input field -->
                 <input type="text" id="tag-input" placeholder="Add a tag..." class="input-tag" style="flex: 1; min-width: 120px; border: none; outline: none;">
             </div>
             <button type="button" id="favorite-btn" class="favorite-button" title="Add to Favorite">
@@ -337,7 +325,7 @@
         function showToastr(type, message, title) {
             const now = Date.now();
             if (lastToastrMessage === message && now - lastToastrTime < 2000) {
-                return; // Suppress duplicate message within 2 seconds
+                return; 
             }
 
             lastToastrMessage = message;
@@ -389,13 +377,11 @@
         tagElement.classList.add('tag');
         tagElement.innerHTML = `${tagValue} <i class="fas fa-times"></i>`;
 
-        // Delete
         tagElement.querySelector('i').addEventListener('click', function () {
             tagElement.remove();
             updateTagsInput();
         });
 
-        // Edit on double-click
         tagElement.addEventListener('dblclick', function () {
             const inputField = document.createElement('input');
             inputField.value = tagValue;
@@ -447,23 +433,20 @@
         document.getElementById('tags-input').value = JSON.stringify(tags);
     }
 
-    // Enhance pre-populated tags
     window.addEventListener('DOMContentLoaded', () => {
         const tagElements = document.querySelectorAll('.tag');
         tagElements.forEach(tagEl => {
             const textSpan = tagEl.querySelector('.tag-text');
             const tagValue = textSpan ? textSpan.textContent.trim() : tagEl.textContent.trim().replace('×', '');
 
-            // Replace with a fresh tag element that has events
             const newTag = createTagElement(tagValue);
             tagEl.replaceWith(newTag);
         });
 
-        updateTagsInput(); // Populate hidden input on load
+        updateTagsInput(); 
     });
     </script>
 
-    <!-- Quill JS and CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
@@ -473,15 +456,14 @@
         });
 
         document.querySelector('form').addEventListener('submit', function (e) {
-            const content = quill.getText().trim(); // getText ignores HTML tags
+            const content = quill.getText().trim(); 
 
             if (content.length === 0) {
-                e.preventDefault(); // Stop form submission
+                e.preventDefault(); 
                 alert("Please fill in the body before submitting.");
                 return;
             }
 
-            // Transfer HTML content to hidden input if not empty
             document.querySelector('#body').value = quill.root.innerHTML;
         });
     </script>
@@ -528,7 +510,6 @@
     });
 
     form.addEventListener('submit', function (e) {
-        // Ensure favorite value is set on submit
         const isFavorite = btn.classList.contains('added');
         favoriteHidden.value = isFavorite ? '1' : '0';
     });

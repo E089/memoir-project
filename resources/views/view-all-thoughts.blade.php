@@ -1,6 +1,329 @@
 @extends('layouts.app')
 
 @section('content')
+<link href="https://fonts.googleapis.com/css2?family=Schoolbell&family=Fragment+Mono&display=swap" rel="stylesheet">
+
+<style>
+   
+html, body {
+        height: auto;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background: url('{{ asset('writing.png') }}');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 1950px;
+        overflow-x: hidden;
+        font-family: 'Fragment Mono', monospace;
+    }
+
+    h1, h2, h3, .card-title {
+        font-family: 'Schoolbell', cursive;
+        font-size: 2rem;
+        margin-top: px;
+        
+    }
+
+    .card-text, p, small, select, input, textarea {
+        font-family: 'Fragment Mono', monospace;
+        
+    }
+
+
+    .btn-delete {
+        background: none;
+        border: none;
+        color: black;
+        cursor: pointer;
+        font-size: 18px;
+        margin-top: 10px;
+    }
+
+    .btn-delete:hover {
+        color: black;
+    }
+
+    .form-control {
+        max-width: 250px;
+    }
+
+    .card.sticky-note {
+    background-color: #FFDB4C;
+    border: none;
+    border-radius: 0px;
+    min-height: 340px;
+    padding: 20px;
+    font-family: 'Schoolbell', cursive;
+    position: relative;
+    transition: transform 0.6s ease-in-out;
+    }
+
+    .card.sticky-note:hover {
+        animation: pop 0.6s ease;
+    }
+
+    @keyframes pop {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+        .navbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1040;
+        padding: 10px 20px;
+
+    }
+
+    .navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: 500;
+        font-size: 1.5rem;
+        font-family: 'Schoolbell', cursive;
+        margin-top: 70px; 
+    }
+
+    .navbar-left {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .back-button {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        background: none;
+        border: none;
+        color: #555;
+        font-size: 1rem;
+        font-family: 'Segoe UI', sans-serif;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .back-button i {
+        margin-right: 6px;
+        font-size: 1.2rem;
+    }
+
+    .back-button:hover {
+        color: #000;
+        text-decoration: none;
+    }
+
+    .modal-content {
+        background-color: #ffffff; 
+        border-radius: 12px;
+        border: none; 
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #eee; 
+        background-color: #f7f7f7; 
+        padding: 1.5rem;
+        position: relative;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        font-family: 'Schoolbell', cursive;
+        color: #333;
+    }
+
+    .close {
+        color: #aaa;
+        font-size: 1.5rem;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: #000;
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .modal-body label {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .modal-body input,
+    .modal-body textarea {
+        width: calc(100% - 40px); /* Adjust width to leave space for the button */
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 0.8rem;
+        background-color: #f9f9f9;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        margin-right: 40px; /* Add some space for the button */
+    }
+
+    .modal-body textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .modal-body button {
+        border-radius: 50%;
+        background-color: transparent;
+        color: #ffde59; /* Soft pastel yellow */
+        border: none;
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: none; /* Remove hover effect */
+        outline: none; /* Remove the blue outline */
+    }
+
+    /* Remove blue border when clicking the check button */
+    .modal-body button:focus {
+        outline: none; /* Ensure no blue border when clicked */
+    }
+
+    /* Ensure modal body stretches input fields */
+    .modal-body .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Remove yellow circle around the check icon */
+    .modal-body button i {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    /* Optional: Enhance the button's position */
+    .modal-body .form-group button {
+        position: relative;
+        top: 5px;
+    }
+
+    .submit-button {
+    background-color: transparent;
+    border: none;
+    color: #ffde59;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    outline: none;
+    }
+
+    .submit-button:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .submit-button i {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .wall-title {
+    margin-bottom: 2.5rem; /* or any value you want */
+    }
+
+    .add-category-btn {
+    background-color: transparent;
+    border: 1px solid #333;
+    color: #333;
+    font-size: 1.2rem; /* Adjusted font size */
+    padding:  0.5rem 1rem; /* Adjusted padding */
+    width: auto;
+    text-decoration: none;
+    border-radius: 30px; /* Rounded corners */
+    transition: background-color 0.3s ease;
+    text-align: center;
+    font-family: 'Schoolbell', cursive;
+    }
+
+    .add-category-btn:hover {
+        background-color: black; /* Soft yellow on hover */
+        color: white;
+        border-color: black; /* Match border to background */
+    }
+
+    .scrollable-wall {
+    max-height: 60vh;
+    overflow-y: auto;
+    border-top: 1px dashed #ccc;
+    }
+
+    .card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Adjust the max width if necessary */
+    display: block;
+    font-size: 1.5rem; /* Adjust as needed */
+    }
+
+    .tag-style {
+    background: transparent;
+    border: 1px solid black;
+    color: black;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-family: 'Schoolbell', cursive;
+    margin-right: 4px;
+
+    
+    /* Ellipsis Styling */
+    max-width: 70px; /* Adjust to match approx. 5 characters */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+    }
+
+    .text-truncate-multiline {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5em;
+    max-height: 4.5em; /* 3 lines x 1.5em */
+    }
+
+
+
+</style>
 
 <!-- Navbar with Back Button -->
 <div class="navbar fixed-top">
@@ -246,336 +569,6 @@
         </div>
     @endif
 </div>
-
-
-@endsection
-
-@section('styles')
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Schoolbell&family=Fragment+Mono&display=swap" rel="stylesheet">
-
-<style>
-   
-html, body {
-        height: auto;
-        min-height: 100%;
-        margin: 0;
-        padding: 0;
-        background: url('{{ asset('writing.png') }}');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 1950px;
-        overflow-x: hidden;
-        font-family: 'Fragment Mono', monospace;
-    }
-
-    h1, h2, h3, .card-title {
-        font-family: 'Schoolbell', cursive;
-        font-size: 2rem;
-        margin-top: px;
-        
-    }
-
-    .card-text, p, small, select, input, textarea {
-        font-family: 'Fragment Mono', monospace;
-        
-    }
-
-
-    .btn-delete {
-        background: none;
-        border: none;
-        color: black;
-        cursor: pointer;
-        font-size: 18px;
-        margin-top: 10px;
-    }
-
-    .btn-delete:hover {
-        color: black;
-    }
-
-    .form-control {
-        max-width: 250px;
-    }
-
-    .card.sticky-note {
-    background-color: #FFDB4C;
-    border: none;
-    border-radius: 0px;
-    min-height: 340px;
-    padding: 20px;
-    font-family: 'Schoolbell', cursive;
-    position: relative;
-    transition: transform 0.6s ease-in-out;
-    }
-
-    .card.sticky-note:hover {
-        animation: pop 0.6s ease;
-    }
-
-    @keyframes pop {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.05);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
-        .navbar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1040;
-        padding: 10px 20px;
-
-    }
-
-    .navbar-center {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        font-weight: 500;
-        font-size: 1.5rem;
-        font-family: 'Schoolbell', cursive;
-        margin-top: 70px; /* Adjust gap between navbar and memoir */
-    }
-
-    .navbar-left {
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .back-button {
-        position: absolute;
-        top: 25px;
-        left: 25px;
-        background: none;
-        border: none;
-        color: #555;
-        font-size: 1rem;
-        font-family: 'Segoe UI', sans-serif;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-    }
-
-    .back-button i {
-        margin-right: 6px;
-        font-size: 1.2rem;
-    }
-
-    .back-button:hover {
-        color: #000;
-        text-decoration: none;
-    }
-
-     /* Modal Styling */
-    .modal-content {
-        background-color: #ffffff; /* White background */
-        border-radius: 12px;
-        border: none; /* Remove border */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .modal-header {
-        border-bottom: 1px solid #eee; /* Light border to separate header */
-        background-color: #f7f7f7; /* Light pastel gray */
-        padding: 1.5rem;
-        position: relative;
-    }
-
-    .modal-title {
-        font-size: 1.5rem;
-        font-family: 'Schoolbell', cursive;
-        color: #333;
-    }
-
-    .close {
-        color: #aaa;
-        font-size: 1.5rem;
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        background: none;
-        border: none;
-        cursor: pointer;
-    }
-
-    .close:hover {
-        color: #000;
-    }
-
-    .modal-body {
-        padding: 2rem;
-    }
-
-    .modal-body label {
-        font-weight: 600;
-        font-size: 1rem;
-        color: #555;
-    }
-
-    .modal-body input,
-    .modal-body textarea {
-        width: calc(100% - 40px); /* Adjust width to leave space for the button */
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        padding: 0.8rem;
-        background-color: #f9f9f9;
-        font-size: 1rem;
-        margin-top: 0.5rem;
-        margin-right: 40px; /* Add some space for the button */
-    }
-
-    .modal-body textarea {
-        resize: vertical;
-        min-height: 80px;
-    }
-
-    .modal-body button {
-        border-radius: 50%;
-        background-color: transparent;
-        color: #ffde59; /* Soft pastel yellow */
-        border: none;
-        font-size: 1.5rem;
-        padding: 0.5rem;
-        cursor: pointer;
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: none; /* Remove hover effect */
-        outline: none; /* Remove the blue outline */
-    }
-
-    /* Remove blue border when clicking the check button */
-    .modal-body button:focus {
-        outline: none; /* Ensure no blue border when clicked */
-    }
-
-    /* Ensure modal body stretches input fields */
-    .modal-body .form-group {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    /* Remove yellow circle around the check icon */
-    .modal-body button i {
-        margin: 0;
-        font-size: 1.2rem;
-    }
-
-    /* Optional: Enhance the button's position */
-    .modal-body .form-group button {
-        position: relative;
-        top: 5px;
-    }
-
-    .submit-button {
-    background-color: transparent;
-    border: none;
-    color: #ffde59;
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    cursor: pointer;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    outline: none;
-    }
-
-    .submit-button:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    .submit-button i {
-        margin: 0;
-        font-size: 1.2rem;
-    }
-
-    .wall-title {
-    margin-bottom: 2.5rem; /* or any value you want */
-    }
-
-    .add-category-btn {
-    background-color: transparent;
-    border: 1px solid #333;
-    color: #333;
-    font-size: 1.2rem; /* Adjusted font size */
-    padding:  0.5rem 1rem; /* Adjusted padding */
-    width: auto;
-    text-decoration: none;
-    border-radius: 30px; /* Rounded corners */
-    transition: background-color 0.3s ease;
-    text-align: center;
-    font-family: 'Schoolbell', cursive;
-    }
-
-    .add-category-btn:hover {
-        background-color: black; /* Soft yellow on hover */
-        color: white;
-        border-color: black; /* Match border to background */
-    }
-
-    .scrollable-wall {
-    max-height: 60vh;
-    overflow-y: auto;
-    border-top: 1px dashed #ccc;
-    }
-
-    .card-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%; /* Adjust the max width if necessary */
-    display: block;
-    font-size: 1.5rem; /* Adjust as needed */
-    }
-
-    .tag-style {
-    background: transparent;
-    border: 1px solid black;
-    color: black;
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 0.8rem;
-    font-family: 'Schoolbell', cursive;
-    margin-right: 4px;
-
-    
-    /* Ellipsis Styling */
-    max-width: 70px; /* Adjust to match approx. 5 characters */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: inline-block;
-    vertical-align: middle;
-    }
-
-    .text-truncate-multiline {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.5em;
-    max-height: 4.5em; /* 3 lines x 1.5em */
-    }
-
-
-
-</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

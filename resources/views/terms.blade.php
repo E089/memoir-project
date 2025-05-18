@@ -24,7 +24,7 @@
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
         font-family: 'Inter', sans-serif;
         color: #333;
-        text-align: center;
+        text-align: left;
     }
 
     h1 {

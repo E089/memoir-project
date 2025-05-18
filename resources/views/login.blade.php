@@ -96,8 +96,7 @@
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-
-                <!-- Display error messages if they exist -->
+                
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
