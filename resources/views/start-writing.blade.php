@@ -288,6 +288,9 @@
         </div>
         <input type="hidden" name="body" id="body">
 
+        <div id="word-count" style="text-align: right; font-size: 0.9rem; color: #333; margin-bottom: 1rem;">
+            Word count: <span id="word-count-number">0</span>
+        </div>
 
         <select id="category_id" name="category_id">
             <option value="">Category</option>
@@ -420,24 +423,6 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
 <script>
-    const quill = new Quill('#editor', {
-        theme: 'snow'
-    });
-
-    document.querySelector('form').addEventListener('submit', function (e) {
-        const content = quill.getText().trim(); 
-
-        if (content.length === 0) {
-            e.preventDefault(); 
-            alert("Please fill in the body before submitting.");
-            return;
-        }
-        document.querySelector('#body').value = quill.root.innerHTML;
-    });
-
-</script>
-
-<script>
     const btn = document.getElementById('favorite-btn');
     const favoriteHidden = document.getElementById('favorite-hidden');
     const form = document.querySelector('form');
@@ -483,4 +468,34 @@
         favoriteHidden.value = isFavorite ? '1' : '0';
     });
 </script>
+
+<script>
+    const quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    const wordCountDisplay = document.getElementById('word-count-number');
+
+    function updateWordCount() {
+        const text = quill.getText().trim();
+        const wordCount = text.length === 0 ? 0 : text.split(/\s+/).length;
+        wordCountDisplay.textContent = wordCount;
+    }
+
+    quill.on('text-change', updateWordCount);
+
+    updateWordCount();
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const content = quill.getText().trim();
+
+        if (content.length === 0) {
+            e.preventDefault();
+            alert("Please fill in the body before submitting.");
+            return;
+        }
+        document.querySelector('#body').value = quill.root.innerHTML;
+    });
+</script>
+
 @endsection

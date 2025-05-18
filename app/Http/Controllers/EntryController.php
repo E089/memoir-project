@@ -138,13 +138,25 @@ class EntryController extends Controller
     }
 
 
-        public function deleteEntry($id)
+       public function deleteEntry($id)
         {
             $entry = Entry::where('user_id', auth()->id())->findOrFail($id);
-        
+
+            $tagIds = $entry->tags->pluck('id')->toArray();
+
+            $entry->tags()->detach();
+
             $entry->delete();
-        
-            return redirect()->route('view-all-thoughts')->with('message', 'Entry deleted successfully!');
+
+            foreach ($tagIds as $tagId) {
+                $tag = Tag::find($tagId);
+
+                if ($tag && $tag->entries()->count() === 0) {
+                    $tag->delete();
+                }
+            }
+
+            return redirect()->route('view-all-thoughts')->with('message', 'Entry and unused tags deleted successfully!');
         }
         
 }

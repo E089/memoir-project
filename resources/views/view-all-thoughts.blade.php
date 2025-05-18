@@ -173,14 +173,14 @@ html, body {
 
     .modal-body input,
     .modal-body textarea {
-        width: calc(100% - 40px); /* Adjust width to leave space for the button */
+        width: calc(100% - 40px); 
         border-radius: 8px;
         border: 1px solid #ddd;
         padding: 0.8rem;
         background-color: #f9f9f9;
         font-size: 1rem;
         margin-top: 0.5rem;
-        margin-right: 40px; /* Add some space for the button */
+        margin-right: 40px; 
     }
 
     .modal-body textarea {
@@ -191,7 +191,7 @@ html, body {
     .modal-body button {
         border-radius: 50%;
         background-color: transparent;
-        color: #ffde59; /* Soft pastel yellow */
+        color: #ffde59; 
         border: none;
         font-size: 1.5rem;
         padding: 0.5rem;
@@ -200,47 +200,43 @@ html, body {
         right: 10px;
         top: 50%;
         transform: translateY(-50%);
-        transition: none; /* Remove hover effect */
-        outline: none; /* Remove the blue outline */
+        transition: none; 
+        outline: none; 
     }
 
-    /* Remove blue border when clicking the check button */
     .modal-body button:focus {
-        outline: none; /* Ensure no blue border when clicked */
+        outline: none; 
     }
 
-    /* Ensure modal body stretches input fields */
     .modal-body .form-group {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    /* Remove yellow circle around the check icon */
     .modal-body button i {
         margin: 0;
         font-size: 1.2rem;
     }
 
-    /* Optional: Enhance the button's position */
     .modal-body .form-group button {
         position: relative;
         top: 5px;
     }
 
     .submit-button {
-    background-color: transparent;
-    border: none;
-    color: #ffde59;
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    cursor: pointer;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    outline: none;
-    }
+        background-color: transparent;
+        border: none;
+        color: #ffde59;
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        outline: none;
+        }
 
     .submit-button:focus {
         outline: none;
@@ -253,82 +249,77 @@ html, body {
     }
 
     .wall-title {
-    margin-bottom: 2.5rem; /* or any value you want */
-    }
+        margin-bottom: 2.5rem; 
+        }
 
     .add-category-btn {
-    background-color: transparent;
-    border: 1px solid #333;
-    color: #333;
-    font-size: 1.2rem; /* Adjusted font size */
-    padding:  0.5rem 1rem; /* Adjusted padding */
-    width: auto;
-    text-decoration: none;
-    border-radius: 30px; /* Rounded corners */
-    transition: background-color 0.3s ease;
-    text-align: center;
-    font-family: 'Schoolbell', cursive;
-    }
+        background-color: transparent;
+        border: 1px solid #333;
+        color: #333;
+        font-size: 1.2rem;
+        padding:  0.5rem 1rem; 
+        width: auto;
+        text-decoration: none;
+        border-radius: 30px; 
+        transition: background-color 0.3s ease;
+        text-align: center;
+        font-family: 'Schoolbell', cursive;
+        }
 
     .add-category-btn:hover {
-        background-color: black; /* Soft yellow on hover */
+        background-color: black; 
         color: white;
-        border-color: black; /* Match border to background */
+        border-color: black; 
     }
 
     .scrollable-wall {
-    max-height: 60vh;
-    overflow-y: auto;
-    border-top: 1px dashed #ccc;
-    }
+        max-height: 60vh;
+        overflow-y: auto;
+        border-top: 1px dashed #ccc;
+        }
 
     .card-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%; /* Adjust the max width if necessary */
-    display: block;
-    font-size: 1.5rem; /* Adjust as needed */
-    }
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%; 
+        display: block;
+        font-size: 1.5rem; 
+        }
 
     .tag-style {
-    background: transparent;
-    border: 1px solid black;
-    color: black;
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 0.8rem;
-    font-family: 'Schoolbell', cursive;
-    margin-right: 4px;
-
-    
-    /* Ellipsis Styling */
-    max-width: 70px; /* Adjust to match approx. 5 characters */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: inline-block;
-    vertical-align: middle;
-    }
+        background: transparent;
+        border: 1px solid black;
+        color: black;
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        font-family: 'Schoolbell', cursive;
+        margin-right: 4px;
+        max-width: 70px; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: middle;
+        }
 
     .text-truncate-multiline {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.5em;
-    max-height: 4.5em; /* 3 lines x 1.5em */
-    }
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.5em;
+        max-height: 4.5em; 
+        }
 
 
 
 </style>
 
-<!-- Navbar with Back Button -->
 <div class="navbar fixed-top">
     <div class="navbar-left">
-        <!-- 🡐 Back Button -->
         <a href="{{ url('/home') }}" class="back-button">
             <i class="fas fa-arrow-left"></i> 
         </a>
@@ -340,7 +331,6 @@ html, body {
     <div class="container">
         <h2 class="wall-title text-center">Wall of Thoughts</h2>
         <div class="row g-3 align-items-center justify-content-center text-center">
-        <!-- Category Dropdown -->
         <div class="col-md-5">
             @if ($errors->has('name'))
                 <script>
@@ -352,7 +342,6 @@ html, body {
         <div class="dropdown">
             <button class="btn btn-outline-dark dropdown-toggle custom-btn w-100" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false" 
                 style="border-radius: 30px;">
-                <!-- Display the category name or default text -->
                 <span>
                     @if(request()->has('category'))
                         {{ $categories->find(request()->category)->name ?? 'Filter by Category' }}
@@ -364,12 +353,10 @@ html, body {
             <ul class="dropdown-menu w-100 text-center" aria-labelledby="categoryDropdown"
                 style="border-radius: 30px; max-height: 250px; overflow-y: auto;">
 
-            <!-- All Categories Link -->
             <li>
                 <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
             </li>
 
-            <!-- Categories List -->
             @foreach ($categories->unique('name') as $category)
                 <li>
                     <div class="d-flex justify-content-between align-items-center">
@@ -379,7 +366,6 @@ html, body {
                             {{ $category->name }}
                         </a>
 
-                        <!-- Delete Category Form -->
                         <form action="{{ route('delete-category', $category->id) }}" method="POST" class="m-0">
                             @csrf
                             @method('DELETE')
@@ -391,7 +377,6 @@ html, body {
                 </li>
             @endforeach
             </ul>
-            <!-- Tag Dropdown -->
             <div class="col-md-5">
                 <div class="dropdown">
                     <button class="btn btn-outline-dark dropdown-toggle custom-btn w-100" type="button" id="tagDropdown" data-bs-toggle="dropdown" aria-expanded="false"
@@ -406,9 +391,7 @@ html, body {
                     </button>
                     <ul class="dropdown-menu w-100 text-center" aria-labelledby="tagDropdown"
                         style="border-radius: 30px; max-height: 250px; overflow-y: auto;">
-                        <!-- All Tags -->
                         <li><a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Tags</a></li>
-                        <!-- Tag List -->
                         @foreach ($tags as $tag)
                             <li>
                                 <a class="dropdown-item text-truncate" href="{{ route('view-all-thoughts', ['tag' => $tag->id]) }}">
@@ -419,7 +402,6 @@ html, body {
                     </ul>
                 </div>
             </div>
-            <!-- Entries List (as Cards) -->
             <ul class="dropdown-menu w-100 text-center mt-3" aria-labelledby="entriesDropdown" style="border-radius: 30px;">
                 @foreach ($entries as $entry)
                     <li class="dropdown-item">
@@ -428,7 +410,6 @@ html, body {
                                 <div class="card-body d-flex flex-column justify-content-between h-100">
                                     <h5 class="card-title">{{ $entry->title }}</h5>
                                     
-                                    <!-- Tags Section -->
                                     <div class="tags-container">
                                         @foreach ($entry->tags as $tag)
                                             <div class="tag">
@@ -452,7 +433,6 @@ html, body {
             </div>
         </div>
 
-            <!-- Search Bar -->
             <div class="col-md-5">
                 <form action="{{ route('view-all-thoughts') }}" method="GET" class="d-flex justify-content-center">
                     <input type="text" name="search" class="custom-input me-2" placeholder="Search thoughts..." value="{{ request()->search }}" 
@@ -462,7 +442,6 @@ html, body {
                     </button>
                 </form>
             </div>
-            <!-- Add Category Button -->
             <div class="col-md-2 mt-3 mt-md-0 d-flex justify-content-center">
                 <button class="btn custom-btn w-100 add-category-btn" data-bs-toggle="modal" data-bs-target="#categoryModal">
                     <i class="fas fa-plus"></i> Add Category
@@ -473,9 +452,7 @@ html, body {
     </div>
 </div>
 
-<!-- Main Content -->
 <div class="container" style="margin-top: 100px;">
-   <!-- Category Creation Modal -->
     <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -502,8 +479,6 @@ html, body {
         </div>
     </div>
 
-
-   <!-- Scrollable Entries Container -->
 <div class="container mt-4">
     <div class="scrollable-wall p-2">
         <div class="row">

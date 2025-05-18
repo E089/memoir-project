@@ -14,13 +14,11 @@ class Entry extends Model
 
     public $timestamps = true;
 
-    // Relationship: An entry belongs to a user
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relationship: An entry may belong to a category
     public function category()
     {
         return $this->belongsTo(Category::class);

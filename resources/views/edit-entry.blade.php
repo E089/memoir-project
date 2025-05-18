@@ -195,7 +195,7 @@
 
 
     #editor {
-        height: 400px; 
+        height: 350px; 
         overflow-y: auto;
         border-color:transparent;
         padding: 1rem;
@@ -291,7 +291,12 @@
 
         <div id="editor">{!! $entry->body !!}</div>
 
-        <select name="category_id" id="category">
+        <div id="word-count" style="text-align:right; font-family: 'Schoolbell', cursive; font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px; color:#333;">
+            Word count: 0
+        </div>
+
+
+       <select name="category_id" id="category" style="margin-bottom: 1rem;">
             <option value="">Category</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ $category->id == $entry->category_id ? 'selected' : '' }}>
@@ -451,24 +456,6 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <script>
-        const quill = new Quill('#editor', {
-            theme: 'snow'
-        });
-
-        document.querySelector('form').addEventListener('submit', function (e) {
-            const content = quill.getText().trim(); 
-
-            if (content.length === 0) {
-                e.preventDefault(); 
-                alert("Please fill in the body before submitting.");
-                return;
-            }
-
-            document.querySelector('#body').value = quill.root.innerHTML;
-        });
-    </script>
-
-    <script>
     const btn = document.getElementById('favorite-btn');
     const favoriteHidden = document.getElementById('favorite-hidden');
     const form = document.querySelector('form');
@@ -522,4 +509,34 @@
     });
 
 </script>
+
+<script>
+    const quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    const wordCountDiv = document.getElementById('word-count');
+
+    function updateWordCount() {
+        const text = quill.getText().trim();
+        const words = text.length ? text.split(/\s+/).filter(Boolean) : [];
+        wordCountDiv.textContent = `Word count: ${words.length}`;
+    }
+
+    quill.on('text-change', updateWordCount);
+    updateWordCount(); 
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const content = quill.getText().trim(); 
+
+        if (content.length === 0) {
+            e.preventDefault(); 
+            alert("Please fill in the body before submitting.");
+            return;
+        }
+
+        document.querySelector('#body').value = quill.root.innerHTML;
+    });
+</script>
+
     @endsection
