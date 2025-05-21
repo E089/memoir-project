@@ -38,9 +38,8 @@
         padding: 2rem;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         max-width: 900px;
-        width: 120%;
-        margin-right: -10px;
-        
+        width: 100%;
+        margin: 0 auto; 
     }
 
     input.form-control {
@@ -177,4 +176,9 @@
         document.body.classList.toggle('dark-mode');
     }
 </script>
+
+<div class="text-center mt-4 text-muted small">
+    &copy; 2025 Memoir
+</div>
+
 @endsection

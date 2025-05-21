@@ -22,7 +22,6 @@
         font-family: 'Schoolbell', cursive;
         margin: 2rem auto;
         box-shadow: 20px 20px 3px rgba(0, 0, 0, 0.2);
-        transform: rotate(-3deg);
 
     }
 
@@ -205,7 +204,7 @@
         border: none;
         font-family: 'Schoolbell', cursive;
         font-size: 1.4rem;
-        color: #666;
+        color: black;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -214,7 +213,7 @@
     }
 
     .favorite-button i {
-        color: gray;
+        color: black;
         font-size: 1.6rem;
         transition: color 0.3s ease;
     }
@@ -264,6 +263,25 @@
         }
     }
 
+    .footer {
+        text-align: center;
+        margin-top: 2rem;
+        color: #555;
+        font-size: 0.9rem;
+        font-family: 'Schoolbell', cursive;
+    }
+
+    
+    .ql-toolbar.ql-snow {
+        background: transparent !important;
+        border: none !important;
+    }
+
+    .ql-container.ql-snow {
+        order: 0px !important;
+    }
+
+
 </style>
 
 <div class="navbar">
@@ -276,12 +294,12 @@
         <i class="fas fa-arrow-left"></i> 
     </a>
 
-    <div class="entry-heading">Start Writing</div>
+    <div class="entry-heading">start writing</div>
 
     <form method="POST" action="{{ url('/start-writing') }}">
         @csrf
 
-        <input type="text" id="title" name="title" placeholder="Title..." required>
+        <input type="text" id="title" name="title" placeholder="title..." required>
 
         <div id="editor-container">
             <div id="editor"></div>
@@ -289,31 +307,37 @@
         <input type="hidden" name="body" id="body">
 
         <div id="word-count" style="text-align: right; font-size: 0.9rem; color: #333; margin-bottom: 1rem;">
-            Word count: <span id="word-count-number">0</span>
+            word count: <span id="word-count-number">0</span>
         </div>
 
         <select id="category_id" name="category_id">
-            <option value="">Category</option>
+            <option value="">category</option>
             @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
             @endforeach
         </select>
 
         <div class="tags-container" id="tags-container">
-                <input type="text" id="tag-input" placeholder="Add a tag..." class="input-tag" style="flex: 1; min-width: 120px; border: none; outline: none;">
+                <input type="text" id="tag-input" placeholder="add a tag..." class="input-tag" style="flex: 1; min-width: 120px; border: none; outline: none;">
                 </div>
 
                  <button type="button" id="favorite-btn" class="favorite-button" title="Add to Favorite">
-                    <i class="fas fa-heart"></i>
+                    <i class="far fa-heart"></i>
                 </button>
 
                 <input type="hidden" name="tags" id="tags-input">
-                <button type="submit" class="save-button">Save</button>
+                <button type="submit" class="save-button">save</button>
                 <input type="hidden" name="favorite" id="favorite-hidden" value="0">
 
             </form>
         </div>
+
+        <div class="text-center mt-4 text-muted small">
+            &copy; 2025 Memoir
+        </div>
 </div>
+
+
 
 
 
@@ -454,14 +478,20 @@
         }
     }
 
-    btn.addEventListener('click', function () {
+   btn.addEventListener('click', function () {
         btn.classList.toggle('added');
+        const icon = btn.querySelector('i');
 
-        const isFavorite = btn.classList.contains('added');
-        if (isFavorite) {
+        if (btn.classList.contains('added')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
             heartPop();
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
         }
     });
+
 
     form.addEventListener('submit', function (e) {
         const isFavorite = btn.classList.contains('added');

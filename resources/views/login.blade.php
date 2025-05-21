@@ -25,7 +25,7 @@
     }
 
     .memoir-sub {
-        font-family: 'Fragment Mono', monoscape;
+        font-family: 'Fragment Mono', monospace;
         text-align: center;
         font-size: 1rem;
         color: #777;
@@ -133,4 +133,8 @@
         document.body.classList.toggle('dark-mode');
     }
 </script>
+
+<div class="text-center mt-4 text-muted small">
+    &copy; 2025 Memoir
+</div>
 @endsection

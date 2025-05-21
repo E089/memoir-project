@@ -345,9 +345,9 @@
 <div class="main-section">
     <div class="hero">
         <h1>
-            <span>type down</span>
-            <span><em>your</em></span>
-            <span class="bold">inner world.</span>
+            <span  style="font-family:'Fragment Mono', monoscape">type down</span>
+            <span style="font-family:'Schoolbell', cursive; margin-left:50px; font-size:7rem;">your</span>
+            <span class="bold" style="font-family:'Arial', sans-serif; font-weight:1500px; font-size:120px; letter-spacing:0.5">inner world.</span>
         </h1>
         <p>Memoir is your digital journal — crafted to hold your thoughts, memories, and life’s little details.</p>
     </div>
@@ -410,5 +410,9 @@
                 </div>
             @endforeach
         </div>
+    </div>
+
+    <div class="text-center mt-4 text-muted small">
+        &copy; 2025 Memoir
     </div>
 @endsection

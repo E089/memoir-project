@@ -68,7 +68,6 @@
         position: relative;
         font-family: 'Schoolbell', cursive;
         box-shadow: 20px 20px 3px rgba(0, 0, 0, 0.2);
-        transform: rotate(3deg);
         height: 750px;
     }
 
@@ -159,13 +158,13 @@
     }
 
     .tags-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-    justify-content: left;
-    }
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        justify-content: left;
+        }
 
     .tag {
         padding: 8px 12px;
@@ -191,11 +190,11 @@
     }
 
     .entry-title {
-    white-space: nowrap; 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-    max-width: 100%; 
-    }
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        max-width: 100%; 
+        }
 
     .see-more-btn {
         background-color: transparent;
@@ -217,31 +216,31 @@
 
 
     .hidden-tag {
-    display: none;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s 0.3s;
-    }
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0s 0.3s;
+        }
 
     .hidden-tag.show {
-    display: inline-flex;
-    max-height: 100px;
-    visibility: visible;
-    transition: opacity 0.3s ease, visibility 0s 0s;
-    opacity: 1;
-    }
+        display: inline-flex;
+        max-height: 100px;
+        visibility: visible;
+        transition: opacity 0.3s ease, visibility 0s 0s;
+        opacity: 1;
+        }
 
     .entry-body {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-    max-width: 100%;
-    overflow-x: auto;
-    padding: 1rem 0;
-    line-height: 1.6;
-}
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        max-width: 100%;
+        overflow-x: auto;
+        padding: 1rem 0;
+        line-height: 1.6;
+    }
 
 .entry-body h1, 
 .entry-body h2, 
@@ -299,6 +298,11 @@
     </a>
 
     <h1 class="entry-title">{{ $entry->title }}</h1>
+    @if ($entry->favorite)
+        <div style="margin-top: 0.1rem, font-size: 0.95rem; color: #e74c3c; font-family: 'Schoolbell', cursive;">
+            <i class="fas fa-heart"></i> added to favorites!
+        </div>
+    @endif
 
     <div class="tags-container">
         @php
@@ -321,12 +325,15 @@
     </div>
 
     <div id="word-count" style="margin-top: 1rem; font-family: 'Schoolbell', cursive; font-size: 1.1rem; color: #555;">
-    Word Count: <span id="count">0</span>
+    word Count: <span id="count">0</span>
     </div>
 
-
-    <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">Edit</a>
+    <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">edit</a>
 </div>
+
+    <div class="text-center mt-4 text-muted small">
+        &copy; 2025 Memoir
+    </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -343,12 +350,10 @@
             });
         }
     });
-    // Word Count Script
 const entryBody = document.querySelector(".entry-body");
 const wordCountElement = document.getElementById("count");
 
 if (entryBody && wordCountElement) {
-    // Strip HTML and count words
     const text = entryBody.textContent || entryBody.innerText || "";
     const wordCount = text.trim().split(/\s+/).filter(word => word.length > 0).length;
     wordCountElement.textContent = wordCount;

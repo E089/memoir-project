@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<link href="https://fonts.googleapis.com/css2?family=Schoolbell&family=Fragment+Mono&display=swap" rel="stylesheet">
-
 <style>
-   
+    @import url('https://fonts.googleapis.com/css2?family=Schoolbell&family=Inter:wght@300;400;600&display=swap');
+
 html, body {
         height: auto;
         min-height: 100%;
@@ -25,7 +24,7 @@ html, body {
         
     }
 
-    .card-text, p, small, select, input, textarea {
+    .card-text, p, select, input, textarea {
         font-family: 'Fragment Mono', monospace;
         
     }
@@ -321,6 +320,7 @@ html, body {
     font-family: 'Fragment Mono', monospace;
     height: 40px;
 }
+
 </style>
 
 <div class="navbar fixed-top">
@@ -504,7 +504,13 @@ html, body {
             You haven't written any entries yet. Start writing your first thought!
         </div>
     @endif
+
+    <div class="text-center mt-4 text-muted small">
+        &copy; 2025 Memoir
+    </div>
+
 </div>
+
 
 
 <script>

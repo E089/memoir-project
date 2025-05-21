@@ -22,7 +22,6 @@
         background-color: #FFDB4C;
         padding: 3rem 2rem;
         position: relative;
-        transform: rotate(-3deg);
         margin: 2rem auto;
         box-shadow: 20px 20px 3px rgba(0, 0, 0, 0.2);
         height: 800px;
@@ -218,7 +217,7 @@
     }
 
     .favorite-button i {
-    color: gray;
+    color: black;
     font-size: 1.6rem; 
     transition: color 0.3s ease;
 }
@@ -268,6 +267,12 @@
         }
     }
 
+    .ql-toolbar.ql-snow {
+        background: transparent !important;
+        border: none !important;
+    }
+    
+
 </style>
 
 <div class="navbar">
@@ -280,24 +285,30 @@
         <i class="fas fa-arrow-left"></i> 
     </a>
 
-    <h1>Edit Your Entry</h1>
+    <h1>edit your entry</h1>
     <form action="{{ route('entries.update', $entry->id) }}" method="POST">
         @csrf
         @method('PUT')
 
         <input type="text" name="title" id="title" value="{{ $entry->title }}" placeholder="Edit your title..." required>
 
+        @if ($entry->favorite)
+            <div style="margin-top: 0.1rem, font-size: 0.95rem; color: #e74c3c; font-family: 'Schoolbell', cursive;">
+                <i class="fas fa-heart"></i> added to favorites!
+            </div>
+        @endif
+        
         <textarea name="body" id="body" hidden>{{ $entry->body }}</textarea>
 
         <div id="editor">{!! $entry->body !!}</div>
 
         <div id="word-count" style="text-align:right; font-family: 'Schoolbell', cursive; font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px; color:#333;">
-            Word count: 0
+            word count: 0
         </div>
 
 
        <select name="category_id" id="category" style="margin-bottom: 1rem;">
-            <option value="">Category</option>
+            <option value="">category</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ $category->id == $entry->category_id ? 'selected' : '' }}>
                     {{ $category->name }}
@@ -312,15 +323,19 @@
                         <i class="fas fa-times"></i>
                     </div>
                 @endforeach
-                <input type="text" id="tag-input" placeholder="Add a tag..." class="input-tag" style="flex: 1; min-width: 120px; border: none; outline: none;">
+                <input type="text" id="tag-input" placeholder="add a tag..." class="input-tag" style="flex: 1; min-width: 120px; border: none; outline: none;">
             </div>
             <button type="button" id="favorite-btn" class="favorite-button" title="Add to Favorite">
-                    <i class="fas fa-heart"></i>
+                    <i class="far fa-heart"></i>
             </button>
                 <input type="hidden" name="tags" id="tags-input">
-                <button type="submit" class="save-button">Save</button>
+                <button type="submit" class="save-button">save</button>
                 <input type="hidden" name="favorite" id="favorite-hidden" value="0">
             </form>
+        </div>
+
+         <div class="text-center mt-4 text-muted small">
+            &copy; 2025 Memoir
         </div>
 
 <script>
@@ -489,10 +504,15 @@
 
     btn.addEventListener('click', function () {
         btn.classList.toggle('added');
+        const icon = btn.querySelector('i');
 
-        const isFavorite = btn.classList.contains('added');
-        if (isFavorite) {
+        if (btn.classList.contains('added')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
             heartPop();
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
         }
     });
 
@@ -501,12 +521,16 @@
         favoriteHidden.value = isFavorite ? '1' : '0';
     });
 
-    window.addEventListener('DOMContentLoaded', () => {
+   window.addEventListener('DOMContentLoaded', () => {
         const isFavorite = {{ $entry->favorite ? 'true' : 'false' }};
+        const icon = btn.querySelector('i');
         if (isFavorite) {
             btn.classList.add('added');
+            icon.classList.remove('far');
+            icon.classList.add('fas');
         }
     });
+
 
 </script>
 
@@ -520,7 +544,7 @@
     function updateWordCount() {
         const text = quill.getText().trim();
         const words = text.length ? text.split(/\s+/).filter(Boolean) : [];
-        wordCountDiv.textContent = `Word count: ${words.length}`;
+        wordCountDiv.textContent = `word count: ${words.length}`;
     }
 
     quill.on('text-change', updateWordCount);
