@@ -29,7 +29,6 @@
         min-height: 100%;
         margin: 0;
         padding: 0;
-        
         background: url('{{ asset('welcome.png') }}') no-repeat center center fixed;
         background-size: cover;
         overflow-x: hidden;
