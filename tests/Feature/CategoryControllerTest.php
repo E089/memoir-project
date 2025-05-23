@@ -1,65 +1,48 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use App\Http\Controllers\CategoryController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 
 class CategoryControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        config()->set('database.default', 'sqlite');
-        config()->set('database.connections.sqlite.database', ':memory:');
-        $this->artisan('migrate');
-    }
-
-    public function test_category_store_creates_category()
+    public function test_category_store_creates_category_with_json()
     {
         $user = User::factory()->create();
-        Auth::login($user);
+        $this->actingAs($user);
 
-        $request = Request::create('/categories', 'POST', [
+        $payload = [
             'name' => 'Work',
             'description' => 'Work-related thoughts',
-        ]);
+        ];
 
-        $controller = new CategoryController();
-        $response = $controller->store($request);
+        $response = $this->postJson('/categories', $payload);
 
+        $response->assertStatus(201); 
         $this->assertDatabaseHas('categories', [
             'name' => 'Work',
+            'description' => 'Work-related thoughts',
             'user_id' => $user->id,
         ]);
-
-        $this->assertEquals(302, $response->status());
     }
 
-    public function test_destroy_deletes_category()
+    public function test_category_destroy_deletes_category_with_json()
     {
         $user = User::factory()->create();
-        $category = Category::create([
-            'name' => 'Personal',
-            'description' => 'Personal stuff',
-            'user_id' => $user->id,
-        ]);
+        $this->actingAs($user);
 
-        Auth::login($user);
-        $controller = new CategoryController();
-        $response = $controller->destroy($category->id);
+        $category = Category::factory()->create(['user_id' => $user->id]);
 
+        $response = $this->deleteJson("/categories/{$category->id}");
+
+        $response->assertStatus(200); 
         $this->assertDatabaseMissing('categories', [
             'id' => $category->id,
         ]);
-
-        $this->assertEquals(302, $response->status());
     }
 }

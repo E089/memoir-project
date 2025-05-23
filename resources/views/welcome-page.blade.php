@@ -315,7 +315,7 @@
     </div>
 
     <div class="home-right" style="font: size 30px;" data-aos="slide-up">
-        <a href="{{ route('register') }}" class="welcome-button" >Login or Sign up</a>
+        <a href="{{ route('register') }}" class="welcome-button" >Login or Register</a>
     </div>
 </div>
 
