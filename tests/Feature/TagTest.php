@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Entry;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TagTest extends TestCase
 {
@@ -14,14 +14,9 @@ class TagTest extends TestCase
 
     public function test_tag_belongs_to_a_user()
     {
-        $user = User::create([
-            'username' => 'taguser',
-            'email' => 'taguser@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+        $user = User::factory()->create();
 
-        $tag = Tag::create([
-            'name' => 'Motivation',
+        $tag = Tag::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -31,30 +26,18 @@ class TagTest extends TestCase
 
     public function test_tag_belongs_to_many_entries()
     {
-        $user = User::create([
-            'username' => 'taguser2',
-            'email' => 'taguser2@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+        $user = User::factory()->create();
 
-        $tag = Tag::create([
-            'name' => 'Mindset',
+        $tag = Tag::factory()->create([
             'user_id' => $user->id,
         ]);
 
-        $entry1 = Entry::create([
-            'title' => 'Entry One',
-            'body' => 'Content for one.',
-            'user_id' => $user->id,
-        ]);
-
-        $entry2 = Entry::create([
-            'title' => 'Entry Two',
-            'body' => 'Content for two.',
-            'user_id' => $user->id,
-        ]);
+        $entry1 = Entry::factory()->create(['user_id' => $user->id]);
+        $entry2 = Entry::factory()->create(['user_id' => $user->id]);
 
         $tag->entries()->attach([$entry1->id, $entry2->id]);
+
+        $tag->refresh();
 
         $this->assertCount(2, $tag->entries);
         $this->assertTrue($tag->entries->contains($entry1));

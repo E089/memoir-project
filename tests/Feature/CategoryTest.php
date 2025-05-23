@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,13 +13,9 @@ class CategoryTest extends TestCase
 
     public function test_category_can_be_created_with_valid_fields()
     {
-        $user = User::create([
-            'username' => 'catuser',
-            'email' => 'cat@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
-        $category = Category::create([
+        $category = Category::factory()->create([
             'name' => 'Personal',
             'description' => 'Personal notes and ideas',
             'user_id' => $user->id,
@@ -34,15 +30,9 @@ class CategoryTest extends TestCase
 
     public function test_category_belongs_to_user()
     {
-        $user = User::create([
-            'username' => 'reluser',
-            'email' => 'rel@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
-        $category = Category::create([
-            'name' => 'Work',
-            'description' => 'Work-related tasks',
+        $category = Category::factory()->create([
             'user_id' => $user->id,
         ]);
 

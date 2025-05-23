@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 
 class UserTest extends TestCase
 {
@@ -12,10 +13,9 @@ class UserTest extends TestCase
 
     public function test_user_can_be_created_with_valid_fields()
     {
-        $user = User::create([
+        $user = User::factory()->create([
             'username' => 'janedoe',
             'email' => 'jane@example.com',
-            'password' => bcrypt('secret123'),
         ]);
 
         $this->assertDatabaseHas('users', [
@@ -26,10 +26,9 @@ class UserTest extends TestCase
 
     public function test_user_password_is_hidden_in_array()
     {
-        $user = User::create([
+        $user = User::factory()->create([
             'username' => 'hiddenpass',
             'email' => 'hidden@example.com',
-            'password' => bcrypt('hidden123'),
         ]);
 
         $array = $user->toArray();
@@ -40,14 +39,12 @@ class UserTest extends TestCase
 
     public function test_user_casts_timestamps_as_datetime()
     {
-        $user = User::create([
+        $user = User::factory()->create([
             'username' => 'castcheck',
             'email' => 'cast@example.com',
-            'password' => bcrypt('pass123'),
         ]);
 
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $user->created_at);
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $user->updated_at);
+        $this->assertInstanceOf(Carbon::class, $user->created_at);
+        $this->assertInstanceOf(Carbon::class, $user->updated_at);
     }
-    
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
@@ -15,15 +15,9 @@ class EntryTest extends TestCase
 
     public function test_entry_belongs_to_a_user()
     {
-        $user = User::create([
-            'username' => 'tester',
-            'email' => 'tester@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
-        $entry = Entry::create([
-            'title' => 'Test Entry',
-            'body' => 'Body content',
+        $entry = Entry::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -33,21 +27,10 @@ class EntryTest extends TestCase
 
     public function test_entry_belongs_to_a_category()
     {
-        $user = User::create([
-            'username' => 'tester',
-            'email' => 'tester@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
+        $category = Category::factory()->create(['user_id' => $user->id]);
 
-        $category = Category::create([
-            'name' => 'Work',
-            'description' => 'Work stuff',
-            'user_id' => $user->id,
-        ]);
-
-        $entry = Entry::create([
-            'title' => 'Work Entry',
-            'body' => 'Body content',
+        $entry = Entry::factory()->create([
             'user_id' => $user->id,
             'category_id' => $category->id,
         ]);
@@ -58,24 +41,17 @@ class EntryTest extends TestCase
 
     public function test_entry_can_have_tags()
     {
-        $user = User::create([
-            'username' => 'tester',
-            'email' => 'tester@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
-        $entry = Entry::create([
-            'title' => 'Tagged Entry',
-            'body' => 'Some thoughts...',
+        $entry = Entry::factory()->create([
             'user_id' => $user->id,
         ]);
 
-        $tag1 = Tag::create(['name' => 'Inspiration', 'user_id' => $user->id]);
-        $tag2 = Tag::create(['name' => 'Life', 'user_id' => $user->id]);
+        $tag1 = Tag::factory()->create(['user_id' => $user->id]);
+        $tag2 = Tag::factory()->create(['user_id' => $user->id]);
 
         $entry->tags()->attach([$tag1->id, $tag2->id]);
-
-        $entry->refresh(); 
+        $entry->refresh();
 
         $this->assertCount(2, $entry->tags);
         $this->assertTrue($entry->tags->contains($tag1));

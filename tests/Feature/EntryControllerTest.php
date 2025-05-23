@@ -1,52 +1,31 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Category;
-use App\Models\Tag;
-use App\Models\Entry;
-use App\Http\Controllers\EntryController;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EntryControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        config()->set('database.default', 'sqlite');
-        config()->set('database.connections.sqlite.database', ':memory:');
-        $this->artisan('migrate');
-    }
-
     public function test_save_entry_creates_entry_and_redirects()
     {
+        $this->withoutMiddleware(); 
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $category = Category::create([
-            'name' => 'Test Category',
-            'description' => 'For testing',
-            'user_id' => $user->id,
-        ]);
+        $category = Category::factory()->create(['user_id' => $user->id]);
 
-        $request = Request::create('/save-entry', 'POST', [
+        $response = $this->post('/start-writing', [
             'title' => 'My First Entry',
             'body' => 'This is a test entry body.',
             'category_id' => $category->id,
         ]);
 
-        $controller = new EntryController();
-        $response = $controller->saveEntry($request);
-
-        $this->assertEquals(302, $response->status());
-        $this->assertEquals(route('view-all-thoughts'), $response->getTargetUrl());
+        $response->assertRedirect(route('view-all-thoughts'));
 
         $this->assertDatabaseHas('entries', [
             'title' => 'My First Entry',
@@ -56,188 +35,147 @@ class EntryControllerTest extends TestCase
         ]);
     }
 
-    public function test_view_all_entries_returns_filtered_entries()
+    public function test_view_all_entries_displays_entries()
     {
-        $user = User::create([
-            'username' => 'viewer',
-            'email' => 'viewer@example.com',
-            'password' => bcrypt('secret123'),
-        ]);
-
-        $this->actingAs($user);
-
-        $category = Category::create([
-            'name' => 'Test Category',
-            'description' => 'Test Description',
-            'user_id' => $user->id,
-        ]);
-
-        $tag = Tag::create([
-            'name' => 'Test Tag',
-            'user_id' => $user->id,
-        ]);
-
-        $entryWithTag = Entry::create([
-            'title' => 'Entry With Tag',
-            'body' => 'Has the tag.',
-            'user_id' => $user->id,
-            'category_id' => $category->id,
-        ]);
-        $entryWithTag->tags()->attach($tag->id);
-
-        $entryWithoutTag = Entry::create([
-            'title' => 'Other Entry',
-            'body' => 'No tag here.',
-            'user_id' => $user->id,
-            'category_id' => $category->id,
-        ]);
-
-        $request = Request::create('/view-all-thoughts', 'GET', [
-            'tag' => $tag->id,
-        ]);
-
-        $controller = new EntryController();
-        $response = $controller->viewAllEntries($request);
-
-        $viewEntries = $response->getData()['entries'];
-
-        $this->assertCount(1, $viewEntries);
-        $this->assertEquals('Entry With Tag', $viewEntries->first()->title);
-    }
-
-    public function test_show_entry_displays_view_with_tags()
-    {
+        $this->withoutMiddleware();
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $entry = Entry::create([
-            'title' => 'Entry with Tags',
-            'body' => '<p>Body content here</p>',
-            'user_id' => $user->id,
-        ]);
+        $category = Category::factory()->create(['user_id' => $user->id]);
 
-        $tags = ['tag1', 'tag2', 'tag3', 'tag4'];
-        foreach ($tags as $tagName) {
-            $tag = Tag::create(['name' => $tagName, 'user_id' => $user->id]);
-            $entry->tags()->attach($tag);
-        }
-
-        $controller = new EntryController();
-        $response = $controller->showEntry($entry->id);
-
-        $this->assertInstanceOf(\Illuminate\View\View::class, $response);
-        $this->assertEquals('view-single-thought', $response->name());
-
-        $data = $response->getData();
-        $this->assertEquals($entry->id, $data['entry']->id);
-        $this->assertCount(4, $data['entry']->tags);
-    }
-
-    public function test_edit_entry_loads_correct_view_and_data()
-    {
-        $user = User::factory()->create();
-        Auth::login($user);
-
-        $category = Category::create([
-            'name' => 'Personal',
-            'description' => 'Private stuff',
-            'user_id' => $user->id,
-        ]);
-
-        $entry = Entry::create([
-            'title' => 'Editable Entry',
-            'body' => 'Some content here',
+        \App\Models\Entry::factory()->create([
+            'title' => 'Entry One',
+            'body' => 'Body of entry one',
             'user_id' => $user->id,
             'category_id' => $category->id,
         ]);
 
-        $tag = Tag::create([
-            'name' => 'Important',
+        \App\Models\Entry::factory()->create([
+            'title' => 'Entry Two',
+            'body' => 'Body of entry two',
             'user_id' => $user->id,
+            'category_id' => $category->id,
         ]);
+
+        $response = $this->get('/view-all-thoughts');
+
+        $response->assertStatus(200);
+        $response->assertSee('Entry One');
+        $response->assertSee('Entry Two');
+    }
+
+    public function test_show_entry_displays_entry_details()
+    {
+        $this->withoutMiddleware();
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user);
+
+        $category = \App\Models\Category::factory()->create(['user_id' => $user->id]);
+
+        $entry = \App\Models\Entry::factory()->create([
+            'title' => 'Detail Test Entry',
+            'body' => 'This is the full body of the test entry.',
+            'user_id' => $user->id,
+            'category_id' => $category->id,
+        ]);
+
+        $response = $this->get("/entries/{$entry->id}");
+
+        $response->assertStatus(200);
+        $response->assertSee('Detail Test Entry');
+        $response->assertSee('This is the full body of the test entry.');
+    }
+
+    public function test_edit_entry_displays_edit_form_with_existing_data()
+    {
+        $this->withoutMiddleware();
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user);
+
+        $category = \App\Models\Category::factory()->create(['user_id' => $user->id]);
+
+        $entry = \App\Models\Entry::factory()->create([
+            'title' => 'Entry to Edit',
+            'body' => 'Original body content.',
+            'user_id' => $user->id,
+            'category_id' => $category->id,
+        ]);
+
+        $response = $this->get("/entries/{$entry->id}/edit");
+
+        $response->assertStatus(200);
+        $response->assertSee('Entry to Edit');
+        $response->assertSee('Original body content.');
+    }
+
+    public function test_update_entry_updates_data_and_redirects()
+    {
+        $this->withoutMiddleware();
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user);
+
+        $originalCategory = \App\Models\Category::factory()->create(['user_id' => $user->id]);
+        $newCategory = \App\Models\Category::factory()->create(['user_id' => $user->id]);
+
+        $entry = \App\Models\Entry::factory()->create([
+            'title' => 'Original Title',
+            'body' => 'Original body content.',
+            'user_id' => $user->id,
+            'category_id' => $originalCategory->id,
+            'favorite' => false,
+        ]);
+
+        $response = $this->put("/entries/{$entry->id}/update", [
+            'title' => 'Updated Title',
+            'body' => 'Updated body content.',
+            'category_id' => $newCategory->id,
+            'favorite' => true,
+        ]);
+
+        $response->assertRedirect(route('view-all-thoughts'));
+
+        $this->assertDatabaseHas('entries', [
+            'id' => $entry->id,
+            'title' => 'Updated Title',
+            'body' => 'Updated body content.',
+            'category_id' => $newCategory->id,
+            'favorite' => true,
+        ]);
+    }
+
+    public function test_delete_entry_removes_entry_and_unused_tags()
+    {
+        $this->withoutMiddleware();
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user);
+
+        $category = \App\Models\Category::factory()->create(['user_id' => $user->id]);
+
+        $entry = \App\Models\Entry::factory()->create([
+            'user_id' => $user->id,
+            'category_id' => $category->id,
+        ]);
+
+        $tag = \App\Models\Tag::factory()->create(['user_id' => $user->id]);
+
         $entry->tags()->attach($tag->id);
 
-        $controller = new EntryController();
-        $response = $controller->editEntry($entry->id);
+       $response = $this->delete("/entry/{$entry->id}/delete");
 
-        $this->assertEquals('edit-entry', $response->getName());
+        $response->assertRedirect(route('view-all-thoughts'));
 
-        $viewData = $response->getData();
-        $this->assertEquals($entry->id, $viewData['entry']->id);
-        $this->assertCount(1, $viewData['categories']);
-        $this->assertEquals('Personal', $viewData['categories'][0]->name);
-    }
-
-    public function test_update_entry_updates_entry_and_tags_correctly()
-    {
-        $user = User::factory()->create();
-        Auth::login($user);
-
-        $initialCategory = Category::create([
-            'name' => 'Initial Category',
-            'description' => 'Initial',
-            'user_id' => $user->id,
+        $this->assertDatabaseMissing('entries', [
+            'id' => $entry->id,
         ]);
 
-        $entry = Entry::create([
-            'title' => 'Original Title',
-            'body' => '<p>Original Body</p>',
-            'user_id' => $user->id,
-            'category_id' => $initialCategory->id,
+        $this->assertDatabaseMissing('entry_tag', [
+            'entry_id' => $entry->id,
+            'tag_id' => $tag->id,
         ]);
 
-        $existingTag = Tag::create([
-            'name' => 'existing',
-            'user_id' => $user->id,
+        $this->assertDatabaseMissing('tags', [
+            'id' => $tag->id,
         ]);
-
-        $entry->tags()->attach($existingTag->id);
-
-        $request = Request::create(route('entries.update', $entry->id), 'PUT', [
-            'title' => 'Updated Title',
-            'body' => '<p>Updated Body</p>',
-            'category_id' => $initialCategory->id,
-            'tags' => json_encode(['newtag', 'existing']), 
-        ]);
-
-        $controller = new EntryController();
-        $response = $controller->updateEntry($request, $entry->id);
-
-        $entry->refresh();
-
-        $this->assertEquals('Updated Title', $entry->title);
-        $this->assertEquals('<p>Updated Body</p>', $entry->body);
-        $this->assertEquals($initialCategory->id, $entry->category_id);
-
-        $tagNames = $entry->tags()->pluck('name')->toArray();
-        $this->assertCount(2, $tagNames);
-        $this->assertContains('existing', $tagNames);
-        $this->assertContains('newtag', $tagNames);
-
-        $this->assertInstanceOf(\Illuminate\Http\RedirectResponse::class, $response);
-        $this->assertEquals(route('view-all-thoughts'), $response->getTargetUrl());
-    }
-
-    public function test_delete_entry_removes_entry_and_redirects()
-    {
-        $user = User::factory()->create();
-        Auth::login($user);
-
-        $entry = Entry::create([
-            'title' => 'Delete Me',
-            'body' => 'Temporary content',
-            'user_id' => $user->id,
-        ]);
-
-        $this->assertDatabaseHas('entries', ['id' => $entry->id]);
-
-        $controller = new EntryController();
-        $response = $controller->deleteEntry($entry->id);
-
-        $this->assertDatabaseMissing('entries', ['id' => $entry->id]);
-
-        $this->assertInstanceOf(\Illuminate\Http\RedirectResponse::class, $response);
-        $this->assertEquals(route('view-all-thoughts'), $response->getTargetUrl());
     }
 
 

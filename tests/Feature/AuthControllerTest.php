@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthControllerTest extends TestCase
 {
@@ -12,28 +12,25 @@ class AuthControllerTest extends TestCase
 
     public function test_login_redirects_to_home_on_valid_credentials()
     {
-        $this->withoutMiddleware(); 
+        $this->withoutMiddleware();
 
-        $user = User::create([
+        $user = User::factory()->create([
             'username' => 'testuser',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password123'),
+            'password' => bcrypt('password123'), 
         ]);
 
         $response = $this->post('/login', [
             'username' => 'testuser',
-            'password' => 'password123',
+            'password' => 'password123', 
         ]);
 
         $response->assertRedirect('/home');
         $this->assertAuthenticatedAs($user);
     }
 
-
-
     public function test_register_creates_user_and_redirects_to_login()
     {
-        $this->withoutMiddleware(); 
+        $this->withoutMiddleware();
 
         $response = $this->post('/register', [
             'username' => 'newuser',
@@ -43,6 +40,7 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('login'));
+
         $this->assertDatabaseHas('users', [
             'username' => 'newuser',
             'email' => 'newuser@example.com',

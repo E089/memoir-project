@@ -5,14 +5,17 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Category;
+use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CategoryControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_category_store_creates_category_with_json()
+    public function test_category_store_creates_category_with_form_request()
     {
+        $this->withoutMiddleware(); 
+
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -21,9 +24,10 @@ class CategoryControllerTest extends TestCase
             'description' => 'Work-related thoughts',
         ];
 
-        $response = $this->postJson('/categories', $payload);
+        $response = $this->post('/categories', $payload);
 
-        $response->assertStatus(201); 
+        $response->assertRedirect(route('view-all-thoughts'));
+
         $this->assertDatabaseHas('categories', [
             'name' => 'Work',
             'description' => 'Work-related thoughts',
@@ -31,18 +35,22 @@ class CategoryControllerTest extends TestCase
         ]);
     }
 
-    public function test_category_destroy_deletes_category_with_json()
+   public function test_category_destroy_deletes_category()
     {
+        $this->withoutMiddleware(); 
+
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $category = Category::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->deleteJson("/categories/{$category->id}");
+        $response = $this->delete("/categories/{$category->id}");
 
-        $response->assertStatus(200); 
+        $response->assertRedirect(route('view-all-thoughts'));
+
         $this->assertDatabaseMissing('categories', [
             'id' => $category->id,
         ]);
     }
+
 }
