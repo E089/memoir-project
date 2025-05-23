@@ -11,7 +11,7 @@
         margin: 0;
         padding: 0;
         font-family: 'Arial', sans-serif;
-        background: url('{{ asset('images/bg_home.png') }}') no-repeat center center fixed;
+        background: url('{{ asset('home.png') }}') no-repeat center center fixed;
 
         background-size: cover;
         overflow-x: hidden;
@@ -66,7 +66,7 @@
         padding: 8rem 4rem 4rem;
         gap: 4rem;
         flex-wrap: wrap;
-        margin-top: 8rem;
+        margin-top: 45rem;
     }
 
 
@@ -134,6 +134,10 @@
         background-color: #FFDB4C; 
         color: black; 
         border-color: #FFDB4C; 
+    }
+
+    h5{
+        font-family:'Schoolbell', cursive;
     }
 
 
@@ -343,24 +347,24 @@
 </div>
 
 <div class="main-section">
-    <div class="hero">
-        <h1>
+    <div class="hero" data-aos="fade-right" style="margin-left:5rem;">
+        <h1 style="line-height: 0.80;">
             <span  style="font-family:'Fragment Mono', monoscape">type down</span>
             <span style="font-family:'Schoolbell', cursive; margin-left:50px; font-size:7rem;">your</span>
             <span class="bold" style="font-family:'Arial', sans-serif; font-weight:1500px; font-size:120px; letter-spacing:0.5">inner world.</span>
         </h1>
-        <p>Memoir is your digital journal — crafted to hold your thoughts, memories, and life’s little details.</p>
+        <p style="font-size:25px;">Memoir is your digital journal — crafted to hold your thoughts, memories, and life’s little details.</p>
     </div>
 
-    <div class="home-right" style="font: size 30px;">
+    <div class="home-right" style="font: size 30px; margin-top:-10rem;">
         <a href="{{ route('start-writing') }}" class="home-button" >     Start Writing     </a>
         <a href="{{ route('view-all-thoughts') }}" class="home-button">Wall of Thoughts</a>
     </div>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-4" style="margin-top:20rem;">
     <div class="recent-header text-center mb-5">
-            <h2 class="recent-title">recent ✿</h2>
+            <h2 class="recent-title" style="margin-top:10rem;">recent ✿</h2>
     </div>
 
     <div class="scrollable-wall p-2">
@@ -418,14 +422,14 @@
                     <h5 class="modal-title schoolbell-font" id="logoutLabel">Confirm Logout</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center">
+                <div class="modal-body text-center" style="font-family: 'Fragment Mono', monospace;">
                     <p>Are you sure you want to log out?</p>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal" style="font-family: 'Fragment Mono', monospace;">Cancel</button>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
                         @csrf
-                        <button type="submit" class="btn btn-danger">Yes, Log Out</button>
+                        <button type="submit" class="btn btn-danger" style="font-family: 'Fragment Mono', monospace;">Yes, Log Out</button>
                     </form>
                 </div>
             </div>
