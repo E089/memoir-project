@@ -291,12 +291,6 @@
         @method('PUT')
 
         <input type="text" name="title" id="title" value="{{ $entry->title }}" placeholder="Edit your title..." required>
-
-        @if ($entry->favorite)
-            <div style="margin-top: 0.1rem, font-size: 0.95rem; color: #e74c3c; font-family: 'Schoolbell', cursive;">
-                <i class="fas fa-heart"></i> added to favorites!
-            </div>
-        @endif
         
         <textarea name="body" id="body" hidden>{{ $entry->body }}</textarea>
 

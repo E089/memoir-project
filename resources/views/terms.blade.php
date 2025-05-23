@@ -85,4 +85,8 @@
         Last updated: May 2025 • Self-approved with snacks 🍪
     </p>
 </div>
+
+<div class="text-center mt-4 text-muted small">
+    &copy; 2025 Memoir
+</div>
 @endsection

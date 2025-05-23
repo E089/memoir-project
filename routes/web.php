@@ -20,7 +20,7 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 // Logout
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');  // Logout via GET
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/welcome-page', function () {
     return view('welcome-page');  
 })->name('welcome-page');  
@@ -31,8 +31,6 @@ Route::get('/home', function () {
 })->name('home')->middleware('auth');  // Protect home route with 'auth' middleware
 
 Route::get('/home', [EntryController::class, 'home'])->name('home');
-
-
 
 // Dashboard actions (Start Writing and View All Thoughts)
 Route::get('/start-writing', [EntryController::class, 'showStartWriting'])->name('start-writing')->middleware('auth');

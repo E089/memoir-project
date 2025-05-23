@@ -278,7 +278,7 @@
     }
 
     .ql-container.ql-snow {
-        order: 0px !important;
+        border: 0px !important;
     }
 
 

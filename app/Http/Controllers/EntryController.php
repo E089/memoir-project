@@ -59,31 +59,30 @@ class EntryController extends Controller
     }
 
     public function viewAllEntries(Request $request)
-    {
-        $query = Entry::where('user_id', auth()->id());
-    
-        if ($request->has('category') && $request->category != '') {
-            $query->where('category_id', $request->category);
-        }
-    
-        if ($request->has('tag') && $request->tag != '') {
-            $query->whereHas('tags', function($q) use ($request) {
-                $q->where('tags.id', $request->tag);
-            });
+        {
+            $query = Entry::where('user_id', auth()->id())
+                ->when($request->filled('category'), fn($q) => 
+                    $q->where('category_id', $request->category)
+                )
+                ->when($request->filled('tag'), fn($q) => 
+                    $q->whereHas('tags', fn($q2) => 
+                        $q2->where('tags.id', $request->tag)
+                    )
+                )
+                ->when($request->filled('search'), fn($q) => 
+                    $q->where(function($q2) use ($request) {
+                        $q2->where('title', 'like', '%' . $request->search . '%')
+                        ->orWhere('body', 'like', '%' . $request->search . '%');
+                    })
+                );
+
+            $entries = $query->with('tags')->latest()->get();
+            $categories = Category::where('user_id', auth()->id())->get();
+            $tags = Tag::where('user_id', auth()->id())->get(); 
+
+            return view('view-all-thoughts', compact('entries', 'categories', 'tags'));
         }
 
-        if ($request->has('search') && $request->search != '') {
-            $query->where(function($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->search . '%')
-                ->orWhere('body', 'like', '%' . $request->search . '%');
-            });
-        }
-        $entries = $query->with('tags')->latest()->get();
-        $categories = Category::where('user_id', auth()->id())->get();
-        $tags = Tag::where('user_id', auth()->id())->get(); 
-    
-        return view('view-all-thoughts', compact('entries', 'categories', 'tags'));
-    }
     
     public function showEntry($id)
         {

@@ -411,8 +411,38 @@
             @endforeach
         </div>
     </div>
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content animate__animated animate__fadeIn">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title schoolbell-font" id="logoutLabel">Confirm Logout</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Are you sure you want to log out?</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Yes, Log Out</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
     <div class="text-center mt-4 text-muted small">
         &copy; 2025 Memoir
     </div>
+
+    <script>
+    document.getElementById('logout-link').addEventListener('click', function (e) {
+        e.preventDefault();
+        const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+        modal.show();
+    });
+    </script>
+
 @endsection

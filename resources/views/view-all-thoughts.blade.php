@@ -357,22 +357,21 @@ html, body {
                     </button>
                     <ul class="dropdown-menu w-100 text-center" aria-labelledby="categoryDropdown" style="border-radius: 30px; max-height: 250px; overflow-y: auto;">
                         <li>
-                            <a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Categories</a>
+                           <a class="dropdown-item" href="{{ route('view-all-thoughts', request()->only('tag', 'search')) }}">All Categories</a>
                         </li>
                         @foreach ($categories->unique('name') as $category)
                             <li>
                                 <div class="d-flex align-items-center justify-content-between px-3">
-                                    <a href="{{ route('view-all-thoughts', ['category' => $category->id]) }}" class="text-truncate text-start text-dark text-decoration-none flex-grow-1">
+                                   <a href="{{ route('view-all-thoughts', array_merge(request()->only('tag', 'search'), ['category' => $category->id])) }}">
                                         {{ $category->name }}
                                     </a>
-                               <form action="{{ route('delete-category', $category->id) }}" method="POST" class="delete-category-form ms-2">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-link text-danger p-0 delete-category-btn" title="Delete Category">
-        <i class="fas fa-trash-alt"></i>
-    </button>
-</form>
-
+                           <form action="{{ route('delete-category', $category->id) }}" method="POST" class="delete-category-form ms-2">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link text-danger p-0 delete-category-btn show-category-confirm" title="Delete Category">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
                                 </div>
                             </li>
                         @endforeach
@@ -395,16 +394,15 @@ html, body {
                         
                     </button>
                     <ul class="dropdown-menu w-100 text-center" aria-labelledby="tagDropdown" style="border-radius: 30px; max-height: 250px; overflow-y: auto;">
-                        <li><a class="dropdown-item" href="{{ route('view-all-thoughts') }}">All Tags</a></li>
+                        <li><a class="dropdown-item" href="{{ route('view-all-thoughts', request()->only('category', 'search')) }}">All Tags</a></li>
                         @foreach ($tags as $tag)
-                            <li><a class="dropdown-item text-truncate" href="{{ route('view-all-thoughts', ['tag' => $tag->id]) }}">{{ $tag->name }}</a>
-                             </li>
+                            <li>
+                                <a class="dropdown-item text-truncate" href="{{ route('view-all-thoughts', array_merge(request()->only('category', 'search'), ['tag' => $tag->id])) }}">
+                                    {{ $tag->name }}
+                                </a>
+                            </li>
                         @endforeach
-
-                        
                     </ul>
-
-                
                 </div>
             </div>
             <div class="col-md-3">
@@ -498,12 +496,51 @@ html, body {
             @endforeach
         </div>
     </div>
-
-    @if($entries->isEmpty())
-        <div class="alert alert-info mt-4">
-            You haven't written any entries yet. Start writing your first thought!
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content animate__animated animate__fadeIn">
+        <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="deleteConfirmLabel">Confirm Delete</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body text-center">
+            <p>Are you sure you want to delete this entry?</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Yes, Delete</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content animate__animated animate__fadeIn">
+        <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="deleteCategoryLabel">Confirm Delete</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p>Are you sure you want to delete this category?</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteCategoryBtn">Yes, Delete</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+
+   @if($entries->isEmpty())
+        @if(request()->has('search') || request()->has('category') || request()->has('tag'))
+            <p class="text-center mt-4 text-muted">No entries matched your search or filters.</p>
+        @else
+            <p class="text-center mt-4 text-muted">You haven't written any entries yet.</p>
+        @endif
     @endif
+
 
     <div class="text-center mt-4 text-muted small">
         &copy; 2025 Memoir
@@ -511,31 +548,41 @@ html, body {
 
 </div>
 
-
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.show-confirm').forEach(button => {
-            button.addEventListener('click', function () {
-                const form = this.closest('form');
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "This entry will be lost forever 🥺",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#e3342f',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Yes, delete it',
-                    cancelButtonText: 'Cancel',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
+    let deleteFormToSubmit = null;
+
+    document.querySelectorAll('.show-confirm').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            deleteFormToSubmit = this.closest('form');
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
         });
     });
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+        if (deleteFormToSubmit) deleteFormToSubmit.submit();
+    });
 </script>
+
+<script>
+    let deleteCategoryFormToSubmit = null;
+
+    document.querySelectorAll('.show-category-confirm').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            deleteCategoryFormToSubmit = this.closest('form');
+            const modal = new bootstrap.Modal(document.getElementById('deleteCategoryModal'));
+            modal.show();
+        });
+    });
+
+    document.getElementById('confirmDeleteCategoryBtn').addEventListener('click', function () {
+        if (deleteCategoryFormToSubmit) deleteCategoryFormToSubmit.submit();
+    });
+</script>
+
+
 
 
 @endsection

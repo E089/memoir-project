@@ -30,6 +30,8 @@
     <script src="https://cdn.jsdelivr.net/npm/trix@1.3.1/dist/trix.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 
+    <link rel="icon" href="{{ asset('images/favicon2.ico') }}" type="image/x-icon">
+
 </head>
 
 <body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh;">
