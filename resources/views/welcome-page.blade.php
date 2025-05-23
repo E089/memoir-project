@@ -225,6 +225,16 @@
         z-index: 0; 
     }
 
+    .belief-panel {
+    background-color: #f2f2f0;
+    padding: 6rem 2rem;
+    width: 100% !important;  /* Overrides huge width */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+    
+
 @media (max-width: 768px) {
     .features-container {
         flex-direction: column;
@@ -291,6 +301,73 @@
     html {
     scroll-behavior: smooth;
     }
+
+
+    .contact-section-dark {
+        background-color: #1e1e1e;
+        color: #eaeaea;
+        padding: 6rem 2rem;
+        font-family: 'Fragment Mono', monospace;
+        }
+
+        .contact-container-dark {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        }
+
+        .contact-left, .contact-right {
+        flex: 1;
+        min-width: 280px;
+        }
+
+        .contact-left h2 {
+        font-size: 3rem;
+        margin-bottom: 2rem;
+        color: #f1f1f1;
+        }
+
+        .social-links {
+        list-style: none;
+        padding: 0;
+        font-size: 1rem;
+        }
+
+        .social-links li {
+        margin-bottom: 0.75rem;
+        }
+
+        .social-links a {
+        color: #ddd;
+        text-decoration: underline;
+        }
+
+        .contact-right p {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+        .contact-container-dark {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-left h2 {
+            text-align: center;
+        }
+
+        .contact-left, .contact-right {
+            text-align: center;
+        }
+        }
+
+    
+
 </style>
 
 <div class="navbar">
@@ -303,7 +380,7 @@
     </div>
 </div>
 
-<div id="home" class="main-section" style="margin-top: 40rem;">
+<div id="home" class="main-section" style="margin-top: 125rem;">
     <div class="hero" data-aos="fade-right" style="margin-left:5rem;">
         <h1 style="line-height: 0.80;">
             <span  style="font-family:'Fragment Mono', monoscape">type down</span>
@@ -337,23 +414,78 @@
     </div>
 </div>
 
-<div class="panel" style="background-color: #f2f2f0;">
-    <h2 style="font-family: 'Schoolbell', cursive; font-size: 4rem; text-align: center;">we believe in</h2>
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-around; text-align: center; margin-top: 2rem;">
-        <div style="max-width: 300px;font-family:'Fragment Mono', monscapce;">
-            <h5>Writing is healing</h5>
-            <p>Self-expression helps us understand who we are.</p>
-        </div>
-        <div style="max-width: 300px;font-family:'Fragment Mono', monscapce;">
-            <h5>Memories Matter</h5>
-            <p>Even the little things deserve to be remembered.</p>
-        </div>
-        <div style="max-width: 300px;font-family:'Fragment Mono', monscapce;">
-            <h5>Simplicity is power</h5>
-            <p>A clean, quiet space encourages true reflection.</p>
+<div class="panel" style="background-color: #f2f2f0; height:785px; margin-top:5rem;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h2 style="font-family: 'Inter', sans-serif; font-size: 6rem; font-weight: 900; line-height: 1; margin-bottom: 3rem;">
+            we believe<br>in
+        </h2>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; font-size: 5rem;">
+            <div style="max-width: 300px;">
+                <h3 style="font-family:'Schoolbell', cursive; font-size: 2rem;">Writing is healing</h3>
+                <p style="font-family:'Fragment Mono', monospace; font-size: 1rem; line-height: 1.4;">
+                    Self-expression<br>helps us understand<br>who we are.
+                </p>
+            </div>
+
+            <div style="max-width: 300px;">
+                <h3 style="font-family:'Schoolbell', cursive; font-size: 2rem;">Memories Matter</h3>
+                <p style="font-family:'Fragment Mono', monospace; font-size: 1rem; line-height: 1.4;">
+                    Even the little<br>things deserve to be<br>remembered.
+                </p>
+            </div>
+
+            <div style="max-width: 300px;">
+                <h3 style="font-family:'Schoolbell', cursive; font-size: 2rem;">Simplicity is power</h3>
+                <p style="font-family:'Fragment Mono', monospace; font-size: 1rem; line-height: 1.4;">
+                    A clean, quiet space<br>encourages true<br>reflection.
+                </p>
+            </div>
         </div>
     </div>
 </div>
+
+
+<div class="panel" style="background-color:rgb(31, 31, 31); height:785px; margin-top:5rem;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h2 style="font-family: 'Inter', sans-serif; font-size: 6rem; font-weight: 900; margin-top: 3rem; color:white; ">
+            contact us
+        </h2>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: space-between;color:white; margin-top:5rem;">
+            <div style="flex: 1; min-width: 280px;">
+                <h3 style="font-family:'Schoolbell', cursive; font-size: 1.5rem;">🌐 Follow Us & Stay Connected</h3>
+                <p style="font-family:'Fragment Mono', monospace; font-size: 1rem; line-height: 1.6;">
+                    📸 Instagram – <a href="#">@memoirjournal</a><br>
+                    🐦 Twitter – <a href="#">@memoirjournal</a><br>
+                    📌 Pinterest – <a href="#">@memoirjournal</a>
+                </p>
+            </div>
+
+            <div style="flex: 1; min-width: 280px;">
+                <h3 style="font-family:'Schoolbell', cursive; font-size: 1.5rem;">📮 General Inquiries</h3>
+                <p style="font-family:'Fragment Mono', monospace; font-size: 1rem; line-height: 1.6;">
+                    Have a question, concern, or something to share?<br>
+                    Email us anytime at:<br>
+                    <strong>hello@memoir.app</strong>
+                </p>
+                <p style="font-family:'Fragment Mono', monospace; font-size: 1rem; line-height: 1.6;">
+                    We’d love to hear from you. Whether you have a question, feedback, or just want to say hello — feel free to reach out.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
