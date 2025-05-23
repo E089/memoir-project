@@ -268,6 +268,17 @@
         
 }
 
+#word-count {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    font-family: 'Schoolbell', cursive;
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 0; 
+}
+
+
  @media (max-width: 768px) {
 
         .navbar {
@@ -323,10 +334,11 @@
     <div class="entry-body-wrapper">
         <div class="entry-body">{!! $entry->body !!}</div>
     </div>
-
-    <div id="word-count" style="margin-top: 1rem; font-family: 'Schoolbell', cursive; font-size: 1.1rem; color: #555;">
-    word Count: <span id="count">0</span>
+    
+    <div id="word-count">
+        word count: <span id="count">0</span>
     </div>
+
 
     <a href="{{ route('entries.edit', $entry->id) }}" class="edit-button">edit</a>
 </div>

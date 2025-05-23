@@ -319,6 +319,11 @@ html, body {
     background-color: transparent   ;
     font-family: 'Fragment Mono', monospace;
     height: 40px;
+
+    .dropdown-menu a {
+    color: inherit; 
+    text-decoration: none; 
+    }
 }
 
 </style>
@@ -362,7 +367,7 @@ html, body {
                         @foreach ($categories->unique('name') as $category)
                             <li>
                                 <div class="d-flex align-items-center justify-content-between px-3">
-                                   <a href="{{ route('view-all-thoughts', array_merge(request()->only('tag', 'search'), ['category' => $category->id])) }}">
+                                   <a href="{{ route('view-all-thoughts', array_merge(request()->only('tag', 'search'), ['category' => $category->id])) }}" style="text-decoration: none; color: inherit;">
                                         {{ $category->name }}
                                     </a>
                            <form action="{{ route('delete-category', $category->id) }}" method="POST" class="delete-category-form ms-2">
