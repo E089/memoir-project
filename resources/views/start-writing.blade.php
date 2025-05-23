@@ -521,9 +521,10 @@
 
         if (content.length === 0) {
             e.preventDefault();
-            alert("Please fill in the body before submitting.");
+            showToastr('error', 'Please fill in the body before submitting.', '📝 Empty Body');
             return;
         }
+
         document.querySelector('#body').value = quill.root.innerHTML;
     });
 </script>
